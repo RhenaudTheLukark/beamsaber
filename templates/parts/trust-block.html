@@ -1,0 +1,18 @@
+<div class="trust-block">
+  <b>{{localize 'BITD.Trust'}}</b>
+  <div class="flex-vertical big-teeth-section trust">
+    <div class="small-teeth-container">
+      <div class="small-teeth-wrap">
+        <div class="small-teeth">
+          {{#multiboxes trust}}
+          <label id="{{trust_id}}-0" class="input{{#if (eq 0 trust)}} checked{{/if}}" type="radio" data-name="{{trust_path}}" data-value="0"></label>
+          {{#times_from 1 9}}
+          <label id="{{../trust_id}}-{{this}}" class="input{{#if (eq this ../trust)}} checked{{/if}}" type="radio" data-name="{{../trust_path}}" data-value="{{this}}"></label>
+          <label class="radio-toggle{{#if (lteq this ../trust)}} enabled{{/if}}"></label>
+          {{/times_from}}
+          {{/multiboxes}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

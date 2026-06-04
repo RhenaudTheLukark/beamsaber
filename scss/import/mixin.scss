@@ -20,49 +20,44 @@
  * Toothradio. Some (eg trauma) are not changeable, hence the option.
  */
 @mixin toothradio($width, $height, $unchecked_background, $checked_background, $changeable: true) {
-
   display: flex;
 
-  label {
+  label:not(.input) {
+    height: $height;
+    width: $width;
+    background-image: url($checked_background);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-right: 5px;
 
-    & {
-      height: $height;
-      width: $width;
-      background-image: url($checked_background);
-      background-repeat: no-repeat;
-      background-size: contain;
-      margin-right: 5px;
-  
-      &:last-of-type {
-        margin-right: 0px;
-      }
-      &[for$="-0"] {
-        width: auto;
-        height: auto;
-        background-image: none !important;
-        color: $almost_white;
+    &:last-of-type {
+      margin-right: 0px;
+    }
 
-        i {
-          margin-top: 4px;
-        }
-      }
+    &[for$="-0"] {
+      width: auto;
+      height: auto;
+      background-image: none !important;
+      color: $almost_white;
 
-      @if $changeable {
-        @include changeable(0.1s, 0.8, 0.9);
+      i {
+        margin-top: 4px;
       }
-      @else {
-        cursor: not-allowed;
-      }
+    }
+
+    @if $changeable {
+      @include changeable(0.1s, 0.8, 0.9);
+    }
+    @else {
+      cursor: not-allowed;
     }
   }
 
   /* Hide the browser's default checkbox */
-  input {
-  
+  input, label.input {
     display: none;
-  
-    &:checked {
-  
+
+    &:checked, &.checked {
       & ~ label {
         background-image: url($unchecked_background);
       }
@@ -77,48 +72,51 @@
  * Custom Radio
  */
 @mixin custom_radio($width, $height) {
-
   display: flex;
   $default_color: $almost_white;
   $accent_color: $almost_black;
   $circle_border_color: $almost_black;
 
   label {
+    height: $height;
+    width: $width;
+    background-color: $accent_color;
 
-    & {
-      height: $height;
-      width: $width;
-      background-color: $accent_color;
+    vertical-align: middle;
+    border: 2px solid $circle_border_color;
+    border-radius: 24px;
 
-      vertical-align: middle;
-      border: 2px solid $circle_border_color;
+    &[for$="-0"] {
+      height: 5px;
+      width: 5px;
       border-radius: 24px;
-
-      &[for$="-0"] {
-        height: 5px;
-        width: 5px;
-        border-radius: 24px;
-        background-image: none !important;
-        background-color: $red !important;
-        margin-right: 0px;
-      }
-
-      @include changeable(0.1s, 0.7, 0.7);
+      background-image: none !important;
+      background-color: $red !important;
+      margin-right: 0px;
     }
+
+    &.current-form {
+      background-color: $blue !important;
+    }
+
+    &.other-form {
+      background-color: $lightblue !important;
+    }
+
+    @include changeable(0.1s, 0.7, 0.7);
   }
 
   /* Hide the browser's default checkbox */
   input {
     display: none;
-  
+
     &:checked {
-  
       & ~ label {
         background-color: $default_color;
       }
       & + label {
         // Less opacity here cos otherwise it's barely visible on the dark
-        @include changeable(0.1s, 0.7, 0.7); 
+        @include changeable(0.1s, 0.7, 0.7);
         background-color: $accent_color;
       }
     }
@@ -129,41 +127,34 @@
  * Custom Radio Squared
  */
 @mixin custom_radio_square($side) {
-
   display: flex;
   $default_color: $almost_white;
   $accent_color: $gold;
   $circle_border_color: $almost_black;
 
-  label {
+  input, label.input {
+    display: none;
 
-    & {
-      height: $side;
-      width: $side;
-      background-color: $accent_color;
-
-      vertical-align: middle;
-      border: 1px solid $circle_border_color;
-
-      &[for$="-0"] {
-        margin-right: 0px;
-      }
-      @include changeable(0.1s, 0.8, 0.9);
+    &[id$="-0"] + label {
+      display: none;
+      margin-right: 0px;
     }
   }
 
-  /* Hide the browser's default checkbox */
-  input {
-    display: none;
-  
-    &:checked {
-  
-      & ~ label {
-        background-color: $default_color;
-      }
-      & + label {
-        background-color: $accent_color;
-      }
+  label:not(.input) {
+    height: $side;
+    width: $side;
+    vertical-align: middle;
+    background-color: $default_color;
+    border: 1px solid $circle_border_color;
+    @include changeable(0.1s, 0.8, 0.9);
+
+    &:last-of-type {
+      margin-right: 0px;
+    }
+
+    &.enabled {
+      background-color: $accent_color;
     }
   }
 }
@@ -172,9 +163,11 @@
  * Checkboxes underscored.
  */
 @mixin check_underscore() {
-
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+
   label {
     cursor: pointer;
     font-size: 19px;
@@ -187,7 +180,6 @@
 
     /* Hide the browser's default checkbox */
     input {
-      
       display: none;
 
       &:checked ~ .checkmark {
@@ -200,14 +192,12 @@
       font-weight: bold;
     }
   }
-
 }
 
 /*
  * Create Clock
  */
-@mixin clock($segments, $size, $default_color:null, $accent_color:null) {
-
+@mixin clock($segments, $size, $shifted:false, $default_color:null, $accent_color:null) {
   $angle: calc(360 / $segments);
   $skew: 90 + $angle;
   $border_width: 3;
@@ -215,7 +205,6 @@
   position: relative;
 
   .blades-clock {
-
     position: relative;
     @if $default_color {
       border: #{$border_width}px solid $almost_black;
@@ -223,7 +212,6 @@
     padding: 0;
     width: #{$size}px;
     height: #{$size}px;
-    border-radius: 50%;
     list-style: none;
     overflow: hidden;
     background-size: cover;
@@ -231,11 +219,20 @@
     label {
       overflow: hidden;
       position: absolute;
-      top: -50%;
-      right: -50%;
+      @if $segments > 2 {
+        top: -50%;
+      }
+      @if $segments > 1 {
+        right: -50%;
+      }
       width: 100%;
       height: 100%;
-      transform-origin: 0% 100%;
+      @if $segments == 2 {
+        transform-origin: 0% 50%;
+      }
+      @else if $segments > 2 {
+        transform-origin: 0% 100%;
+      }
       background-color: $accent_color;
 
       @include changeable(0.1s, 0.8, 0.9);
@@ -265,105 +262,38 @@
     }
 
     @for $i from 1 through $segments {
+      $rotate_angle: $angle * ($i - if($shifted, 1.5, 1));
 
-      $rotate_angle: $angle * ($i - 1);
       *:nth-child(#{$i * 2 + 1}) {
-        transform: rotate(#{$rotate_angle}deg) skewY(#{$skew}deg);
+        @if $segments > 2 {
+          transform: rotate(#{$rotate_angle}deg) skewY(#{$skew}deg);
+        }
+        @else if $segments == 2 {
+          transform: rotate(#{$rotate_angle}deg);
+        }
       }
     }
-  }
 
-}
-
-/*
- * Turf Block
- */
-@mixin turf_block($turf_width, $turf_height) {
-  @include changeable(0.1s, 0.8, 0.9);
-
-
-  $turf_margin: 20px;
-  $connector_height: math.div($turf_height, 10);
-  $connector_width: $turf_margin * 2;
-
-  width: $turf_width;
-  height: $turf_height;
-  background-color: $lightgray;
-  position: relative;
-  margin: $turf_margin;
-  flex-grow: initial;
-
-  &.turf-selected {
-    .connector {
-      background-color: $gray;
-      z-index: 1;
-    }
-  }
-
-  .connector {
-
-    position: absolute;
-    display: block;
-    background-color: $lightgray;
-
-    &.right,
-    &.left {
-      width: $turf_margin * 2;
-      height: math.div($turf_height, 5);
-      top: math.div($turf_height, 2) - math.div($turf_height, 10);
-    }
-    &.left {
-      left: -$turf_margin * 2;
-    }
-    &.right {
-      left: $turf_width;
+    img {
+      float: left;
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      border: 0px;
+      padding: 0px;
     }
 
-    &.top,
-    &.bottom {
-      height: $turf_margin * 2;
-      width: math.div($turf_height, 5);
-      left: math.div($turf_width, 2) - math.div($turf_height, 10);
-    }
-    &.top {
-      top: -$turf_margin * 2;
-    }
-    &.bottom {
-      top: $turf_height;
-    }
-  }
-
-
-  &.turf-selected {
-    background-color: $gray;
-  }
-
-  .turf-description {
-    border: none;
-    background: none;
-    resize: none;
-    width: $turf_width;
-    text-align: center;
-    min-height: auto;
-    font-size: 12px;
-  }
-
-  .turf-name {
-    border: none;
-    border-radius: 0px;
-    text-align: center;
-    font-weight: bold;
-  }
-
-  input[type="checkbox"] {
-    transform: scale(1);
-  }
-
-  .turf-control {
-    &.turf-select {
+    .clock-style-picker {
+      display: none;
       position: absolute;
-      top: -7px;
-      left: -7px;
+      right: 0px;
+      font-size: 16px;
+    }
+
+    &:hover {
+      .clock-style-picker {
+        display: block;
+      }
     }
   }
 }
@@ -373,7 +303,6 @@
  * Toothradio single elements
  */
  @mixin toothradio_single($width, $height, $unchecked_background, $checked_background) {
-
   display: flex;
 
   label {
@@ -385,7 +314,7 @@
       background-repeat: no-repeat;
       background-size: contain;
       margin-right: 5px;
-  
+
       &:last-of-type {
         margin-right: 0px;
       }
@@ -394,9 +323,9 @@
 
   /* Hide the browser's default checkbox */
   input {
-  
+
     display: none;
-  
+
     &:checked {
       & + label {
         background-image: url($checked_background);
@@ -409,7 +338,6 @@
  * Custom Radio Round
  */
  @mixin custom_radio_round($diameter, $circle_border_color, $default_color, $accent_color) {
-
   display: flex;
 
   label {
@@ -428,7 +356,7 @@
   /* Hide the browser's default checkbox */
   input {
     display: none;
-  
+
     &:checked {
       & ~ label:not([for$="-0"]) {
         border-color: $circle_border_color;

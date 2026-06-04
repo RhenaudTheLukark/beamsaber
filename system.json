@@ -1,167 +1,106 @@
 {
-  "id": "beam-saber",
-  "title": "Beam Saber Test",
+  "id": "beamsaber",
+  "title": "Beam Saber",
   "description": "Beam Saber game system based on the game from Austin Ramsay - https://austin-ramsay.itch.io/beamsaber",
   "version": "0.6.0",
+  "license": "./LICENSE",
+  "manifest": "https://raw.githubusercontent.com/conordjpc/foundryvtt-beamsaber/master/system.json",
+  "download": "https://github.com/conordjpc/foundryvtt-beamsaber/archive/bs0.5.3.zip",
+  "url": "https://github.com/conordjpc/foundryvtt-beamsaber/",
   "compatibility": {
-    "minimum": 12,
-    "verified": "12.330"
+    "minimum": "13",
+    "verified": 13.351,
+    "maximum": "13"
   },
-  "url": "https://github.com/Dez384/fvtt-beam-saber/",
-  "manifest": "https://raw.githubusercontent.com/Dez384/fvtt-beam-saber/master/system.json",
-  "download": "https://github.com/Dez384/fvtt-beam-saber/archive/refs/tags/v0.6.0.zip",
+  "background": "systems/beamsaber/images/BS_title.png",
   "authors": [
-    { "name": "conordjpc"},
-    { "name": "grankless"},
-    { "name": "Dez384"}
+    { "name": "conordjpc" },
+    { "name": "RhenaudTheLukark" }
   ],
-  "esmodules": [
-    "module/blades.js"
-  ],
-  "styles": [
-    "styles/blades.css"
-  ],
+  "esmodules": [ "module/blades.js" ],
+  "styles": [ "styles/blades.css" ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
-    },
-    {
-      "lang": "ru",
-      "name": "Russian",
-      "path": "lang/ru.json"
-    },
-    {
-      "lang": "es",
-      "name": "Spanish",
-      "path": "lang/es.json"
-    },
-    {
-      "lang": "fr",
-      "name": "French",
-      "path": "lang/fr.json"
-    },
-    {
-      "lang": "pl",
-      "name": "Polish",
-      "path": "lang/pl.json"
-    },
-    {
-      "lang": "de",
-      "name": "Deutsch",
-      "path": "lang/de.json"
-    },
-    {
-      "lang": "pt",
-      "name": "Portuguese",
-      "path": "lang/pt.json"
-    },
-    {
-      "lang": "it",
-      "name": "Italian",
-      "path": "lang/it.json"
     }
   ],
   "packs": [
     {
+      "name": "ability",
+      "label": "Abilities",
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/abilities"
+    },
+    {
       "name": "class",
       "label": "Classes",
-      "system": "beam-saber",
-      "path": "./packs/classes.db",
-      "type": "Item"
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/classes"
+    },
+    {
+      "name": "crew_ability",
+      "label": "Squad Abilities",
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/crew_abilities"
+    },
+    {
+      "name": "crew_reputation",
+      "label": "Squad Reputation",
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/crew_reputation"
+    },
+    {
+      "name": "crew_type",
+      "label": "Squad Types",
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/crew_types"
+    },
+    {
+      "name": "crew_upgrade",
+      "label": "Squad Upgrades",
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/crew_upgrades"
+    },
+    {
+      "name": "faction_type",
+      "label": "Faction Types",
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/faction_type"
     },
     {
       "name": "item",
       "label": "Items",
-      "system": "beam-saber",
-      "path": "./packs/items.db",
-      "type": "Item"
-    },
-    {
-      "name": "ability",
-      "label": "Abilities",
-      "system": "beam-saber",
-      "path": "./packs/abilities.db",
-      "type": "Item"
-    },
-    {
-      "name": "crew_reputation",
-      "label": "Crew Reputation",
-      "system": "beam-saber",
-      "path": "./packs/crew_reputation.db",
-      "type": "Item"
-    },
-    {
-      "name": "crew_type",
-      "label": "Crew Types",
-      "system": "beam-saber",
-      "path": "./packs/crew_types.db",
-      "type": "Item"
-    },
-    {
-      "name": "crew_upgrade",
-      "label": "Crew Upgrades",
-      "system": "beam-saber",
-      "path": "./packs/crew_upgrades.db",
-      "type": "Item"
-    },
-    {
-      "name": "crew_ability",
-      "label": "Crew Abilities",
-      "system": "beam-saber",
-      "path": "./packs/crew_abilities.db",
-      "type": "Item"
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/items"
     },
     {
       "name": "vehicle_gear",
       "label": "Vehicle Gear",
-      "system": "beam-saber",
-      "path": "./packs/vehicle_gear.db",
-      "type": "Item"
-    },
-	{
-      "name": "entanglements",
-      "label": "Entanglements",
-      "system": "beam-saber",
-      "path": "./packs/entanglements.db",
-      "type": "RollTable"
-    },
-	{
-      "name": "entanglements-journals",
-      "label": "Entanglements Journals",
-      "system": "beam-saber",
-      "path": "./packs/entanglements-journals.db",
-      "type": "JournalEntry"
-    },
-	{
-      "name": "entanglements-macro",
-      "label": "Entanglements Macro",
-      "system": "beam-saber",
-      "path": "./packs/entanglements-macro.db",
-      "type": "Macro"
+      "type": "Item",
+      "system": "beamsaber",
+      "path": "packs/vehicle_gear"
     }
   ],
   "packFolders": [
     {
       "name": "Character Options",
       "sorting": "m",
-      "packs": ["class", "ability", "item", "background", "heritage", "vice"]
-	},
+      "packs": ["class", "ability", "item", "vehicle_gear"]
+    },
     {
-      "name": "Crew Options",
+      "name": "Squad Options",
       "sorting": "m",
-      "packs": ["crew_type", "crew_ability", "crew_upgrade", "prison", "crew_reputation", "hunting_grounds"]
-	},
-    {
-      "name": "Factions & NPCs",
-      "sorting": "m",
-      "packs": ["faction", "npc"]
-	},
-    {
-      "name": "Entanglements",
-      "sorting": "m",
-      "packs": ["entanglements-macro", "entanglements", "entanglements-journals"]
-	}
+      "packs": ["crew_type", "crew_ability", "crew_upgrade", "crew_reputation"]
+    }
   ]
 }

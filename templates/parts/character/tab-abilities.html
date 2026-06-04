@@ -1,0 +1,23 @@
+<section class="tab flex-vertical {{tabs.abilities.id}} {{tabs.abilities.cssClass}}" data-tab="{{tabs.abilities.id}}" data-group="{{tabs.abilities.group}}">
+  <div class="label-stripe flex-horizontal">
+    <p><label for="character-{{_id}}-experience-0">{{localize 'BITD.Abilities'}}</label><a class="item-add-popup" data-item-type="ability" data-tooltip="{{localize 'BITD.AddAbility'}}"><i class="fas fa-plus-square"></i></a></p>
+    <div id="character-{{_id}}-experience" class="teeth-experience">
+      <!--<label for="character-{{_id}}-experience-0"><i class="fab fa-creative-commons-zero nullifier"></i></label>-->
+      {{#multiboxes system.experience.value}}
+      <input type="radio" id="character-{{_id}}-experience-0" name="system.experience.value" value="0" dtype="Radio">
+      {{#times_from 1 system.experience.max}}
+      <input type="radio" id="character-{{../_id}}-experience-{{this}}" name="system.experience.value" value="{{this}}" dtype="Radio">
+      <label class="radio-toggle"></label>
+      {{/times_from}}
+      {{/multiboxes}}
+    </div>
+  </div>
+
+  <div id="character-{{_id}}-abilities-list" class="tab-list">
+    {{#each items as |item id|}}
+    {{#if (and (eq item.type "ability") (eq item.system.owner null))}}
+    {{> "systems/beamsaber/templates/parts/item_display/ability.html" item=item id=id actor=../this}}
+    {{/if}}
+    {{/each}}
+  </div>
+</section>

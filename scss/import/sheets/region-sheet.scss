@@ -1,0 +1,123 @@
+.header-fields {
+  width: 100%;
+  align-items: center;
+  gap: 6px;
+
+  .owner {
+    min-width: 100px;
+    align-items: center;
+    justify-items: center;
+
+    img {
+      flex: none;
+      width: 24px;
+      height: 24px;
+    }
+
+    .item-name {
+      width: auto;
+      margin-right: 0;
+    }
+  }
+}
+
+.landmarks {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.landmarks-pips {
+  align-items: center;
+
+  .pipped-values {
+    margin-left: 10px;
+    gap: 10px;
+    height: 100%;
+
+    .supply-container {
+      justify-items: center;
+      align-items: center;
+
+      .wealth, .might, .crime, .tech {
+        justify-items: center;
+        align-items: center;
+        width: 90px;
+      }
+
+      .wealth {
+        label.enabled {
+          background-color: $gold;
+        }
+      }
+
+      .might {
+        label.enabled {
+          background-color: $red;
+        }
+      }
+
+      .crime {
+        label.enabled {
+          background-color: $purple;
+        }
+      }
+
+      .tech {
+        label.enabled {
+          background-color: $blue;
+        }
+      }
+    }
+  }
+}
+
+.squads {
+  margin-top: 10px;
+
+  .list, .list .item-container {
+    background: rgba(0, 0, 0, 0.05);
+
+    > * {
+      &:nth-child(odd) {
+        background-color: var(--table-row-color-odd);
+      }
+
+      &:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  .list {
+    .squad-container {
+      &:has(.item-container:empty) {
+        .collapse {
+          display: none;
+        }
+      }
+
+      &:not(:has(.item-container:empty)) {
+        .squad-img {
+          display: none;
+        }
+      }
+
+      .item-container {
+        margin-left: 24px;
+
+        &:empty {
+          display: none;
+        }
+      }
+    }
+
+    .open-actor {
+      width: 100%;
+
+      .item-name {
+        width: 100%;
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -1,0 +1,221 @@
+<h2>{{localize 'BITD.EndMission'}}</h2>
+<p>{{{localize 'BITD.EndMissionDescription'}}}</p>
+
+<div class="category-collapse">{{localize 'BITD.EndMissionReward'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
+<fieldset class="collapse-category collapsed-category">
+  <legend>{{localize 'BITD.EndMissionReward'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>
+  <div class="form-group-inline">
+    <input type="checkbox" name="supplyRoll" checked>
+    <label>
+      {{{localize 'BITD.EndMissionSupplyRoll' independentSupplyRoll=extraData.independentSupplyRoll}}}
+    </label>
+  </div>
+  <div class="form-group-inline">
+    <input type="checkbox" class="automated" name="factionBonus" checked>
+    <label>{{{localize 'BITD.EndMissionFactionBonus' factionBonus=faction_bonus}}}</label>
+  </div>
+  <div class="form-group-inline">
+    <input type="checkbox" class="automated" name="rep" checked>
+    <div>
+      <label>{{{localize 'BITD.EndMissionRep'}}}</label>
+      <div class="flex-horizontal actor-contents">
+        <label>{{localize 'BITD.MissionTier'}}:</label>
+        <select name="repTier">
+          {{{rep_tiers}}}
+        </select>
+      </div>
+      <div class="flex-horizontal actor-contents">
+        <label>{{{localize 'BITD.Hidden'}}}:</label>
+        <input type="checkbox" class="automated" name="repHidden">
+      </div>
+    </div>
+  </div>
+  {{#if (gt extraData.airfieldSupply 0)}}
+  <div class="form-group-inline">
+    <input type="checkbox" class="automated" name="airfield" checked>
+    <label>{{{localize 'BITD.EndMissionAirfield' num=extraData.airfieldSupply}}}</label>
+  </div>
+  {{/if}}
+  <div class="form-group-inline">
+    <input type="checkbox" name="supplyPoints" checked>
+    <label>{{{localize 'BITD.EndMissionSupplyPoints'}}}</label>
+  </div>
+  <div class="form-group-inline">
+    <input type="checkbox" name="pilotDrive" checked>
+    <label>{{{localize 'BITD.EndMissionPilotDrive'}}}</label>
+  </div>
+  <div class="form-group-inline">
+    <input type="checkbox" class="automated" name="recoverFixUpkeep" checked>
+    <label>{{{localize 'BITD.EndMissionRecoverFixUpkeep'}}}</label>
+  </div>
+  <div class="form-group-inline">
+    <input type="checkbox" class="automated" name="factionGoal"{{#if (ne faction_goals '')}} checked{{/if}}>
+    <div>
+      <label>{{{localize 'BITD.EndMissionFactionGoal'}}}</label>
+      <div class="flex-horizontal actor-contents">
+        <label>{{localize 'BITD.MissionTier'}}:</label>
+        {{#if faction_goals}}
+        <select name="factionGoalId">
+          {{{faction_goals}}}
+        </select>
+        {{else}}
+        {{localize 'BITD.EndMissionNoFactionGoal'}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<div class="form-group-inline">
+  <input type="checkbox" name="squadStatus" checked>
+  <label>{{{localize 'BITD.EndMissionSquadStatus'}}}</label>
+</div>
+
+<div class="category-collapse">{{localize 'BITD.EndMissionFactionTrust'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
+<fieldset class="collapse-category collapsed-category">
+  <legend>{{localize 'BITD.EndMissionFactionTrust'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>
+  <div class="category-collapse">{{localize 'BITD.EndMissionTargetFaction'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
+  <fieldset class="collapse-category collapsed-category faction-category target-faction">
+    <legend>{{localize 'BITD.EndMissionTargetFaction'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>
+    <span class="actor-contents flex-horizontal">
+      <label>{{localize 'BITD.EndMissionTargetFaction'}} <a><i class="fas fa-question-circle" data-tooltip="{{localize 'BITD.TargetFactionDragDropInfo'}}"></i></a>:</label>
+      <div class="actor-data">{{localize 'BITD.None'}}</div>
+    </span>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetImportantInfrastructure">
+      <label>{{{localize 'BITD.EndMissionImportantInfrastructure'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetVIPKilled">
+      <label>{{{localize 'BITD.EndMissionVIPKilled'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetCiviliansDied">
+      <label>{{{localize 'BITD.EndMissionCiviliansDied'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetExposedCorruption">
+      <label>{{{localize 'BITD.EndMissionExposedCorruption'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetSquadCasualties">
+      <label>{{{localize 'BITD.EndMissionSquadCasualties'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetHighProfileTarget">
+      <label>{{{localize 'BITD.EndMissionHighProfileTarget'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetControlledTerritory">
+      <label>{{{localize 'BITD.EndMissionControlledTerritory'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="targetVendetta">
+      <label>{{{localize 'BITD.EndMissionVendetta'}}}</label>
+    </div>
+  </fieldset>
+  <div class="category-collapse">{{localize 'BITD.EndMissionEmployerFaction'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
+  <fieldset class="collapse-category collapsed-category faction-category employer-faction">
+    <legend>{{localize 'BITD.EndMissionEmployerFaction'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>
+    <span class="actor-contents flex-horizontal">
+      <label>{{localize 'BITD.EndMissionEmployerFaction'}} <a><i class="fas fa-question-circle" data-tooltip="{{localize 'BITD.EmployerFactionDragDropInfo'}}"></i></a>:</label>
+      <div class="actor-data">{{localize 'BITD.None'}}</div>
+    </span>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerCiviliansDied">
+      <label>{{{localize 'BITD.EndMissionCiviliansDied'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerRoEBroken">
+      <label>{{{localize 'BITD.EndMissionRoEBroken'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerBadImportantInfrastructure">
+      <label>{{{localize 'BITD.EndMissionBadImportantInfrastructure'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerSquadHarmed">
+      <label>{{{localize 'BITD.EndMissionEmployerSquadHarmed'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerSuccessfulMission">
+      <div>
+        <label>{{{localize 'BITD.EndMissionSuccessfulMission'}}}</label>
+        <div class="flex-horizontal actor-contents">
+          <label>{{localize 'BITD.Tier'}}:</label>
+          <select name="employerSuccessfulMissionSquadTier">
+            {{{rep_tiers}}}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerSecondaryObjective">
+      <label>{{{localize 'BITD.EndMissionSecondaryObjective'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerVendetta">
+      <label>{{{localize 'BITD.EndMissionVendetta'}}}</label>
+    </div>
+    {{#if extraData.highSociety}}
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerHighSociety">
+      <label>{{{localize 'BITD.EndMissionHighSociety'}}}</label>
+    </div>
+    {{/if}}
+  </fieldset>
+  <div class="category-collapse">{{localize 'BITD.EndMissionPatronFaction'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
+  <fieldset class="collapse-category collapsed-category">
+    <legend>{{localize 'BITD.EndMissionPatronFaction'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>
+    <span class="actor-contents flex-horizontal">
+      <label>{{localize 'BITD.EndMissionPatronFaction'}}:</label>
+      <div class="actor-data">
+        {{#if extraData.patronFaction}}
+        <div class="actor-contents flex-horizontal">
+          <img src="{{extraData.patronFaction.img}}" data-tooltip="{{extraData.patronFaction.name}}" width="32" height="32"/>
+          <label>{{extraData.patronFaction.name}}</label>
+        </div>
+        {{else}}
+        {{localize 'BITD.None'}}
+        {{/if}}
+      </div>
+    </span>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="patronAnotherFactionHelped">
+      <label>{{{localize 'BITD.EndMissionAnotherFactionHelped'}}}</label>
+    </div>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="patronInterestsHarmed">
+      <label>{{{localize 'BITD.EndMissionInterestsHarmed'}}}</label>
+    </div>
+    {{#if extraData.highSociety}}
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="patronHighSociety">
+      <label>{{{localize 'BITD.EndMissionHighSociety'}}}</label>
+    </div>
+    {{/if}}
+  </fieldset>
+  {{#if extraData.justPassingThrough}}
+  <div class="category-collapse">{{localize 'BITD.EndMissionLocalFaction'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
+  <fieldset class="collapse-category collapsed-category">
+    <legend>{{localize 'BITD.EndMissionPatronFaction'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>
+    <span class="actor-contents flex-horizontal">
+      <label>{{localize 'BITD.EndMissionLocalFaction'}}:</label>
+      <div class="actor-data">
+        {{#if extraData.regionFaction}}
+        <div class="actor-contents flex-horizontal">
+          <img src="{{extraData.regionFaction.img}}" data-tooltip="{{extraData.regionFaction.name}}" width="32" height="32"/>
+          <label>{{extraData.regionFaction.name}}</label>
+        </div>
+        {{else}}
+        {{localize 'BITD.None'}}
+        {{/if}}
+      </div>
+    </span>
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="localJustPassingThrough"{{#if extraData.regionFaction}} checked{{/if}}>
+      <label>{{{localize 'BITD.EndMissionJustPassingThrough'}}}</label>
+    </div>
+  </fieldset>
+  {{/if}}
+</fieldset>

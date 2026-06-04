@@ -1,0 +1,54 @@
+<div class="dice-tooltip blades-die-tooltip">
+  <div class="chat-label label-stripe-chat">{{localize 'BITD.GroupActionRoll'}}</div>
+  <div class="chat-label-small label-stripe-chat-small">{{localize action}} | {{localize (concat 'BITD.Position' (capitalize position))}} | {{localize (concat 'BITD.Effect' (capitalize effect))}}</div>
+
+  {{#if (eq roll_status "critical-success")}}
+  <div class="die {{roll_status}}">{{localize 'BITD.RollCriticalSuccess'}}</div>
+  <div class="description">
+    <p>{{{localize 'BITD.RollDoWithIncreasedEffect'}}}</p>
+  </div>
+  {{else if (eq roll_status "success")}}
+  <div class="die {{roll_status}}">{{localize 'BITD.RollSuccess'}}</div>
+  <div class="description">
+    <p>{{{localize 'BITD.RollDo'}}}</p>
+  </div>
+  {{else if (eq roll_status "partial-success")}}
+  <div class="die {{roll_status}}">{{localize 'BITD.RollPartialSuccess'}}</div>
+  <div class="description">
+    <p>
+      {{#if (eq position "controlled")}}
+      {{{localize 'BITD.RollPartialSuccessPositionControlled'}}}
+      {{else if (eq position "risky")}}
+      {{{localize 'BITD.RollPartialSuccessPositionRisky'}}}
+      {{else}}
+      {{{localize 'BITD.RollPartialSuccessPosition'}}}
+      {{/if}}
+    </p>
+  </div>
+  {{else if (eq roll_status "failure")}}
+  <div class="die {{roll_status}}">{{localize 'BITD.RollFailure'}}</div>
+  <div class="description">
+    <p>
+      {{#if (eq position "controlled")}}
+      {{{localize 'BITD.RollFailurePositionControlled'}}}
+      {{else if (eq position "risky")}}
+      {{{localize 'BITD.RollFailurePositionRisky'}}}
+      {{else}}
+      {{{localize 'BITD.RollFailurePositionDesperate'}}}
+      {{/if}}
+    </p>
+  </div>
+  {{/if}}
+
+  <div class="description">
+    {{#if is_vehicle_action}}
+      {{{localize 'BITD.LeaderTextQuirk' leader=leader_name quirks=quirks}}}
+    {{else}}
+      {{{localize 'BITD.LeaderTextStress' leader=leader_name stress=stress}}}
+    {{/if}}
+  </div>
+
+  {{#if note}}
+    <p><em>{{note}}</em></p>
+  {{/if}}
+</div>

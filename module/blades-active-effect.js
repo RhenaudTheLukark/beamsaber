@@ -1,5 +1,3 @@
-import { BladesHelpers } from "./blades-helpers.js";
-
 /**
  * Extend the base ActiveEffect class to implement system-specific logic.
  * @extends {ActiveEffect}
@@ -15,24 +13,26 @@ export class BladesActiveEffect extends ActiveEffect {
   /* --------------------------------------------- */
   /** @inheritdoc */
   apply(actor, change) {
-    if ( this.isSuppressed ) return null;
+    if (actor.type == 'character')
+      if (this.parent?.system?.suppressed)
+        return null;
+    if (this.isSuppressed) return null;
+
     //this allows for math and actor data references in the change values. Probably not necessary for
     // blades, but it was simple, and you never know what users will do. Probably ruin everything.
     change.value = Roll.replaceFormulaData(change.value, actor.system);
-    try {
-      change.value = Roll.safeEval(change.value).toString();
-    } catch (e) {
+    try { change.value = Roll.safeEval(change.value).toString(); }
+    catch (e) {
       // this is a valid case, e.g., if the effect change simply is a string
     }
+
     let parsed;
-    try{
-      parsed = JSON.parse(change.value);
-    }
-    catch(e){
-    }
-    if(parsed instanceof Array){
+    try { parsed = JSON.parse(change.value); }
+    catch(e) {}
+    if (parsed instanceof Array) {
       change.value = parsed;
     }
+
     return super.apply(actor, change);
   }
   /* --------------------------------------------- */
@@ -44,22 +44,20 @@ export class BladesActiveEffect extends ActiveEffect {
     this.isSuppressed = false;
   }
 
-
   /**
    * Manage Active Effect instances through the Actor Sheet via effect control buttons.
    * @param {MouseEvent} event      The left-click event on the effect control
    * @param {Actor|Item} owner      The owning entity which manages this effect
    */
   static onManageActiveEffect(event, owner) {
-    event.preventDefault();
-    const a = event.currentTarget;
-    const selector = a.closest("tr");
+    const target = event.currentTarget;
+    const selector = target.closest("tr");
     const effect = selector.dataset.effectId ? owner.effects.get(selector.dataset.effectId) : null;
-    switch ( a.dataset.action ) {
+    switch (target.dataset.action) {
       case "create":
         return owner.createEmbeddedDocuments("ActiveEffect", [{
           name: "New Effect",
-          img: "systems/beam-saber/styles/assets/icons/Icon.3_13.png",
+          img: "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
           origin: owner.uuid,
           "duration.rounds": selector.dataset.effectType === "temporary" ? 1 : undefined,
           disabled: selector.dataset.effectType === "inactive"
@@ -67,7 +65,6 @@ export class BladesActiveEffect extends ActiveEffect {
       case "edit":
         return effect.sheet.render(true);
       case "delete":
-        console.log("delete effect");
         return effect.delete();
       case "toggle":
         return effect.update({disabled: !effect.disabled});
@@ -81,7 +78,6 @@ export class BladesActiveEffect extends ActiveEffect {
    * @return {object}                   Data for rendering
    */
   static prepareActiveEffectCategories(effects) {
-
     // Define effect header categories
     const categories = {
       temporary: {
@@ -104,22 +100,19 @@ export class BladesActiveEffect extends ActiveEffect {
         name: "Suppressed Effects",
         effects: []
       }
-
     };
 
     // Iterate over active effects, classifying them into categories
-    for ( let e of effects ) {
+    for (let e of effects) {
       //e._getSourceName(); // Trigger a lookup for the source name
       e.origin;  //fixes deprecation of _getSourceName?
-	  if ( e.isSuppressed ) categories.suppressed.effects.push(e);
-      else if ( e.disabled ) categories.inactive.effects.push(e);
-      else if ( e.isTemporary ) categories.temporary.effects.push(e);
+      if (e.isSuppressed) categories.suppressed.effects.push(e);
+      else if (e.disabled) categories.inactive.effects.push(e);
+      else if (e.isTemporary) categories.temporary.effects.push(e);
       else categories.passive.effects.push(e);
     }
     return categories;
   }
-
-
 }
 
 // Portions of this code are copyright 2021 Andrew Clayton

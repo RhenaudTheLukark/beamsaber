@@ -1,0 +1,25 @@
+<div class="dice-tooltip blades-die-tooltip">
+  {{#if attribute_label}}<div class="chat-label label-stripe-chat">{{localize extraFields.resistance_attribute}} {{localize attribute_label}}</div>{{/if}}
+
+  {{#if (gteq current_quirks quirks)}}
+  <div class="die success">{{localize 'BITD.RollSuccess'}}</div>
+  <div class="description">
+    <p>{{{localize 'BITD.ResistanceQuirksSuccess' quirks=quirks}}}</p>
+  </div>
+  {{else}}
+  <div class="die failure">{{localize 'BITD.RollFailure'}}</div>
+  <div class="description">
+    <p>{{{localize 'BITD.ResistanceQuirksFailure' quirks=quirks currentQuirks=current_quirks}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if extraFields.modifier_text}}
+  <div class='description'>
+    <p>{{{extraFields.modifier_text}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if note}}
+    <em>{{note}}</em>
+  {{/if}}
+</div>

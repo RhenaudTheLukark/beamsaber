@@ -1,0 +1,37 @@
+<section class="tab flex-vertical {{tabs.connections.id}} {{tabs.connections.cssClass}}" data-tab="{{tabs.connections.id}}" data-group="{{tabs.connections.group}}">
+  <div class="label-stripe flex-horizontal">
+    <p>{{localize 'BITD.Connections'}}</p>
+    <div class="flex-horizontal" style="gap: 1em;">
+      <p><a class="actor-add-popup" data-actor-type="crewmate" data-title="{{localize 'BITD.Connection'}}" data-tooltip="{{localize 'BITD.CharacterConnectionInfo'}}"><i class="fas fa-plus-square"></i></a></p>
+    </div>
+  </div>
+  <table>
+    {{#each system.resolved_connections as |connection id|}}
+    <tr>
+      <td class="flex-vertical">
+        <div id="character-{{../_id}}-connection-{{id}}" class="flex-horizontal item" data-connection-id="{{id}}" {{#if (ne connection.actor null)}}data-item-id="{{connection.actor.uuid}}"{{/if}}>
+          <label for="character-{{../_id}}-connection-{{id}}-name" class="item-name"><b>{{localize 'BITD.Pilot'}}</b></label>
+          <div class="open-actor flex-horizontal">
+            <img src="{{connection.actor.img}}" data-tooltip="{{connection.actor.name}}" width="24" height="24"/>
+            <a class="item-name">{{connection.actor.name}}</a>
+          </div>
+          <a data-action="deleteConnection" class="item-control delete-connection" data-tooltip="{{localize 'BITD.TitleDeleteConnection'}}"><i class="fas fa-trash"></i></a>
+        </div>
+        <section class="flex-horizontal">
+          <div class="clock-block">
+            <div class="clocks clocks-4 small">
+              {{{blades-clock-object connection.clock (concat 'system.connections.' id '.clock') (concat 'connection_clock_' id) ../defaultClockThemeColor false false}}}
+            </div>
+          </div>
+          <div class="flex-vertical beliefs">
+            {{#each connection.beliefs as |belief id2|}}
+            <input type="text" name="system.connections.{{id}}.beliefs.{{id2}}" value="{{belief}}">
+            {{/each}}
+          </div>
+        </section>
+        <textarea rows="3" name="system.connections.{{id}}.discoveries">{{connection.discoveries}}</textarea>
+      </td>
+    </tr>
+    {{/each}}
+  </table>
+</section>

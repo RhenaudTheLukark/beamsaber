@@ -1,0 +1,100 @@
+<div id="character-{{_id}}-attributes" class="attributes">
+  {{#each system.attributes as |attribute attribute_name|}}
+  {{#if (or (and (eq attribute.is_vehicle true) (ne ../system.vehicle null)) (ne attribute.is_vehicle true))}}
+  <div id="character-{{../_id}}-attributes-{{attribute_name}}" class="attribute">
+    <div id="character-{{../_id}}-attributes-{{attribute_name}}-title" class="attributes-exp">
+      <div class="stripe">
+        <a class="attribute-label roll-die-attribute rollable-text" data-tooltip="{{localize (concat attribute.label 'Info')}}" data-roll-attribute="{{attribute_name}}">{{localize attribute.label}}</a>
+      </div>
+      <div class="stripe-tooth-body">
+        {{#multiboxes attribute.exp}}
+        {{#if (and (eq attribute.is_vehicle true) (eq ../type 'character'))}}
+        <input type="radio" id="{{../_id}}-{{attribute_name}}-exp-0" class="vehicle-data" data-dtype="Number" data-name="system.attributes.{{attribute_name}}.exp" value="0">
+        {{else}}
+        <input type="radio" id="{{../_id}}-{{attribute_name}}-exp-0" data-dtype="Number" name="system.attributes.{{attribute_name}}.exp" value="0">
+        {{/if}}
+        {{#times_from 1 attribute.exp_max}}
+        {{#if (andtest (eq attribute.is_vehicle true) (eq ../../type 'character'))}}
+        <input type="radio" id="{{../../_id}}-{{attribute_name}}-exp-{{this}}" class="vehicle-data" data-dtype="Number" data-name="system.attributes.{{attribute_name}}.exp" value="{{this}}">
+        {{else}}
+        <input type="radio" id="{{../../_id}}-{{attribute_name}}-exp-{{this}}" data-dtype="Number" name="system.attributes.{{attribute_name}}.exp" value="{{this}}">
+        {{/if}}
+        <label class="radio-toggle"></label>
+        {{/times_from}}
+        {{/multiboxes}}
+      </div>
+    </div>
+
+    {{!-- Actions --}}
+    {{#each attribute.actions as |action action_name|}}
+    <div class="flex-horizontal">
+      <div class="attributes-container">
+        {{#multiboxes action.value}}
+        {{#if (and (eq attribute.is_vehicle true) (eq ../../type 'character'))}}
+        <input type="radio"{{#if (lteq 0 (oneless action.min))}} disabled{{else}} class="vehicle-data"{{/if}} id="attributes-{{../../_id}}-{{action_name}}-0" data-dtype="Number" data-name="system.attributes.{{attribute_name}}.actions.{{action_name}}.value" value="0">
+        {{else}}
+        <input type="radio"{{#if (lteq 0 (oneless action.min))}} disabled{{/if}} id="attributes-{{../../_id}}-{{action_name}}-0" data-dtype="Number" name="system.attributes.{{attribute_name}}.actions.{{action_name}}.value" value="0">
+        {{/if}}
+        {{#times_from 1 action.max}}
+        {{#if (or (eq attribute.is_vehicle true) (ne ../../../type 'character'))}}
+        <input type="radio"{{#if (lteq this (oneless action.min))}} disabled{{/if}}{{#if (eq ../../../type 'character')}} class="vehicle-data"{{/if}} id="attributes-{{../../../_id}}-{{action_name}}-{{this}}" data-dtype="Number" {{#if (eq ../../../type 'character')}}data-{{/if}}name="system.attributes.{{attribute_name}}.actions.{{action_name}}.value" value="{{this}}">
+        <label class="radio-toggle{{#if
+            (and
+              (or
+                (eq ../../../gearOwner.system.more_than_meets_the_eye true)
+                (ne ../../../type 'character'))
+              (gt this action.value))}} middle{{#if
+            (or
+              (and
+                (gteq action.first_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form false))
+              (and
+                (gteq action.second_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form true)))}} current-form{{/if}}{{#if
+            (or
+              (and
+                (gteq action.first_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form true))
+              (and
+                (gteq action.second_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form false)))}} other-form{{/if}}{{/if}}"
+          {{#if (and (gt action.min 0) (lteq this action.min))}} data-tooltip="{{localize 'BITD.DisabledByAE'}}"{{/if}}
+          {{#if (and (eq ../../../gearOwner.system.more_than_meets_the_eye true) (gt this action.value))}} data-tooltip="{{localize 'BITD.MiddleClickForForm'}}{{#if (lteq this (add action.value action.first_form))}} {{localize 'BITD.AssignedFirstForm'}}{{/if}}{{#if (lteq this (add action.value action.second_form))}} {{localize 'BITD.AssignedSecondForm'}}{{/if}}{{#if
+            (or
+              (and
+                (gteq action.first_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form false))
+              (and
+                (gteq action.second_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form true)))}} {{localize 'BITD.CurrentlyActive'}}{{/if}}{{#if
+            (or
+              (and
+                (gteq action.first_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form true))
+              (and
+                (gteq action.second_form (minus this action.value))
+                (eq ../../../vehicle.system.is_second_form false)))}} {{localize 'BITD.NotCurrentlyActive'}}{{/if}}"
+          {{/if}}
+          {{#if (lteq this (oneless action.min))}} style="filter: unset; opacity: unset; cursor: unset;"{{/if}}></label>
+        {{else}}
+        <input type="radio"{{#if (lteq this (oneless action.min))}} disabled{{/if}} id="attributes-{{../../../_id}}-{{action_name}}-{{this}}" data-dtype="Number" name="system.attributes.{{attribute_name}}.actions.{{action_name}}.value" value="{{this}}">
+        <label class="radio-toggle"{{#if (and (gt action.min 0) (lteq this action.min))}} data-tooltip="{{localize 'BITD.DisabledByAE'}}"{{/if}}{{#if (lteq this (oneless action.min))}} style="filter: unset; opacity: unset; cursor: unset;"{{/if}}></label>
+        {{/if}}
+        {{/times_from}}
+
+        {{#if (eq action.max 3)}}
+        <input type="radio" id="attributes-{{../../../_id}}-{{action_name}}-{{this}}" data-dtype="Number" name="system.attributes.{{attribute_name}}.actions.{{action_name}}.value" value="{{this}}">
+        <label data-tooltip="{{localize 'BITD.NoMastery'}}" style="filter: unset; opacity: unset; cursor: unset; background-color: #dadbed; border-color: gray"></label>
+        {{/if}}
+
+        <div class="attribute-action-label roll-die-attribute rollable-text" data-tooltip="{{localize (concat action.label 'Info')}}" data-roll-attribute="{{action_name}}">
+        {{localize action.label}}
+        </div>
+        {{/multiboxes}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+  {{/each}}
+</div>

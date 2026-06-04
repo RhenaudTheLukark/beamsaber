@@ -1,0 +1,24 @@
+<div class="relationship-container flex-vertical">
+  <div class="item flex-horizontal{{#if relationship.system.patron}} patron{{/if}}" data-item-id="{{relationship.uuid}}">
+    <div class="collapse flex-horizontal"><a class="collapse-button" {{#if (isempty relationship.system.children)}}style="visibility: hidden"{{/if}}><i class="fas fa-{{#if (eq relationship.system.collapsed true)}}plus{{else}}minus{{/if}}-square"></i></a></div>
+    <div class="open-actor flex-horizontal">
+      <img src="{{relationship.img}}" data-tooltip="{{relationship.name}}" />
+      <p class="item-name"><a>{{relationship.name}}{{#if relationship.system.patron}}<br>({{localize 'BITD.PatronFaction'}}){{/if}}</a></p>
+    </div>
+    {{#if (and (eq actor.type 'crew') (eq relationship.type 'crew'))}}
+    {{> "systems/beamsaber/templates/parts/beliefs-block.html" beliefs=relationship.system.beliefs beliefs_path=(concat "system.relationships." relationship.system.relationshipId ".beliefs") beliefs_id=(concat actor.type "-" _id "-relationship-" relationship.system.relationshipId "-beliefs")}}
+    {{/if}}
+    {{#if (and (ne relationship.system.trust undefined) (or relationship.system.is_player_crew actor.system.is_player_crew relationship.system.patron))}}
+    {{> "systems/beamsaber/templates/parts/trust-block.html" trust=relationship.system.trust trust_path=(concat "system.relationships." relationship.system.relationshipId ".trust") trust_id=(concat actor.type "-" _id "-relationship-" relationship.system.relationshipId "-trust")}}
+    {{/if}}
+    {{> "systems/beamsaber/templates/parts/status-block.html" status=relationship.system.status status_path=(concat "system.relationships." relationship.system.relationshipId ".status") status_id=(concat actor.type "-" _id "-relationship-" relationship.system.relationshipId "-status" actor=actor type=relationship.type)}}
+    <div class="item-controls flex-horizontal">
+      <a class="item-control delete-relationship{{#if relationship.system.patron}} disabled-item{{/if}}" data-tooltip="{{#if relationship.system.patron}}{{localize 'BITD.TitleNoDeleteRelationship'}}{{else}}{{localize 'BITD.TitleDeleteRelationship'}}{{/if}}"><i class="fas fa-trash"></i></a>
+    </div>
+  </div>
+  <div class="relationship-child-list{{#if (eq relationship.system.collapsed true)}} collapsed{{/if}}">
+    {{#each relationship.system.children as |relationship2 id2|}}
+    {{> "systems/beamsaber/templates/parts/relationship-block.html" relationship=relationship2 actor=../actor _id=../_id}}
+    {{/each}}
+  </div>
+</div>

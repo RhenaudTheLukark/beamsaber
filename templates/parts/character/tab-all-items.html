@@ -1,0 +1,17 @@
+<section class="tab flex-vertical {{tabs.all_items.id}} {{tabs.all_items.cssClass}}" data-tab="{{tabs.all_items.id}}" data-group="{{tabs.all_items.group}}">
+  <div class="label-stripe">
+    <p><label>{{localize 'BITD.AllItems'}}</label></p>
+  </div>
+  <div class="tab-list">
+    {{#each items as |item id|}}
+    <div class="item flex-horizontal" data-item-id="{{item._id}}">
+      <div class="item-body flex-horizontal">
+        <img src="{{item.img}}" data-tooltip="{{item.name}}" width="24" height="24"/>
+        <div class="item-name">{{item.name}}</div>
+      </div>
+      <a class="item-control delete-item" data-tooltip="{{localize 'BITD.TitleDeleteItem'}}"><i class="fas fa-trash"></i></a>
+      <a class="item-control item-post" data-tooltip="{{localize 'BITD.TitlePostItem'}}"><i class="fas fa-comment"></i></a>
+    </div>
+    {{/each}}
+  </div>
+</section>

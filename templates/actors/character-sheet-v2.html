@@ -1,0 +1,603 @@
+<div class="{{cssClass}} actor-sheet" autocomplete="off">
+
+  <section id="character-{{_id}}-name-alias" class="flex-horizontal name-alias">
+
+    {{!-- Portrait --}}
+    <img src="{{img}}" data-action="editImage" data-field="img" data-tooltip="{{name}}" class="portrait{{#if system.dead}} dead{{/if}}" />
+
+    <div class="grow-two">
+      <div class="flex-vertical">
+        <div class="flex-horizontal">
+          {{!-- Name --}}
+          <div id="character-{{_id}}-name-box">
+            <label for="character-{{_id}}-name">{{localize 'BITD.Name'}}:</label>
+            <input type="text" id="character-{{_id}}-name" class="name" name="name" value="{{name}}">
+          </div>
+          {{!-- Callsign --}}
+          <div id="character-{{_id}}-alias-box">
+            <label for="character-{{_id}}-alias">{{localize 'BITD.Alias'}}:</label>
+            <input type="text" id="character-{{_id}}-alias" class="alias" name="system.alias" value="{{system.alias}}">
+          </div>
+          {{!-- Gender --}}
+          <div id="character-{{_id}}-gender-box">
+            <label for="character-{{_id}}-gender">{{localize 'BITD.Gender'}}:</label>
+            <input type="text" id="character-{{_id}}-gender" class="gender" name="system.gender" value="{{system.gender}}">
+          </div>
+          {{!-- Spark --}}
+          <div id="character-{{_id}}-spark-box" class="flex-vertical">
+            <label for="character-{{_id}}-spark">{{localize 'BITD.Spark'}}</label>
+            <input data-action="spark" type="checkbox" id="character-{{_id}}-spark" class="spark" name="system.spark" {{checked system.spark}}>
+          </div>
+        </div>
+
+        {{!-- Traits --}}
+        <div id="character-{{_id}}-traits" class="traits flex-vertical">
+          {{!-- History --}}
+          <div class="item-block flex-horizontal">
+            <label class="item-class-label" for="character-{{_id}}-history">{{localize 'BITD.History'}}:</label>
+            <input type="text" id="character-{{_id}}-history" name="system.history" value="{{system.history}}">
+          </div>
+
+          {{!-- Tragedy --}}
+          <div class="item-block flex-horizontal">
+            <label class="item-class-label" for="character-{{_id}}-tragedy">{{localize 'BITD.Tragedy'}}:</label>
+            <input type="text" id="character-{{_id}}-tragedy" name="system.tragedy" value="{{system.tragedy}}">
+          </div>
+
+          {{!-- Opening --}}
+          <div class="item-block flex-horizontal">
+            <label class="item-class-label" for="character-{{_id}}-opening">{{localize 'BITD.Opening'}}:</label>
+            <input type="text" id="character-{{_id}}-opening" name="system.opening" value="{{system.opening}}">
+          </div>
+
+          <div class="two-line flex-horizontal">
+            {{!-- Class --}}
+            <div class="item-block flex-horizontal grow-one">
+              <div class="item-class-label"><a class="item-add-popup" data-item-type="class" data-unique="true" data-value-path="system.class" data-add-as-item="true">{{localize 'BITD.Class'}}:</a></div>
+              {{#if (ne system.class null)}}
+              <div class="item flex-horizontal" data-item-id="{{system.class.uuid}}">
+                <div class="open-actor flex-horizontal">
+                  <img src="{{system.class.img}}" data-tooltip="{{system.class.name}}" width="24" height="24"/>
+                  <a class="item-name">{{system.class.name}}</a>
+                </div>
+                <a data-action="deleteClass" class="item-control delete-class" data-tooltip="{{localize 'BITD.TitleDeleteItem'}}"><i class="fas fa-trash"></i></a>
+              </div>
+              {{/if}}
+            </div>
+            {{!-- Vehicle --}}
+            <div class="item-block flex-horizontal grow-one">
+              <div class="item-class-label"><a class="actor-add-popup" data-actor-type="vehicle" data-unique="true" data-value-path="system.vehicle" data-parent-path="system.pilot">{{localize 'BITD.VehicleName'}}:</a></div>
+              {{#if (ne system.vehicle null)}}
+              <div class="item flex-horizontal" data-item-id="{{system.vehicle.uuid}}" data-item-type="{{system.vehicle.type}}">
+                <div class="open-actor flex-horizontal">
+                  <img src="{{system.vehicle.img}}" data-tooltip="{{system.vehicle.name}}" width="24" height="24"/>
+                  <a class="item-name">{{system.vehicle.name}}</a>
+                </div>
+                <a data-action="deleteVehicle" class="item-control delete-vehicle" data-tooltip="{{localize 'BITD.TitleDeleteItem'}}"><i class="fas fa-trash"></i></a>
+              </div>
+              {{/if}}
+            </div>
+          </div>
+
+          <div class="two-line flex-horizontal">
+            {{!-- Squad --}}
+            <div class="item-block flex-horizontal grow-one">
+              <div class="item-class-label"><a class="actor-add-popup" data-actor-type="crew" data-unique="true" data-value-path="system.crew">{{localize 'BITD.Squad'}}:</a></div>
+              {{#if (ne system.crew null)}}
+              <div class="item flex-horizontal" data-item-id="{{system.crew.uuid}}" data-item-type="{{system.crew.type}}">
+                <div class="open-actor flex-horizontal">
+                  <img src="{{system.crew.img}}" data-tooltip="{{system.crew.name}}" width="24" height="24"/>
+                  <a class="item-name">{{system.crew.name}}</a>
+                </div>
+                <a data-action="deleteSquad" class="item-control delete-crew" data-tooltip="{{localize 'BITD.TitleDeleteSquad'}}"><i class="fas fa-trash"></i></a>
+              </div>
+              {{/if}}
+            </div>
+            {{!-- Region --}}
+            <div class="item-block flex-horizontal grow-one">
+              <div class="item-class-label"><a class="actor-add-popup" data-actor-type="region" data-unique="true" data-value-path="system.region">{{localize 'BITD.Region'}}:</a></div>
+              {{#if (ne system.region null)}}
+              <div class="item flex-horizontal" data-item-id="{{system.region.uuid}}" data-item-type="{{system.region.type}}">
+                <div class="open-actor flex-horizontal">
+                  <img src="{{system.region.img}}" data-tooltip="{{system.region.name}}" width="24" height="24"/>
+                  <a class="item-name">{{system.region.name}}</a>
+                </div>
+                <a data-action="deleteRegion" class="item-control delete-region" data-tooltip="{{localize 'BITD.TitleDeleteRegion'}}"><i class="fas fa-trash"></i></a>
+              </div>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{!-- Drive --}}
+  <section id="drive">
+    <table class="drive-table">
+      <thead>
+        <th class="black-white-header" colspan="4">{{localize 'BITD.Drive'}}</th>
+        <th class="black-white-header">{{localize 'BITD.DriveClock1'}}</th>
+        <th class="black-white-header">{{localize 'BITD.DriveClock2'}}</th>
+      </thead>
+      <tr>
+        <td colspan="4"><textarea rows="5" name="system.drive.description">{{{system.drive.description}}}</textarea></td>
+        <td class="clock-block">
+          <div class="character-drive-clock clocks small clocks-{{system.drive.clock1.max}}">
+            {{{blades-clock-object system.drive.clock1 'system.drive.clock1' (concat "drive_clock1_" _id) defaultClockThemeColor false false}}}
+          </div>
+        </td>
+        <td class="clock-block">
+          <div class="character-drive-clock clocks small clocks-{{system.drive.clock2.max}}">
+            {{{blades-clock-object system.drive.clock2 'system.drive.clock2' (concat "drive_clock2_" _id) defaultClockThemeColor false false}}}
+          </div>
+        </td>
+      </tr>
+    </table>
+  </section>
+
+  {{!-- Stress and Trauma --}}
+  <div id="character-{{_id}}-stress-trauma" class="section big-teeth-section">
+    <div id="character-{{_id}}-stress" class="big-teeth character-stress">
+      {{#multiboxes system.stress.value}}
+      <input type="radio" id="character-{{_id}}-stress-0" name="system.stress.value" value="0" dtype="Radio">
+      <!--<label class="black-label" for="character-{{_id}}-stress-0">{{localize system.stress.name}}</label>-->
+      <div class="black-label">{{localize system.stress.name}}</div>
+      {{#times_from 1 system.stress.max}}
+      <input type="radio" id="character-{{../_id}}-stress-{{this}}" name="system.stress.value" value="{{this}}" dtype="Radio">
+      <label class="radio-toggle"></label>
+      {{/times_from}}
+      {{/multiboxes}}
+    </div>
+    <div id="character-{{_id}}-trauma-container" class="small-teeth-container trauma">
+      {{#traumacounter system.trauma.list}}
+      <div id="character-{{_id}}-trauma" class="small-teeth-wrap">
+        <!--<label class="black-label" for="character-{{_id}}-trauma-counter-0">{{localize system.trauma.name}}</label>-->
+        <div class="black-label">{{localize system.trauma.name}}</div>
+        <div id="character-{{_id}}-trauma-teeth" class="small-teeth">
+          <input type="radio" id="character-{{_id}}-trauma-counter-0" name="system.trauma.value" value="0">
+          {{#times_from 1 system.trauma.max}}
+          <input type="radio" id="character-{{../_id}}-trauma-counter-{{this}}" name="system.trauma.value" value="{{this}}" disabled>
+          <label for="character-{{../_id}}-trauma-counter-{{this}}"></label>
+          {{/times_from}}
+        </div>
+      </div>
+      {{/traumacounter}}
+    </div>
+
+    <div id="character-{{_id}}-trauma-list" class="trauma-list">
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.cold" value="cold" {{checked system.trauma.list.cold}}>
+        <span class="checkmark">{{localize system.trauma.options.[0]}}</span>
+      </label>
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.haunted" value="haunted" {{checked system.trauma.list.haunted}}>
+        <span class="checkmark">{{localize system.trauma.options.[1]}}</span>
+      </label>
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.obsessed" value="obsessed" {{checked system.trauma.list.obsessed}}>
+        <span class="checkmark">{{localize system.trauma.options.[2]}}</span>
+      </label>
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.paranoid" value="paranoid" {{checked system.trauma.list.paranoid}}>
+        <span class="checkmark">{{localize system.trauma.options.[3]}}</span>
+      </label>
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.reckless" value="reckless" {{checked system.trauma.list.reckless}}>
+        <span class="checkmark">{{localize system.trauma.options.[4]}}</span>
+      </label>
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.soft" value="soft" {{checked system.trauma.list.soft}}>
+        <span class="checkmark">{{localize system.trauma.options.[5]}}</span>
+      </label>
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.unstable" value="unstable" {{checked system.trauma.list.unstable}}>
+        <span class="checkmark">{{localize system.trauma.options.[6]}}</span>
+      </label>
+      <label>
+        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.vicious" value="vicious" {{checked system.trauma.list.vicious}}>
+        <span class="checkmark">{{localize system.trauma.options.[7]}}</span>
+      </label>
+    </div>
+  </div>
+
+  {{!-- Harm, Healing and Armor --}}
+  <section id="character-{{_id}}-harm-armor" class="harm-armor">
+    {{#if (not system.dead)}}
+    <table>
+      <thead>
+        <th class="black-white-header" colspan="4">{{localize 'BITD.PilotHarm'}}</th>
+        <th class="black-white-header">{{localize 'BITD.Healing'}}</th>
+        {{#if (gt system.armor.max 0)}}
+        <th class="black-white-header">{{localize 'BITD.Armor'}}</th>
+        {{/if}}
+      </thead>
+      <tbody>
+        <tr>
+          <td>3</td>
+          <td colspan="2">
+            <input type="text" id="character-{{_id}}-harm-3-1" name="system.harm.heavy.one" value="{{system.harm.heavy.one}}" placeholder=" ">
+          </td>
+          <td>{{localize 'BITD.NeedHelp'}}<a class="death-toggle"><i class="fa-regular fa-skull"></i></a></span></td>
+          <td rowspan="3">
+            <div id="character-{{_id}}-health-clock" class="character-health-clock clocks-{{system.healing_clock.max}}">
+              {{{blades-clock-object system.healing_clock 'system.healing_clock' 'healing-clock' defaultClockThemeColor false false}}}
+            </div>
+          </td>
+          {{#if (gt system.armor.max 0)}}
+          <td rowspan="3" id="character-{{_id}}-armor" class="character-armor">
+            <div class="flex-horizontal">
+              {{#multiboxes system.armor.value}}
+              <input type="radio" id="character-{{_id}}-armor-0" name="system.armor.value" value="0" dtype="Radio">
+
+              {{#times_from 1 system.armor.max}}
+              <input type="radio" id="character-{{../_id}}-armor-{{this}}" name="system.armor.value" value="{{this}}" dtype="Radio">
+              <label class="radio-toggle{{#if (lteq this ../system.armor.value)}} enabled{{/if}}"><a><i class="fa{{#if (lteq this ../system.armor.value)}}s{{else}}-regular{{/if}} fa-shield"></i></a></label>
+              {{/times_from}}
+              {{/multiboxes}}
+            </div>
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>
+            <input type="text" id="character-{{_id}}-harm-2-1" name="system.harm.medium.one" value="{{system.harm.medium.one}}" placeholder=" ">
+          </td>
+          <td>
+            <input type="text" id="character-{{_id}}-harm-2-2" name="system.harm.medium.two" value="{{system.harm.medium.two}}" placeholder=" ">
+          </td>
+          <td>-1D</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            <input type="text" id="character-{{_id}}-harm-1-1" name="system.harm.light.one" value="{{system.harm.light.one}}" placeholder=" ">
+          </td>
+          <td>
+            <input type="text" id="character-{{_id}}-harm-1-2" name="system.harm.light.two" value="{{system.harm.light.two}}" placeholder=" ">
+          </td>
+          <td>{{localize 'BITD.LessEffect'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{else}}
+    <div class="flex-vertical">
+      <div class="black-white-header">{{localize 'BITD.PilotHarm'}}</div>
+      <div>
+        <div class="flex-horizontal death-block">
+          <div>4</div>
+          <input type="text" id="character-{{_id}}-harm-4-1" name="system.harm.deadly.one" value="{{system.harm.deadly.one}}" placeholder=" ">
+          <a class="death-toggle"><i class="fas fa-skull"></i></a></span>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+  </section>
+
+  {{!-- Vehicle Damage and Armor --}}
+  {{#if (ne system.vehicle null)}}
+  <section id="vehicle-{{_id}}-damage-armor" class="damage-armor">
+    {{#if (not system.vehicle.system.dead)}}
+    <table>
+      <thead>
+        <th class="black-white-header" colspan="4">{{localize 'BITD.VehicleDamage'}}</th>
+        <th class="black-white-header">{{localize 'BITD.VehicleRepair'}}</th>
+        {{#if (gt system.vehicle.system.armor.max 0)}}
+        <th class="black-white-header">{{localize 'BITD.VehicleArmor'}}</th>
+        {{/if}}
+      </thead>
+      <tbody>
+        <tr>
+          <td>3</td>
+          <td colspan="2">
+            <input class="vehicle-data" type="text" id="character-{{_id}}-vehicle-damage-3-1" data-name="system.damage.heavy.one" value="{{system.vehicle.system.damage.heavy.one}}" placeholder=" ">
+          </td>
+          <td>{{localize 'BITD.NeedHelp'}}<a class="death-toggle" data-target-id="{{system.vehicle.uuid}}"><i class="fa-regular fa-skull"></i></a></span></td>
+          <td rowspan="3">
+            <div id="vehicle-{{_id}}-repair-clock" class="vehicle-repair-clock clocks-{{system.vehicle.system.repair_clock.max}}">
+              {{{blades-clock-object system.vehicle.system.repair_clock 'system.repair_clock' 'repair-clock' defaultClockThemeColor true false}}}
+            </div>
+          </td>
+          {{#if (gt system.vehicle.system.armor.max 0)}}
+          <td rowspan="3" id="vehicle-{{_id}}-armor" class="vehicle-armor">
+            <div class="flex-horizontal">
+              {{#multiboxes system.vehicle.system.armor.value}}
+              <input data-action="vehicleData" class="vehicle-data" type="radio" id="vehicle-{{_id}}-armor-0" data-name="system.armor.value" value="0" dtype="Radio">
+
+              {{#times_from 1 system.vehicle.system.armor.max}}
+              <input data-action="vehicleData" class="vehicle-data" type="radio" id="vehicle-{{../_id}}-armor-{{this}}" data-name="system.armor.value" value="{{this}}" dtype="Radio">
+              <label class="radio-toggle{{#if (lteq this ../system.vehicle.system.armor.value)}} enabled{{/if}}"><a><i class="fa{{#if (lteq this ../system.vehicle.system.armor.value)}}s{{else}}-regular{{/if}} fa-shield"></i></a></label>
+              {{/times_from}}
+              {{/multiboxes}}
+            </div>
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>
+            <input class="vehicle-data" type="text" id="character-{{_id}}-vehicle-damage-2-1" data-name="system.damage.medium.one" value="{{system.vehicle.system.damage.medium.one}}" placeholder=" ">
+          </td>
+          <td>
+            <input class="vehicle-data" type="text" id="character-{{_id}}-vehicle-damage-2-2" data-name="system.damage.medium.two" value="{{system.vehicle.system.damage.medium.two}}" placeholder=" ">
+          </td>
+          <td>-1D</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            <input class="vehicle-data" type="text" id="character-{{_id}}-vehicle-damage-1-1" data-name="system.damage.light.one" value="{{system.vehicle.system.damage.light.one}}" placeholder=" ">
+          </td>
+          <td>
+            <input class="vehicle-data" type="text" id="character-{{_id}}-vehicle-damage-1-2" data-name="system.damage.light.two" value="{{system.vehicle.system.damage.light.two}}" placeholder=" ">
+          </td>
+          <td>{{localize 'BITD.LessEffect'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{else}}
+    <div class="flex-vertical">
+      <div class="black-white-header">{{localize 'BITD.VehicleDamage'}}</div>
+      <div>
+        <div class="flex-horizontal death-block">
+          <div>4</div>
+          <input class="vehicle-data" type="text" id="character-{{_id}}-vehicle-damage-4-1" data-name="system.damage.deadly.one" value="{{system.vehicle.system.damage.deadly.one}}" placeholder=" ">
+          <a class="death-toggle" data-target-id="{{system.vehicle.uuid}}"><i class="fas fa-skull"></i></a></span>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+  </section>
+
+  {{!-- Vehicle Quirks --}}
+  <section id="vehicle-{{_id}}-vehicle-quirks" class="vehicle-quirks">
+    <table class="quirks">
+      <thead>
+        <th class="black-white-header" colspan="4">
+          {{localize 'BITD.VehicleQuirks'}}
+          <a data-action="addQuirk" class="add-quirk flex-horizontal"><i class="fas fa-plus-square"></i></a>
+        </th>
+      </thead>
+      {{#with system.vehicle}}
+      {{#each system.quirks as |quirk id|}}
+      {{#if (eq (modulo id 2) 0)}}
+      <tr>
+      {{/if}}
+        <td id="character-{{../_id}}-quirk-{{id}}" class="flex-horizontal grow-two item" data-quirk-id="{{id}}">
+          <input class="vehicle-data" type="text" id="character-{{../../_id}}-quirk-{{id}}-name" data-name="system.quirks.{{id}}.name" value="{{quirk.name}}">
+          <input data-action="vehicleData" class="vehicle-data" type="checkbox" id="character-{{../../_id}}-quirk-{{id}}-usable" data-name="system.quirks.{{id}}.usable" {{checked quirk.usable}}>
+          <a data-action="deleteQuirk" class="item-control delete-quirk" data-tooltip="{{localize 'BITD.TitleDeleteQuirk'}}"><i class="fas fa-trash"></i></a>
+        </td>
+      {{#if (or (eq (modulo id 2) 1) @last)}}
+      </tr>
+      {{/if}}
+      {{/each}}
+      {{/with}}
+    </table>
+  </section>
+
+  {{!-- Vehicle Breakdown & Enhance --}}
+  <section id="vehicle-{{_id}}-vehicle-enhance-breakdown" class="vehicle-enhance-breakdown">
+    <div class="big-teeth-section flex-horizontal">
+      <div id="character-{{_id}}-vehicle-enhance" class="big-teeth character-vehicle-enhance">
+        {{#multiboxes system.vehicle.system.enhance}}
+        <input data-action="vehicleData" class="vehicle-data" type="radio" id="character-{{_id}}-vehicle-enhance-0" data-name="system.enhance" value="0" dtype="Radio">
+        <div class="black-label">{{localize 'BITD.VehicleEnhance'}}</div>
+
+        {{#times_from 1 system.vehicle.system.enhance_max}}
+        <input data-action="vehicleData" class="vehicle-data" type="radio" id="character-{{../_id}}-vehicle-enhance-{{this}}" data-name="system.enhance" value="{{this}}" dtype="Radio">
+        <label class="radio-toggle"></label>
+        {{/times_from}}
+        {{/multiboxes}}
+      </div>
+      <div id="character-{{_id}}-vehicle-breakdown" class="big-teeth character-vehicle-breakdown">
+        {{#multiboxes system.vehicle.system.breakdown}}
+        <input data-action="vehicleData" class="vehicle-data" type="radio" id="character-{{_id}}-vehicle-breakdown-0" data-name="system.breakdown" value="0" dtype="Radio">
+        <div class="black-label">{{localize 'BITD.VehicleBreakdown'}}</div>
+
+        {{#times_from 1 system.vehicle.system.breakdown_max}}
+        <input data-action="vehicleData" class="vehicle-data" type="radio" id="character-{{../_id}}-vehicle-breakdown-{{this}}" data-name="system.breakdown" value="{{this}}" dtype="Radio">
+        <label class="radio-toggle"></label>
+        {{/times_from}}
+        {{/multiboxes}}
+      </div>
+    </div>
+  </section>
+  {{/if}}
+
+  {{!-- Attributes --}}
+  <section class="flex-horizontal">
+    <div class="tab-content flex-vertical grow-two">
+
+  {{!-- Attributes --}}
+  <section class="flex-horizontal">
+    <div class="tab-content flex-vertical grow-two">
+      {{!-- Nav menu --}}
+      <nav class="tabs flex-horizontal">
+        {{#if (ne system.vehicle null)}}
+        <a class="item" data-tab="mech-load">{{localize 'BITD.VehicleLoadout'}}</a>
+        {{/if}}
+        <a class="item" data-tab="abilities">{{localize 'BITD.Abilities'}}</a>
+        <a class="item" data-tab="loadout">{{localize 'BITD.Loadout'}}</a>
+        <a class="item" data-tab="connections">{{localize 'BITD.Connections'}}</a>
+        <a class="item" data-tab="notes">{{localize 'BITD.Notes'}}</a>
+        {{#if isGM}}
+        <a class="item" data-tab="effects">{{localize 'BITD.Effects'}}</a>
+        {{/if}}
+        <a class="item" data-tab="all-items">{{localize 'BITD.AllItems'}}</a>
+      </nav>
+
+      {{!-- Vehicle items Tab --}}
+      {{#if (ne system.vehicle null)}}
+      <div id="character-{{_id}}-mech-load" class="tab flex-vertical mech-load" data-tab="mech-load">
+        <div class="label-stripe flex-horizontal">
+          <p>{{localize 'BITD.VehicleLoadout'}} <a class="item-add-popup" data-item-type="vehicle_gear"><i class="fas fa-plus-square"></i></a></p>
+          <p>{{system.vehicle.system.load}}/{{localize system.vehicle.system.load_level}} </p>
+          <div class="dropdown">
+            <select class="vehicle-data" data-name="system.selected_load_level">
+              {{selectOptions system.load_levels selected=system.vehicle.system.selected_load_level localize=true}}
+            </select>
+          </div>
+        </div>
+        <div class="tab-list">
+          {{#each items as |item id|}}
+          {{#if (and (eq item.type "vehicle_gear") (eq item.system.owner null))}}
+          {{> "systems/beamsaber/templates/parts/item_display/vehicle_gear.html" item=item id=id actor=../this gearOwner=../gearOwner}}
+          {{/if}}
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+
+      {{!-- Abilities Section --}}
+      <section class="tab flex-vertical {{tabs.abilities.id}} {{tabs.abilities.cssClass}}" data-tab="{{tabs.abilities.id}}" data-group="{{tabs.abilities.group}}">
+        <div class="label-stripe flex-horizontal">
+          <p><label for="character-{{_id}}-experience-0">{{localize 'BITD.Abilities'}}</label><a class="item-add-popup" data-item-type="ability" data-tooltip="{{localize 'BITD.AddAbility'}}"><i class="fas fa-plus-square"></i></a></p>
+          <div id="character-{{_id}}-experience" class="teeth-experience">
+            <!--<label for="character-{{_id}}-experience-0"><i class="fab fa-creative-commons-zero nullifier"></i></label>-->
+            {{#multiboxes system.experience.value}}
+            <input type="radio" id="character-{{_id}}-experience-0" name="system.experience.value" value="0" dtype="Radio">
+            {{#times_from 1 system.experience.max}}
+            <input type="radio" id="character-{{../_id}}-experience-{{this}}" name="system.experience.value" value="{{this}}" dtype="Radio">
+            <label class="radio-toggle"></label>
+            {{/times_from}}
+            {{/multiboxes}}
+          </div>
+        </div>
+
+        <div id="character-{{_id}}-abilities-list" class="tab-list">
+          {{#each items as |item id|}}
+          {{#if (and (eq item.type "ability") (eq item.system.owner null))}}
+          {{> "systems/beamsaber/templates/parts/item_display/ability.html" item=item id=id actor=../this}}
+          {{/if}}
+          {{/each}}
+        </div>
+      </section>
+
+      {{!-- Owned Items Tab --}}
+      <section class="tab flex-vertical {{tabs.loadout.id}} {{tabs.loadout.cssClass}}" data-tab="{{tabs.loadout.id}}" data-group="{{tabs.loadout.group}}">
+        <div class="label-stripe flex-horizontal">
+          <p>{{localize 'BITD.Loadout'}} <a class="item-add-popup" data-item-type="item" data-tooltip="{{localize 'BITD.AddItem'}}"><i class="fas fa-plus-square"></i></a></p>
+          <p>{{system.load}}/{{localize system.load_level}} </p>
+          <div class="dropdown">
+            <select name="system.selected_load_level">
+              {{selectOptions system.load_levels selected=system.selected_load_level localize=true}}
+            </select>
+          </div>
+        </div>
+        <div class="tab-list">
+          {{#each items as |item id|}}
+          {{#if (and (eq item.type "item") (eq item.system.owner null))}}
+          {{> "systems/beamsaber/templates/parts/item_display/item.html" item=item id=id actor=../this gearOwner=../gearOwner}}
+          {{/if}}
+          {{/each}}
+        </div>
+      </section>
+
+      {{!-- Connections Tab --}}
+      <section class="tab flex-vertical {{tabs.connections.id}} {{tabs.connections.cssClass}}" data-tab="{{tabs.connections.id}}" data-group="{{tabs.connections.group}}">
+        <div class="label-stripe flex-horizontal">
+          <p>{{localize 'BITD.Connections'}}</p>
+          <div class="flex-horizontal" style="gap: 1em;">
+            <p><a class="actor-add-popup" data-actor-type="crewmate" data-title="{{localize 'BITD.Connection'}}" data-tooltip="{{localize 'BITD.CharacterConnectionInfo'}}"><i class="fas fa-plus-square"></i></a></p>
+          </div>
+        </div>
+        <table>
+          {{#each system.resolved_connections as |connection id|}}
+          <tr>
+            <td class="flex-vertical">
+              <div id="character-{{../_id}}-connection-{{id}}" class="flex-horizontal item" data-connection-id="{{id}}" {{#if (ne connection.actor null)}}data-item-id="{{connection.actor.uuid}}"{{/if}}>
+                <label for="character-{{../_id}}-connection-{{id}}-name" class="item-name"><b>{{localize 'BITD.Pilot'}}</b></label>
+                <div class="open-actor flex-horizontal">
+                  <img src="{{connection.actor.img}}" data-tooltip="{{connection.actor.name}}" width="24" height="24"/>
+                  <a class="item-name">{{connection.actor.name}}</a>
+                </div>
+                <a data-action="deleteConnection" class="item-control delete-connection" data-tooltip="{{localize 'BITD.TitleDeleteConnection'}}"><i class="fas fa-trash"></i></a>
+              </div>
+              <section class="flex-horizontal">
+                <div class="clock-block">
+                  <div class="clocks clocks-4 small">
+                    {{{blades-clock-object connection.clock (concat 'system.connections.' id '.clock') (concat "connection_clock_" id) ../defaultClockThemeColor false false}}}
+                  </div>
+                </div>
+                <div class="flex-vertical beliefs">
+                  {{#each connection.beliefs as |belief id2|}}
+                  <input type="text" name="system.connections.{{id}}.beliefs.{{id2}}" value="{{belief}}">
+                  {{/each}}
+                </div>
+              </section>
+              <textarea rows="3" name="system.connections.{{id}}.discoveries">{{connection.discoveries}}</textarea>
+            </td>
+          </tr>
+          {{/each}}
+        </table>
+      </section>
+
+      {{!-- Notes Tab --}}
+      <section class="tab flex-vertical {{tabs.notes.id}} {{tabs.notes.cssClass}}" data-tab="{{tabs.notes.id}}" data-group="{{tabs.notes.group}}">
+        <div class="label-stripe">
+          <p>{{localize 'BITD.Notes'}}</p>
+        </div>
+        <textarea rows="13" name="system.description">{{{system.description}}}</textarea>
+      </section>
+
+      {{!-- Active Effects --}}
+      <section class="tab flex-vertical {{tabs.effects.id}} {{tabs.effects.cssClass}}" data-tab="{{tabs.effects.id}}" data-group="{{tabs.effects.group}}">
+        <div class="label-stripe">
+          <p>{{localize 'BITD.Effects'}}</p>
+        </div>
+        {{> 'systems/beamsaber/templates/parts/active-effects.html'}}
+      </section>
+
+      {{!-- Full Item List --}}
+      <section class="tab flex-vertical {{tabs.all_items.id}} {{tabs.all_items.cssClass}}" data-tab="{{tabs.all_items.id}}" data-group="{{tabs.all_items.group}}">
+        <div class="label-stripe">
+          <p><label>{{localize 'BITD.AllItems'}}</label></p>
+        </div>
+        <div class="tab-list">
+          {{#each items as |item id|}}
+          <div class="item flex-horizontal" data-item-id="{{item._id}}">
+            <div class="item-body flex-horizontal">
+              <img src="{{item.img}}" data-tooltip="{{item.name}}" width="24" height="24"/>
+              <div class="item-name">{{item.name}}</div>
+            </div>
+            <a class="item-control delete-item" data-tooltip="{{localize 'BITD.TitleDeleteItem'}}"><i class="fas fa-trash"></i></a>
+            <a class="item-control item-post" data-tooltip="{{localize 'BITD.TitlePostItem'}}"><i class="fas fa-comment"></i></a>
+          </div>
+          {{/each}}
+        </div>
+      </section>
+    </div>
+
+    {{!-- Attributes --}}
+    <div class="flex-vertical">
+      {{> "systems/beamsaber/templates/parts/attributes.html" actor=actor vehicle=system.vehicle}}
+      <div class="extra-content">
+        {{#if (eq system.conditional_roll_modifiers.conviction_extra true)}}
+        <div class="flex-horizontal conviction">
+          <label id="character-{{_id}}-conviction-uses"><b>{{localize 'BITD.ConvictionUses'}}</b></label>
+          <div class="supply conviction-uses">
+            {{#multiboxes system.conviction_uses.value}}
+            {{#times_from 0 system.conviction_uses.max}}
+            <input id="character-{{../_id}}-conviction-uses-{{this}}" type="radio" name="system.conviction_uses.value" value="{{this}}">
+            <label class="radio-toggle{{#if (lteq this ../system.conviction_uses.value)}} enabled{{/if}}"></label>
+            {{/times_from}}
+            {{/multiboxes}}
+          </div>
+        </div>
+        {{/if}}
+        {{#if (andtest (ne system.vehicle null) (eq system.more_than_meets_the_eye true))}}
+        <div class="flex-horizontal second-form">
+          <label id="character-{{_id}}-vehicle-second-form"><b>{{localize 'BITD.UsingSecondForm'}}</b></label>
+          <input data-action="vehicleData" class="vehicle-data" type="checkbox" id="character-{{_id}}-vehicle-second-form" data-name="system.is_second_form" {{checked system.vehicle.system.is_second_form}}>
+        </div>
+        {{/if}}
+      </div>
+      <div class="flex-horizontal extra-rolls">
+        <a class="other-rolls" data-tooltip="{{localize 'BITD.OtherRoll'}}">{{> 'systems/beamsaber/templates/svg/d20.hbs'}}</a>
+        <a class="downtime" data-tooltip="{{localize 'BITD.DowntimeActivity'}}"><i class="fas fa-bed"></i></a>
+      </div>
+    </div>
+  </section>
+</div>

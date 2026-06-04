@@ -1,0 +1,139 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img src="{{img}}" data-edit="img" data-tooltip="{{name}}" />
+    <div class="header-fields flex-horizontal">
+      {{!-- Name --}}
+      <h1 class="charname">
+        <input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Region'}}" />
+      </h1>
+      <div class="owner flex-vertical">
+        <a class="add-owner"><b>{{localize 'BITD.Owner'}}</b></a>
+        {{#if (ne system.owner null)}}
+        <div class="item flex-horizontal" data-item-id="{{system.owner.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{system.owner.img}}" data-tooltip="{{system.owner.name}}" width="24" height="24"/>
+            <a class="item-name">{{system.owner.name}}</a>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-owner" data-tooltip="{{localize 'BITD.TitleDeleteOwner'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{else}}
+        {{localize 'BITD.None'}}
+        {{/if}}
+      </div>
+    </div>
+  </header>
+
+  {{!-- Description --}}
+  <div class="flex-vertical">
+    <b>{{localize 'BITD.Description'}}</b>
+    <textarea rows="6" name="system.description">{{system.description}}</textarea>
+  </div>
+
+  <div class="flex-horizontal landmarks-pips">
+    <div class="flex-vertical landmarks">
+      <b>{{localize 'BITD.Landmarks'}}</b>
+      <textarea rows="6" name="system.landmarks">{{system.landmarks}}</textarea>
+    </div>
+    <div class="flex-vertical pipped-values">
+      <div class="supply-container">
+        <b>{{localize 'BITD.Wealth'}}</b>
+        <div class="supply wealth">
+          {{#multiboxes system.wealth}}
+          {{#times_from 0 5}}
+          <input id="region-{{../_id}}-wealth-{{this}}" type="radio" name="system.wealth" value="{{this}}">
+          <label class="radio-toggle{{#if (lteq this ../system.wealth)}} enabled{{/if}}"></label>
+          {{/times_from}}
+          {{/multiboxes}}
+        </div>
+      </div>
+      <div class="supply-container">
+        <b>{{localize 'BITD.Might'}}</b>
+        <div class="supply might">
+          {{#multiboxes system.might}}
+          {{#times_from 0 5}}
+          <input id="region-{{../_id}}-might-{{this}}" type="radio" name="system.might" value="{{this}}">
+          <label class="radio-toggle{{#if (lteq this ../system.might)}} enabled{{/if}}"></label>
+          {{/times_from}}
+          {{/multiboxes}}
+        </div>
+      </div>
+    </div>
+    <div class="flex-vertical pipped-values">
+      <div class="supply-container">
+        <b>{{localize 'BITD.Crime'}}</b>
+        <div class="supply crime">
+          {{#multiboxes system.crime}}
+          {{#times_from 0 5}}
+          <input id="region-{{../_id}}-crime-{{this}}" type="radio" name="system.crime" value="{{this}}">
+          <label class="radio-toggle{{#if (lteq this ../system.crime)}} enabled{{/if}}"></label>
+          {{/times_from}}
+          {{/multiboxes}}
+        </div>
+      </div>
+      <div class="supply-container">
+        <b>{{localize 'BITD.Tech'}}</b>
+        <div class="supply tech">
+          {{#multiboxes system.tech}}
+          {{#times_from 0 5}}
+          <input id="region-{{../_id}}-tech-{{this}}" type="radio" name="system.tech" value="{{this}}">
+          <label class="radio-toggle{{#if (lteq this ../system.tech)}} enabled{{/if}}"></label>
+          {{/times_from}}
+          {{/multiboxes}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Special Rules --}}
+  <div class="flex-vertical">
+    <b>{{localize 'BITD.SpecialRules'}}</b>
+    <textarea rows="4" name="system.special_rules">{{system.special_rules}}</textarea>
+  </div>
+
+  {{!-- Squads Tab --}}
+  <div id="faction-{{_id}}-squads" class="flex-vertical squads">
+    <div class="label-stripe flex-horizontal">
+      <p>{{localize 'BITD.NotableSquadsCharactersNPCs'}}</p>
+      {{#if isGM}}<p><a class="actor-add-popup" data-actor-type="crew" data-value-path="system.squads" data-parent-path="system.owner"><i class="fas fa-plus-square"></i></a></p>{{/if}}
+    </div>
+    <div class="list">
+      {{#each system.squad_members as |squad id|}}
+      <div class="squad-container flex-vertical">
+        <div class="item flex-horizontal" data-item-id="{{squad.uuid}}">
+          <div class="collapse flex-horizontal"><a class="collapse-button"><i class="fas fa-{{#if (eq squad.region_collapsed true)}}plus{{else}}minus{{/if}}-square"></i></a></div>
+          <div class="open-actor flex-horizontal">
+            <img class="squad-img" src="{{squad.img}}" data-tooltip="{{squad.name}}" width="24" height="24"/>
+            <p class="item-name"><a>{{squad.name}}</a></p>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-squad" data-tooltip="{{localize 'BITD.TitleDeleteSquad'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        <div class="item-container{{#if (eq squad.region_collapsed true)}} collapsed{{/if}}">{{#each squad.members as |member id|}}{{#if (eq member.system.region ../../uuid)}}
+          <div class="item flex-horizontal" data-item-id="{{member.uuid}}">
+            <div class="open-actor flex-horizontal">
+              <img src="{{member.img}}" data-tooltip="{{member.name}}" width="24" height="24"/>
+              <p class="item-name"><a>{{member.name}}</a></p>
+            </div>
+            <div class="item-controls flex-horizontal">
+              <a class="item-control delete-notable" data-tooltip="{{localize 'BITD.TitleDeleteMember'}}"><i class="fas fa-trash"></i></a>
+            </div>
+          </div>{{/if}}{{/each}}</div>
+      </div>
+      {{/each}}
+      {{#each system.notables as |notable id|}}
+      <div class="item flex-horizontal" data-item-id="{{notable.uuid}}">
+        <div class="open-actor flex-horizontal">
+          <img src="{{notable.img}}" data-tooltip="{{notable.name}}" width="24" height="24"/>
+          <a class="item-name"><p>{{notable.name}}</p></a>
+        </div>
+        <div class="item-controls flex-horizontal">
+          <a class="item-control delete-notable" data-tooltip="{{localize 'BITD.TitleDeleteNotablePerson'}}"><i class="fas fa-trash"></i></a>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</form>

@@ -1,0 +1,29 @@
+<div class="dice-tooltip blades-die-tooltip">
+  <div class="chat-label label-stripe-chat">{{localize 'BITD.EnhanceRoll'}}</div>
+
+  <div class="description">
+    <p>{{{localize 'BITD.EnhanceText' num=num}}}</p>
+  </div>
+
+  {{#if enhance_maxxed}}
+  <div class="description">
+    <p>{{{localize 'BITD.EnhanceTextMaxxed'}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if (not extraFields.bonusRoll)}}
+  <div class="description">
+    <p>{{{localize 'BITD.EnhanceBonusNotice'}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if extraFields.modifier_text}}
+  <div class="description">
+    <p>{{{extraFields.modifier_text}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if note}}
+    <em>{{note}}</em>
+  {{/if}}
+</div>

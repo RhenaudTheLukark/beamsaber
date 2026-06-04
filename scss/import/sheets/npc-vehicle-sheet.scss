@@ -1,0 +1,201 @@
+.actor-sheet > section {
+  align-items: center;
+}
+
+section > img {
+  margin: 20px;
+}
+
+section {
+  justify-content: start;
+
+  &.lines {
+    width: 100%;
+
+    .text-line {
+      height: 26px;
+      padding: 5px 10px;
+      min-width: 150px;
+      width: 150px;
+      text-align: right;
+      font-family: "Kirsty", serif;
+    }
+
+    input, textarea {
+      margin-bottom: 5px;
+      width: 100%;
+    }
+  }
+}
+
+.black-white-header {
+  background-color: $almost_black;
+  color: $almost_white;
+  text-align: center;
+  width: 100%;
+
+  &:is(div) {
+    padding: 0.25em;
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+.item {
+  .item-name {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+.mech-load {
+  .item-name {
+    width: 100px;
+  }
+}
+
+.damage-armor {
+  display: flex;
+
+  & > div {
+    margin: 7px 0;
+    width: 100%;
+  }
+
+  input[type=text]:not(:placeholder-shown) {
+    background: rgba(255, 0, 0, 0.1);
+  }
+
+  .td:first-of-type {
+    width: 20px;
+  }
+
+  .death-block {
+    align-items: center;
+
+    & > * {
+      margin: 5px;
+    }
+
+    & > input {
+      width: 100%;
+    }
+
+    & > div {
+      text-align: center;
+    }
+
+    div:first-of-type {
+      width: 16px;
+    }
+  }
+
+  // Clock
+  .vehicle-repair-clock {
+    margin: 0 auto;
+    @include clock(4, 88);
+    width: 88px;
+  }
+
+  .vehicle-armor {
+    align-items: center;
+
+    div {
+      gap: 5px;
+      justify-content: space-around;
+
+      input {
+        display: none;
+      }
+
+      .radio-toggle > a > i {
+        &.fa-shield {
+          &.fas {
+            color: $gold;
+          }
+          &.fa-regular {
+            color: $almost_black;
+          }
+        }
+        &:before {
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
+
+.quirks {
+  tr {
+    display: flex;
+  }
+  .add-quirk {
+    float: right;
+    margin-right: 10px;
+  }
+  td:has(input[type=checkbox]:not(:checked)) {
+    input {
+      color: $gray;
+    }
+  }
+}
+
+.vehicle-enhance-breakdown {
+  margin-bottom: 15px;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+.tab-content {
+  .mech-load {
+    > .tab-list, .item-container-list {
+      background: rgba(0, 0, 0, 0.05);
+
+      > * {
+        &:nth-child(odd) {
+          background-color: var(--table-row-color-odd);
+        }
+
+        &:nth-child(even) {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+
+      .hackrig-type, .ammo, .drone-type, .expertise, .stay-late, .experimental, .hidden-item, .form-toggle {
+        text-align: center;
+        align-self: center;
+        align-items: center;
+
+        input {
+          margin: 0px;
+        }
+      }
+
+      .item:has(.extra-description) {
+        .item-body {
+          width: auto;
+          .item-description {
+            display: none;
+          }
+        }
+      }
+
+      .extra-description {
+        text-align: center;
+        align-self: center;
+        width: 100%;
+
+        textarea {
+          text-align: left;
+          text-wrap: wrap;
+        }
+      }
+    }
+  }
+}
+
+.gear-ability {
+  align-items: start !important;
+}

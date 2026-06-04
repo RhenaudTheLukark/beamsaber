@@ -1,0 +1,49 @@
+p {
+  padding-bottom: 1em;
+}
+
+.window-content {
+  overflow-y: auto;
+
+  .theme {
+    .theme-row, .color-row, .size-row {
+      width: 100%;
+      height: 32px;
+      gap: 10px;
+      align-items: center;
+
+      .folder-name {
+        width: 100%;
+      }
+
+      img {
+        background-color: $almost_white;
+      }
+    }
+
+    .data-container {
+      margin-left: 32px;
+    }
+
+    .shifted {
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .fas {
+      &.fa-plus-square, &.fa-minus-square {
+        font-size: 24px;
+      }
+
+      &.fa-check {
+        color: $light_green;
+        font-size: 24px;
+      }
+
+      &.fa-x {
+        color: $red;
+        font-size: 24px;
+      }
+    }
+  }
+}

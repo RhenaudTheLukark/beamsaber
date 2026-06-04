@@ -4,7 +4,6 @@
  * @param {Actor|Item} owner      The owning entity which manages this effect
  */
 export function onManageActiveEffect(event, owner) {
-  event.preventDefault();
   const a = event.currentTarget;
   const selector = a.closest("tr");
   const effect = selector.dataset.effectId ? owner.effects.get(selector.dataset.effectId) : null;
@@ -12,7 +11,7 @@ export function onManageActiveEffect(event, owner) {
     case "create":
       return owner.createEmbeddedDocuments("ActiveEffect", [{
         name: "New Effect",
-        icon: "systems/beam-saber/styles/assets/icons/Icon.3_13.png",
+        icon: "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
         origin: owner.uuid,
         "duration.rounds": selector.dataset.effectType === "temporary" ? 1 : undefined,
         disabled: selector.dataset.effectType === "inactive"
@@ -20,7 +19,6 @@ export function onManageActiveEffect(event, owner) {
     case "edit":
       return effect.sheet.render(true);
     case "delete":
-      console.log("delete effect");
       return effect.delete();
     case "toggle":
       return effect.update({disabled: !effect.disabled});

@@ -1,25 +1,41 @@
 <form class="{{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
-        <img src="{{img}}" data-edit="img" title="{{name}}"/>
-        <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Name'}}"/></h1>
-        </div>
-    </header>
-
-    {{!-- Sheet Body --}}
-    <section class="sheet-body flex">
-      {{editor system.description target="system.description" button=true editable=editable}}
-    </section>
-    <div class="flex-vertical">
-      <label class="label-stripe">{{localize "BITD.AbilityPrice"}}</label>
-      <input id="ability-price" type="text" name="system.price" value="{{system.price}}" placeholder="{{localize 'BITD.AbilityPrice'}}">
-      <label class="label-stripe">{{localize "BITD.AbilityClass"}}</label>
-      <input id="ability-class" type="text" name="system.class" value="{{system.class}}" placeholder="{{localize 'BITD.AbilityClass'}}">
-      {{#if isGM}}
-       <!-- <div class="label-stripe">{{localize "BITD.Logic"}}</div>
-        <textarea name="system.logic">{{{system.logic}}}</textarea> -->
-        <div class="label-stripe">{{localize "BITD.Effects"}}</div>
-        <div id="effects">{{> "systems/beam-saber/templates/parts/active-effects.html"}}</div>
-      {{/if}}
+  <header class="sheet-header">
+    <img src="{{img}}" data-edit="img" data-tooltip="{{name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Name'}}"/></h1>
     </div>
+  </header>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body flex">
+    {{#if editable}}
+      <prose-mirror name="system.description" button="true" editable="{{editable}}" toggled="false" value="{{system.description}}">
+        {{{system.description}}}
+      </prose-mirror>
+    {{else}}
+      {{{system.description}}}
+    {{/if}}
+  </section>
+  <div class="flex-vertical">
+    <div class="flex-horizontal">
+      <div class="three-line">
+        <label class="label-stripe">{{localize 'BITD.AbilityPrice'}}</label>
+        <input type="number" name="system.price" value="{{system.price}}" onkeypress="return BladesHelpers.isNumberKey(event)" placeholder="{{localize 'BITD.AbilityPrice'}}">
+      </div>
+      <div class="three-line">
+        <label class="label-stripe">{{localize 'BITD.AbilityUses'}}</label>
+        <input type="number" name="system.uses.max" value="{{system.uses.max}}" onkeypress="return BladesHelpers.isNumberKey(event)" placeholder="{{localize 'BITD.AbilityUses'}}">
+      </div>
+      <div class="three-line">
+        <label class="label-stripe">{{localize 'BITD.AbilityClass'}}</label>
+        <input type="text" name="system.class" value="{{system.class}}" placeholder="{{localize 'BITD.AbilityClass'}}">
+      </div>
+    </div>
+    {{#if isGM}}
+      <!-- <div class="label-stripe">{{localize 'BITD.Logic'}}</div> -->
+      <!-- <textarea name="system.logic">{{{system.logic}}}</textarea> -->
+      <div class="label-stripe">{{localize 'BITD.Effects'}}</div>
+      <div id="effects">{{> 'systems/beamsaber/templates/parts/active-effects.html'}}</div>
+    {{/if}}
+  </div>
 </form>

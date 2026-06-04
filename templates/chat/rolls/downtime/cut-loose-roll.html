@@ -1,0 +1,136 @@
+<div class="dice-tooltip blades-die-tooltip">
+  <div class="chat-label label-stripe-chat">{{localize 'BITD.CutLooseRoll'}}</div>
+  {{#if zeromode}}<div class="chat-label-small label-stripe-chat-small">0d</div>{{/if}}
+
+  {{#if (eq roll_status 'failure')}}
+  <div class="die {{roll_status}}">{{localize 'BITD.RollFailure'}}</div>
+  <div class="description">
+    <p>
+    {{#if extraFields.workHardPlayHardRoll}}
+    {{{localize 'BITD.RollCutLooseDoubleFailure' pilot=pilot clear_stress=clear_stress}}}
+    {{else}}
+    {{{localize 'BITD.RollCutLooseFailure' pilot=pilot clear_stress=clear_stress}}}
+    {{/if}}
+    <ul>
+      <li>{{{localize 'BITD.RollCutLooseFailureAttactTrouble'}}}</li>
+      <li>{{{localize 'BITD.RollCutLooseFailureBrag'}}}</li>
+      <li>{{{localize 'BITD.RollCutLooseFailureLost'}}}</li>
+      <li>{{{localize 'BITD.RollCutLooseFailureTapped'}}}</li>
+    </ul>
+    {{#if extraFields.actor.system.functioningVice}}{{{localize 'BITD.RollCutLooseFunctioningViceOther' pilot=pilot}}}{{/if}}
+    </p>
+  </div>
+  {{else}}
+  <div class="die success">{{localize 'BITD.RollSuccess'}}</div>
+  <div class="description">
+    <p>{{{localize 'BITD.RollCutLoose' pilot=pilot clear_stress=clear_stress}}}
+    {{#if extraFields.rollData.carouseStress}}
+      {{#if saved_by_carouse}}
+        {{{localize 'BITD.RollCutLooseSavedByCarouse'}}}
+      {{else}}
+        {{{localize 'BITD.RollCutLooseCarouseStress'}}}
+      {{/if}}
+    {{/if}}
+    {{#if extraFields.conviction}}
+      {{#if saved_by_conviction}}
+        {{{localize 'BITD.RollCutLooseSavedByConviction'}}}
+      {{else}}
+        {{{localize 'BITD.RollCutLooseConviction'}}}
+      {{/if}}
+    {{/if}}
+    {{#if extraFields.actor.system.functioningVice}}
+      {{#if (gt saved_by_functioning_vice 0)}}
+        {{{localize 'BITD.RollCutLooseSavedByFunctioningVice' num=saved_by_functioning_vice}}}
+      {{else}}
+        {{{localize 'BITD.RollCutLooseFunctioningVice'}}}
+      {{/if}}
+      {{{localize 'BITD.RollCutLooseFunctioningViceOther' pilot=pilot}}}
+    {{/if}}
+    {{#if (gt extraFields.actor.system.stress.value 0)}}
+      {{{localize 'BITD.RollCutLooseExtraResult'}}}
+    {{/if}}</p>
+  </div>
+  {{/if}}
+
+  <div class="description">
+    <p>
+      {{#if extraFields.rollData.carousePilotRelationship}}
+        {{{localize 'BITD.RollCutLooseConnectionCarousePilot' pilot=pilot}}}
+      {{else}}
+        {{{localize 'BITD.RollCutLooseConnection' pilot=pilot}}}
+      {{/if}}
+      {{#if connection_maxxed}}
+        {{{localize 'BITD.RollCutLooseConnectionMaxxed' pilot=pilot}}}
+      {{/if}}
+    </p>
+  </div>
+
+  {{#if extraFields.rollData.carouseOtherRelationship}}
+  <div class="description">
+    <p>
+      {{{localize 'BITD.RollCutLooseConnectionCarouseOther' pilot=pilot}}}
+      {{#if connection_maxxed}}
+        {{{localize 'BITD.RollCutLooseConnectionCarouseOtherMaxxed' pilot=pilot}}}
+      {{/if}}
+    </p>
+  </div>
+  {{/if}}
+
+  {{#if (not extraFields.bonusRoll)}}
+  <div class="description">
+    <p>{{{localize 'BITD.RollCutLooseBonusNotice'}}}</p>
+  </div>
+  {{/if}}
+
+  <div class="description">
+    {{#if (getSetting 'Edge')}}
+    {{#if edge}}
+      <p>{{{localize 'BITD.GainEdge'}}}</p>
+    {{/if}}
+    {{/if}}
+  </div>
+
+  {{#if extraFields.modifier_text}}
+  <div class="description">
+    <p>{{{extraFields.modifier_text}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if note}}
+  <em>{{note}}</em>
+  {{/if}}
+
+
+  <ol class="dice-rolls">
+    {{#each this.rolls}}
+    {{#if this.result}}
+    <li class="roll die d6 {{../this.color}}"{{#if (eq this.result 6)}}style="color: green;"{{else if (eq this.result 3)}}style="color: red;"{{else if (eq this.result 2)}}style="color: red;"{{else if (eq this.result 1)}}style="color: red;"{{/if}}>{{{this.result}}}</li>
+    {{else}}
+    <li class="roll die d6">{{{this.roll}}}</li>
+    {{/if}}
+    {{/each}}
+    {{#if @root.method}}
+      {{#unless (eq @root.method.type "mersenne")}}
+        <li class="roll method" data-tooltip="{{localize @root.method.label}}">{{{ @root.method.icon }}}</li>
+      {{/unless}}
+    {{/if}}
+  </ol>
+
+  {{#if extraFields.workHardPlayHard}}
+  <div class="button">
+    <button class="work-hard-play-hard-roll" data-original-actor-id="{{extraFields.actor.uuid}}" data-actor-id="{{extraFields.connection.uuid}}" data-result="{{roll_status}}">{{localize 'BITD.RollCutLooseOtherPilot'}}</button>
+  </div>
+  {{/if}}
+
+  {{#if (and extraFields.actor.system.carouse (not (or extraFields.rollData.carouseStress (or extraFields.rollData.carousePilotRelationship extraFields.rollData.carouseOtherRelationship))))}}
+  <div class="button">
+    <button class="carouse-stress">{{localize 'BITD.RollCutLooseCarouseStressButton'}}</button>
+  </div>
+  <div class="button">
+    <button class="carouse-pilot-connection" data-actor-id="{{extraFields.connection.uuid}}">{{localize 'BITD.RollCutLooseCarousePilotConnectionButton'}}</button>
+  </div>
+  <div class="button">
+    <button class="carouse-other-connection" data-actor-id="{{extraFields.connection.uuid}}">{{localize 'BITD.RollCutLooseCarouseOtherConnectionButton'}}</button>
+  </div>
+  {{/if}}
+</div>

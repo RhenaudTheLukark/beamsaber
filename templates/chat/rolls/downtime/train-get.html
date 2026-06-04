@@ -1,0 +1,33 @@
+<div class="dice-tooltip blades-die-tooltip">
+  <div class="chat-label label-stripe-chat">{{localize 'BITD.TrainRoll'}}</div>
+
+  <div class="description">
+    <p>{{{localize 'BITD.TrainText' trainTypeDesc=train_type_desc trainTypeText=train_type_text num=num}}}</p>
+  </div>
+
+  {{#if level_up}}
+  <div class="description">
+    {{#if (eq extraFields.trainType 'playbook')}}
+    <p>{{{localize 'BITD.TrainLevelUpPlaybook'}}}</p>
+    {{else}}
+    <p>{{{localize 'BITD.TrainLevelUpAttribute' trainType=train_type_text}}}</p>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{#if (not extraFields.bonusRoll)}}
+  <div class="description">
+    <p>{{{localize 'BITD.TrainBonusNotice'}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if extraFields.modifier_text}}
+  <div class="description">
+    <p>{{{extraFields.modifier_text}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if note}}
+    <em>{{note}}</em>
+  {{/if}}
+</div>

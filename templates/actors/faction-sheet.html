@@ -1,0 +1,182 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img src="{{img}}" data-edit="img" data-tooltip="{{name}}" />
+    <div class="header-fields flex-horizontal">
+      {{!-- Name --}}
+      <h1 class="charname">
+        <input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Faction'}}" />
+      </h1>
+      {{!-- Corruption --}}
+      <div class="flex-vertical corruption">
+        {{localize 'BITD.Corruption'}}
+        <div class="supply">
+          {{#multiboxes system.corruption}}
+          {{#times_from 0 5}}
+          <input id="faction-{{../_id}}-corruption-{{this}}" type="radio" name="system.corruption" value="{{this}}">
+          <label class="radio-toggle{{#if (lteq this ../system.corruption)}} enabled{{/if}}"></label>
+          {{/times_from}}
+          {{/multiboxes}}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-vertical faction-description">
+    {{localize 'BITD.Description'}}:
+    <textarea rows="6" name="system.description">{{system.description}}</textarea>
+  </div>
+
+  <div class="flex-horizontal faction-type">
+    <div class="flex-vertical faction-type-select">
+      <div>{{localize 'BITD.FactionType'}}:</div>
+      <select data-type="String" name="system.type">
+        {{selectOptions factionTypeDropdown selected=system.type localize=true}}
+      </select>
+    </div>
+    <div class="faction-type-description">
+      {{html text=faction_type.system.description}}
+    </div>
+  </div>
+
+  <div class="tab-content flex-vertical">
+    {{!-- Nav Menu --}}
+    <nav class="tabs flex-horizontal">
+      <a class="item" data-tab="squads">{{localize 'BITD.Squads'}}</a>
+      <a class="item" data-tab="npcs">{{localize 'BITD.NPCs'}}</a>
+      <a class="item" data-tab="regions">{{localize 'BITD.Regions'}}</a>
+      <a class="item" data-tab="goals">{{localize 'BITD.Goals'}}</a>
+      <a class="item" data-tab="assets">{{localize 'BITD.Assets'}}</a>
+      <a class="item" data-tab="relationships">{{localize 'BITD.Relationships'}}</a>
+      <a class="item" data-tab="notes">{{localize 'BITD.Notes'}}</a>
+    </nav>
+
+    {{!-- Associated Squads Tab --}}
+    <div id="faction-{{_id}}-squads" class="tab flex-vertical squads" data-tab="squads">
+      <div class="label-stripe flex-horizontal">
+        <p>{{localize 'BITD.AssociatedSquads'}}</p>
+        {{#if isGM}}<p><a class="actor-add-popup" data-actor-type="crew" data-value-path="system.squads" data-parent-path="system.faction"><i class="fas fa-plus-square"></i></a></p>{{/if}}
+      </div>
+      <div class="tab-list">
+        {{#each system.squads as |squad id|}}
+        <div class="item flex-horizontal" data-item-id="{{squad.uuid}}">
+          <img src="{{squad.img}}" data-tooltip="{{squad.name}}" width="48" height="48"/>
+          <div class="flex-vertical open-actor name-tier">
+            <p class="item-name"><a>{{squad.name}}</a></p>
+            <b class="squad-tier">{{localize 'BITD.Tier'}} {{number-to-roman squad.system.tier.value}} ({{#if (eq squad.system.hold 'strong')}}{{localize 'BITD.StrongShort'}}{{else}}{{localize 'BITD.WeakShort'}}{{/if}})</b>
+          </div>
+          {{> "systems/beamsaber/templates/parts/trust-block.html" trust=squad.system.trust trust_path=(concat "system.squads." id ".trust") trust_id=(concat "faction-" ../_id "-squad-" id "-trust")}}
+          {{> "systems/beamsaber/templates/parts/status-block.html" status=squad.system.status status_path=(concat "system.squads." id ".status") status_id=(concat "faction-" ../_id "-squad-" id "-status" actor=../this type="faction")}}
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-squad" data-tooltip="{{localize 'BITD.TitleDeleteSquad'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    {{!-- NPCs Tab --}}
+    <div id="faction-{{_id}}-npcs" class="tab flex-vertical npcs" data-tab="npcs">
+      <div class="label-stripe flex-horizontal">
+        <p>{{localize 'BITD.NotableNPCs'}}</p>
+        {{#if isGM}}<p><a class="actor-add-popup" data-actor-type="npc" data-value-path="system.npcs" data-parent-path="system.faction"><i class="fas fa-plus-square"></i></a></p>{{/if}}
+      </div>
+      <div class="tab-list">
+        {{#each system.npcs as |npc id|}}
+        <div class="item flex-horizontal" data-item-id="{{npc.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{npc.img}}" data-tooltip="{{npc.name}}" width="32" height="32"/>
+            <div class="item-name"><a>{{npc.name}}</a></div>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-npc" data-tooltip="{{localize 'BITD.TitleDeleteNPC'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    {{!-- Controlled Regions Tab --}}
+    <div id="faction-{{_id}}-regions" class="tab flex-vertical regions" data-tab="regions">
+      <div class="label-stripe flex-horizontal">
+        <p>{{localize 'BITD.ControlledRegions'}}</p>
+        {{#if isGM}}<p><a class="actor-add-popup" data-actor-type="region" data-value-path="system.regions" data-parent-path="system.faction"><i class="fas fa-plus-square"></i></a></p>{{/if}}
+      </div>
+      <div class="tab-list">
+        {{#each system.regions as |region id|}}
+        <div class="item flex-horizontal" data-item-id="{{region.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{region.img}}" data-tooltip="{{region.name}}" width="32" height="32"/>
+            <div class="item-name"><a>{{region.name}}</a></div>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-region" data-tooltip="{{localize 'BITD.TitleDeleteRegion'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
+    {{!-- Goals Tab --}}
+    <div id="faction-{{_id}}-goals" class="tab flex-vertical goals" data-tab="goals">
+      <div class="label-stripe flex-horizontal">
+        <p>{{localize 'BITD.Goals'}}</p>
+        <p><a class="add-goal"><i class="fas fa-plus-square"></i></a></p>
+      </div>
+      <table>
+        {{#each system.goals as |goal id|}}
+        <tr>
+          <td class="flex-vertical grow-two goal item" data-goal-id="{{id}}">
+            <section class="flex-horizontal">
+              <div class="clock-block">
+                <div class="goal-clock clocks clocks-{{goal.clock.max}} small">
+                  {{{blades-clock-object goal.clock (concat 'system.goals.' id '.clock') (concat ../_id '-goal-' id) ../defaultClockThemeColor false false}}}
+                </div>
+              </div>
+              <div class="flex-vertical clock-settings">
+                <label><i class="fa fa-chart-pie"></i></label>
+                <select data-type="String" name="system.goals.{{id}}.clock.max">
+                  {{selectOptions (clock-sizes goal.clock ../defaultClockThemeColor) selected=goal.clock.max}}
+                </select>
+              </div>
+              <div class="flex-vertical goal-text">
+                <input type="text" name="system.goals.{{id}}.title" value="{{goal.title}}" placeholder="{{localize BITD.Title}}">
+                <textarea class="goal-description" rows="1" name="system.goals.{{id}}.description">{{goal.description}}</textarea>
+              </div>
+              <a class="item-control delete-goal" data-tooltip="{{localize 'BITD.TitleDeleteGoal'}}"><i class="fas fa-trash"></i></a>
+            </section>
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+
+    {{!-- Assets Tab --}}
+    <div class="tab flex-vertical assets" data-tab="assets">
+      <div class="label-stripe">
+        <p>{{localize 'BITD.Assets'}}</p>
+      </div>
+      <textarea rows="13" name="system.assets">{{system.assets}}</textarea>
+    </div>
+
+    {{!-- Relationships Tab --}}
+    <div class="tab flex-vertical relationships" data-tab="relationships">
+      <div class="label-stripe flex-horizontal">
+        <p>{{localize 'BITD.Relationships'}}</p>
+        <p><a><i class="fas fa-info" data-tooltip="{{localize 'BITD.FactionRelationshipInfo'}}"></i></a></p>
+      </div>
+      <div class="tab-list">
+        {{#each system.direct_relationships as |relationship id|}}
+        {{> "systems/beamsaber/templates/parts/relationship-block.html" relationship=relationship actor=../this _id=../_id}}
+        {{/each}}
+      </div>
+    </div>
+
+    {{!-- Notes Tab --}}
+    <div class="tab flex-vertical character-notes" data-tab="notes">
+      <div class="label-stripe">
+        <p>{{localize 'BITD.Notes'}}</p>
+      </div>
+      <textarea rows="13" name="system.notes">{{system.notes}}</textarea>
+    </div>
+  </div>
+</form>

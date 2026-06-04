@@ -9,14 +9,23 @@ export const preloadHandlebarsTemplates = async function() {
   const templatePaths = [
 
     // Actor Sheet Partials
-    "systems/beam-saber/templates/parts/coins.html",
-    "systems/beam-saber/templates/parts/attributes.html",
-    "systems/beam-saber/templates/parts/turf-list.html",
-    "systems/beam-saber/templates/parts/cohort-block.html",
-    "systems/beam-saber/templates/parts/factions.html",
-    "systems/beam-saber/templates/parts/active-effects.html",
+    "systems/beamsaber/templates/parts/attributes.html",
+    "systems/beamsaber/templates/parts/cohort-block.html",
+    "systems/beamsaber/templates/parts/active-effects.html",
+    "systems/beamsaber/templates/parts/relationship-block.html",
+    "systems/beamsaber/templates/parts/beliefs-block.html",
+    "systems/beamsaber/templates/parts/trust-block.html",
+    "systems/beamsaber/templates/parts/status-block.html",
+    "systems/beamsaber/templates/parts/item_display/ability.html",
+    "systems/beamsaber/templates/parts/item_display/crew_ability.html",
+    "systems/beamsaber/templates/parts/item_display/crew_upgrade.html",
+    "systems/beamsaber/templates/parts/item_display/item.html",
+    "systems/beamsaber/templates/parts/item_display/vehicle_gear.html",
+
+    // SVGs
+    "systems/beamsaber/templates/svg/d20.hbs",
   ];
 
   // Load the template parts
-  return loadTemplates(templatePaths);
+  return foundry.applications.handlebars.loadTemplates(templatePaths);
 };

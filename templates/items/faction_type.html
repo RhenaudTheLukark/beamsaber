@@ -1,0 +1,19 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img src="{{img}}" data-edit="img" data-tooltip="{{name}}" />
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{name}}" placeholder="{{localize 'BITD.Name'}}" />
+    </div>
+  </header>
+
+  <section class="flex-vertical">
+    <label class="label-stripe">{{localize 'BITD.Description'}}</label>
+    {{#if editable}}
+      <prose-mirror name="system.description" button="true" editable="{{editable}}" toggled="false" value="{{system.description}}">
+        {{{system.description}}}
+      </prose-mirror>
+    {{else}}
+      {{{system.description}}}
+    {{/if}}
+  </section>
+</form>

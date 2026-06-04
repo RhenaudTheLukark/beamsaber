@@ -1,17 +1,16 @@
 /**
  * Extend the basic ItemSheet
- * @extends {ItemSheet}
+ * @extends {foundry.appv1.sheets.ItemSheet}
  */
-import {onManageActiveEffect, prepareActiveEffectCategories} from "./effects.js";
+import { onManageActiveEffect, prepareActiveEffectCategories } from "./effects.js";
 import { BladesActiveEffect } from "./blades-active-effect.js";
 
-export class BladesItemSheet extends ItemSheet {
+export class BladesItemSheet extends foundry.appv1.sheets.ItemSheet {
 
   /** @override */
 	static get defaultOptions() {
-
 	  return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ["beam-saber", "sheet", "item"],
+			classes: ["beamsaber", "sheet", "item"],
 			width: 560,
 			height: 'auto',
       tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}]
@@ -22,8 +21,8 @@ export class BladesItemSheet extends ItemSheet {
 
   /** @override */
   get template() {
-    const path = "systems/beam-saber/templates/items";
-    let simple_item_types = ["background", "heritage", "vice", "crew_reputation"];
+    const path = "systems/beamsaber/templates/items";
+    let simple_item_types = ["crew_reputation"];
     let template_name = `${this.item.type}`;
 
     if (simple_item_types.indexOf(this.item.type) >= 0) {
@@ -43,26 +42,59 @@ export class BladesItemSheet extends ItemSheet {
     if (!this.options.editable) return;
 
     html.find(".effect-control").click(ev => {
-      if ( this.item.isOwned ) return ui.notifications.warn(game.i18n.localize("BITD.EffectWarning"))
-      BladesActiveEffect.onManageActiveEffect(ev, this.item)
+      if ( this.item.isOwned ) return ui.notifications.warn(game.i18n.localize("BITD.EffectWarning"));
+      ev.preventDefault();
+      BladesActiveEffect.onManageActiveEffect(ev, this.item);
+    });
+
+    html.find('label.radio-toggle').click((e) => {
+      BladesHelpers.onRadioToggle(e);
+      e.preventDefault();
+    });
+    html.find('label.radio-toggle').contextmenu((e) => {
+      BladesHelpers.onRadioToggle(e);
+      e.preventDefault();
+    });
+
+    html.find('.add-quality').click(async (e) => {
+      await this.object.update({system: {'==quality_modifier': this.object.system.quality_modifier + 1}});
+      await this.object.updateCohortQualityScale();
+    });
+    html.find('.remove-quality').click(async (e) => {
+      await this.object.update({system: {'==quality_modifier': this.object.system.quality_modifier - 1}});
+      await this.object.updateCohortQualityScale();
+    });
+    html.find('.add-scale').click(async (e) => {
+      await this.object.update({system: {'==scale_modifier': this.object.system.scale_modifier + 1}});
+      await this.object.updateCohortQualityScale();
+    });
+    html.find('.remove-scale').click(async (e) => {
+      await this.object.update({system: {'==scale_modifier': this.object.system.scale_modifier - 1}});
+      await this.object.updateCohortQualityScale();
     });
   }
 
   /* -------------------------------------------- */
 
   /** @override */
-  async getData(options) {
-    const superData = super.getData( options );
+  getData(options) {
+    const superData = super.getData(options);
     const sheetData = superData.data;
 
-    sheetData.isGM = game.user.isGM;
     sheetData.owner = superData.owner;
     sheetData.editable = superData.editable;
+    sheetData.document = superData.document;
+    sheetData.isGM = game.user.isGM;
 
     // Prepare Active Effects
     sheetData.effects = prepareActiveEffectCategories(this.document.effects);
 
-    sheetData.system.description = await TextEditor.enrichHTML(sheetData.system.description, {secrets: sheetData.owner, async: true});
+    //sheetData.system.description = foundry.applications.ux.TextEditor.enrichHTML(sheetData.system.description, {secrets: sheetData.owner, async: false});
+
+    sheetData.system.container_item_type_list = {
+      item: {label: 'TYPES.Item.item'},
+      vehicle_gear: {label: 'TYPES.Item.vehicle_gear'}
+    }
 
     return sheetData;
   }

@@ -1,0 +1,18 @@
+<section class="tab flex-vertical {{tabs.loadout.id}} {{tabs.loadout.cssClass}}" data-tab="{{tabs.loadout.id}}" data-group="{{tabs.loadout.group}}">
+  <div class="label-stripe flex-horizontal">
+    <p>{{localize 'BITD.Loadout'}} <a class="item-add-popup" data-item-type="item" data-tooltip="{{localize 'BITD.AddItem'}}"><i class="fas fa-plus-square"></i></a></p>
+    <p>{{system.load}}/{{localize system.load_level}} </p>
+    <div class="dropdown">
+      <select name="system.selected_load_level">
+        {{selectOptions system.load_levels selected=system.selected_load_level localize=true}}
+      </select>
+    </div>
+  </div>
+  <div class="tab-list">
+    {{#each items as |item id|}}
+    {{#if (and (eq item.type "item") (eq item.system.owner null))}}
+    {{> "systems/beamsaber/templates/parts/item_display/item.html" item=item id=id actor=../this gearOwner=../gearOwner}}
+    {{/if}}
+    {{/each}}
+  </div>
+</section>

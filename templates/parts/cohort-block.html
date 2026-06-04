@@ -1,57 +1,64 @@
-<div class="item cohort-block-wrapper" data-item-id="{{_id}}">
-
-  <div class="cohort-block">
-    <div class="label-stripe">
-      <div class="item-sheet-open">
-        {{#if (eq system.cohort "Gang")}}
-          Gang of {{#each system.gang_type as |gang_type key|}}{{gang_type}} {{/each}}
-        {{else if (eq system.cohort "Expert")}}
-          {{system.cohort}} {{system.expert_type}}
+<div class='item cohort-block-wrapper grow-two' data-item-id='{{_id}}'>
+  <div class='cohort-block'>
+    <div class='label-stripe' style='justify-content: space-between'>
+      <div class='item-body'>
+        {{name}},
+        {{#if (eq item.system.type 'Gang')}}
+        Gang of {{#each item.system.gang_type as |gang_type key|}}{{gang_type}} {{/each}}
+        {{else if (eq item.system.type 'Expert')}}
+        {{item.system.type}} {{item.system.expert_type}}
         {{/if}}
-        <i class="fas fa-fw fa-edit"></i>
+        <i class='fas fa-fw fa-edit'></i>
       </div>
-      <div>Q:{{system.quality}} S:{{system.scale}}</div>
-      <a class="item-control item-delete" title="{{localize 'BITD.TitleDeleteItem'}}"><i class="fas fa-trash"></i></a>
-      <a class="item-control item-post" title="{{localize 'BITD.TitlePostItem'}}"><i class="fas fa-comment"></i></a>
+      <div>Q:{{item.system.quality}} S:{{item.system.scale}}</div>
+      <div class='flex-horizontal' style='gap: 5px'>
+        <div class='add-cohort-roll' data-tooltip='BITD.CohortRoll'>
+          {{> 'systems/beamsaber/templates/svg/d20.hbs'}}
+        </div>
+        {{#if (eq item.system.owner null)}}
+        <a class='item-control delete-item' data-tooltip='{{localize 'BITD.TitleDeleteItem'}}'><i class='fas fa-trash'></i></a>
+        {{/if}}
+        <a class='item-control item-post' data-tooltip='{{localize 'BITD.TitlePostItem'}}'><i class='fas fa-comment'></i></a>
+      </div>
     </div>
-    <div class="cohort-body">
-      <div class="flex-horizontal">
-        <img src="{{img}}"/>
-        <div class="cohort-block-harm flex-horizontal">
-          {{#each system.harm_list as |harm harm_key|}}
-            {{#multiboxes ../system.harm}}
-            <input id="harm-{{harm_key}}-{{../_id}}" type="radio" name="harm.{{../_id}}" data-item="{{../_id}}" value="{{harm_key}}">
-            <label for="harm-{{harm_key}}-{{../_id}}">{{localize harm.label}}</label>
-            {{/multiboxes}}
+    <div class='cohort-body'>
+      <div class='flex-horizontal'>
+        <img src='{{img}}' />
+        <div class='cohort-block-harm flex-horizontal'>
+          {{#each item.system.harm_list as |harm harm_key|}}
+          {{#multiboxes ../item.system.harm}}
+          <input id='harm-{{harm_key}}-{{../_id}}' type='radio' name='harm.{{../_id}}' data-item='{{../_id}}' value='{{harm_key}}'>
+          <label for='harm-{{harm_key}}-{{../_id}}'>{{localize harm.label}}</label>
+          {{/multiboxes}}
+          {{/each}}
+        </div>
+        <input class="cohort-armor" type="checkbox"{{#if item.system.armor}} checked{{/if}}>
+        <label class="radio-toggle"><a><i class="fa{{#if item.system.armor}}s{{else}}-regular{{/if}} fa-shield"></i></a></label>
+      </div>
+
+      {{#if (eq system.type 'Gang')}}
+      <div class='flex-vertical'>
+        <div class='cohort-description'>
+          {{#each system.gang_type as |gang_type key|}}
+          {{#with (lookup ../system.gang_type_list gang_type)}}{{localize description}} {{/with}}
           {{/each}}
         </div>
       </div>
-
-      {{#if (eq system.cohort "Gang")}}
-        {{#each system.gang_type as |gang_type key|}}
-        <div>
-            {{#with (lookup ../system.gang_type_list gang_type)}}{{localize description}} {{/with}}
-        </div>
-        {{/each}}
       {{/if}}
 
-      <div class="flex-vertical">
-        <div class="flex-vertical">
-          {{#each system.edges_list as |edge key|}}
-            {{#if edge.selected }}
-              <div class="cohort-description">{{localize edge.description}} <b>({{localize edge.label}})</b></div>
-            {{/if}}
-          {{/each}}
-          {{#each system.flaws_list as |flaw key|}}
-            {{#if flaw.selected }}
-              <div class="cohort-description">{{localize flaw.description}} <b>({{localize flaw.label}})</b></div>
-            {{/if}}
-          {{/each}}
-        </div>
+      <div class='flex-vertical'>
+        {{#each system.edges_list as |edge key|}}
+        {{#if edge.selected }}
+        <div class='cohort-description'>{{localize edge.description}} <b>({{localize edge.label}})</b></div>
+        {{/if}}
+        {{/each}}
+        {{#each system.flaws_list as |flaw key|}}
+        {{#if flaw.selected }}
+        <div class='cohort-description'>{{localize flaw.description}} <b>({{localize flaw.label}})</b></div>
+        {{/if}}
+        {{/each}}
       </div>
-
-      <div class="description">{{localize system.description}}</div>
+      <div class='cohort-description description'>{{localize system.description}}</div>
     </div>
-
   </div>
 </div>

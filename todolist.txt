@@ -1,0 +1,196 @@
+Bug list:
+-1 Try to stop single quotes and double quotes from being an issue in texts by unescaping them
+	- May be fixed by using escapeHTML(), but it's asynchronous, so it needs SheetV2
+-1 Drop item through drag & drop on Vehicle: it adds it to the Vehicle even if it has a pilot
+	- Can be fixed easily after switching to SheetV2
+-1 Vehicle fields not updating the Pilot sheet properly once they're changed on the Vehicle sheet
+	- Upgrade to SheetV2 to work with apps instead of updating everything manually :pray:
+-1 Faction type list sometimes clears itself: need to F5 to reload it when it happens
+	- This sometiimes clears a Faction's Type
+	- Will be fixed by switching over to SheetV2 since it allows for asynchronous data loading
+
+TODO list:
+-1 Upgrade sheets from V1 to V2 (low priority)
+	- Note: prepareData() may not always have all actors known, use prepareContext() instead to replace getData()
+- Look into making up a way to drag actors without the Create Tokens permission (low priority)
+	- Only allow Token creation if the Create Tokens permission is OK
+- ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
+
+To Implement:
+	Pilot Abilities:
+		- (A) Travelling Companion => Choose between 1 Quirk or 2 Stress for Vehicle Action Push Yourself
+		- (Em) Carry That Weight => First effect: time travel on an action roll, roll +1d and add it to the roll result (or roll 1d if 0d roll) from assist or push yourself, Second effect: Stress transfer UI?
+		- (Em) Emoji => Second part: Make it a modifier for Action rolls
+		- (O) Tactical Genius => Display two checkboxes for uses, make it a roll modifier, refresh on mission start
+	Squad Abilities:
+		- (█) Dire Needs => Add a note to it in the End Mission pipeline
+		- (█) No Traces => First effect: Half rep gain from Hidden mission, Second effect: +1 Rep if no trust loss with the Employer Faction
+		- (█)/(C)/(F)/(P)/(R) Sponsor => Modify the Tier up message numbers
+		- (L) Leverage => Add +1 Rep when gaining Rep
+		- (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (AAAAAAAAA)
+		- (M) Scorched Earth => Add a note to it in the End Mission pipeline
+	Squad Upgrades:
+		- Cover Business => Reduce Trust loss from the Mission Target by 2
+		- Propaganda Radio => Reduce Trust loss from the Mission Employer by 2
+		- Refit Station => Add an entry in the Start Mission pipeline
+		- Transmitter Array => Make it a toggleable roll modifier
+		- Trophies Room => End Mission pipeline: +1 Rep for free
+
+Changelog since 26/06/01:
++ BUG: Repair clock doesn't work on the Pilot sheet
++ BUG: Long-Term Project completion: shows undefined
++ Added a tooltip note for the Hidden option of the Reputation line of the End Mission pipeline
++ Added time travel to rolls (specifically Cut Loose rolls), they can be fully reverted (only used for Carouse)
++ Compendium Items:
+	+ Pilot Abilities:
+		+ (Em) Carouse: Choice to be made AFTER the roll (add buttons on the Cut Loose message to revert it, or add extra connection tick)
+			+ Itemize roll data changes (materiel, personnel, stress, trust, other resources?, don't forget to store theoretical & factual changes for each value for roll reversion)
+			+ Allow starting a roll with forced modifiers/rolls
+			+ Allow different relationship increases than just 1 for the Pilot to the person they Cut Loose
+				+ Allow +2 relationship from Pilot to assistant
+				+ Allow +1 relationship from Pilot to assistant, +1 relationship from assistant to Pilot
+
++ => Means it's done
+- => Means it has to be done
+
+
+Already Implemented:
+	Pilot Abilities:
+		- (So) Mule
+	Vehicle Gear:
+		- Armor => Technically (I changed how it's handled)
+	Items:
+		- Armor => Technically (I changed how it's handled)
+	Squad Upgrades:
+		- Mastery
+		- Storage
+
+
+Newly Implemented (fully):
+	- Add both Resistance Rolls & Push Yourself rolls (currently only one or the other)
+	- Allow Push Yourself rolls on all actions, not just on abilities => Cost 2 Stress, +1d
+	- Implement Vehicle skill resistance (4 quirks, -1 per die, min 1)
+	- Move all Vehicle stuff into the Vehicle object and make proxies in the Character sheet for Vehicle data
+	- Change the Vehicle's UI to show its data
+	Pilot Abilities:
+		- (A) Adaptable => Implemented in the spark usage menu
+		- (A) Advanced Prototype => Added an 'Experimental' toggle on vehicle gear that reduces the gear's load, made the effect a toggleable modifier during rolls
+		- (A) Last Stand => Implemented Dire Action rolls + Allow Dire Action success on 4-6 + Add +1d per Breakdown point
+		- (A) Meat Is Cheap, Save The Metal => Made it a toggleable modifier during rolls
+		- (A) More Than Meets The Eye => Action points: blue for active form, lighter blue for inactive form, middle click empty action points to toggle between form assignations / Gear: Button 'Form', click to go from none to 1 to 2 to none / Disable vehicle gear effect on gear that's not in the current form + Show its entry greyed out
+		- (A) Red Comet => Made it a toggleable modifier during rolls, the stunning enemies part is manual
+		- (B) Beneath Notice => Made it a toggleable modifier during rolls
+		- (B) Forgettable => Added a mention to it after a successful Sway roll
+		- (B) Rainy Day => Implemented in the spark usage menu
+		- (Em) Broadcast => Add a mention to it after a successful Push Yourself roll
+		- (Em) Everybody Hurts => Implemented in the spark usage menu
+		- (Em) Far Sight => Add +1d on Survey Gather Info roll
+		- (Em) Telepathy => Made it a toggleable modifier during rolls, handles using the leader's action rating instead of your own in this specific case
+		- (En) Subterfuge => Implemented in the spark usage menu
+		- (En) Trust In Me => Made it a toggleable modifier during rolls
+		- (H) Crowdsource => Made it a toggleable modifier during rolls, uses another player's action rating instead of your own
+		- (H) Matrix Mind => Made it a toggleable modifier during rolls
+		- (H) Iron Will => First part not automatable, second part +1d on Resolve resistance rolls
+		- (H) Warded => Implemented in the spark usage menu
+		- (I) Ambush => Made it a toggleable modifier during rolls
+		- (I) Daredevil => Modify standard roll (+1d) & resistance roll (-1d) only on Desperate actions + need extra
+		- (I) Expertise => The maximum stress for the right leader/action combo in a group action is now capped at 1
+		- (I) Never Tell Me The Odds => Made it a toggleable modifier during rolls
+		- (I) Shadow => Implemented in the spark usage menu
+		- (I) The Devil's Footsteps => Add a mention to it after a successful Push Yourself roll
+		- (O) Leader: Second part: Group actions get an extra effect level when the leader has this ability
+		- (O) Mastermind => Implemented in the spark usage menu
+		- (O) Tactical Genius => Display two checkboxes for usesQuirk to spend for res roll
+		- (O) Warlord => Set up as an option to check with an extra text displayed
+		- (O) Weaving the Web => +1d Consort Gather Info, then +1d Engagement Roll on the entire operation
+		- (Sc) Drone Carrier => Made it as a container + Added field for type of item to transport (Pilot or Vehicle)
+		- (Sc) Focused => Implemented in the spark usage menu
+		- (Sc) Lay of the Land => Made it a toggleable modifier during rolls
+		- (Sc) Ranger => Made it a toggleable modifier during rolls
+		- (Sc) Sharpshooter => Add a mention to it after a successful Push Yourself roll
+		- (Sc) Survivor => +1 Stress box
+		- (Sc) Terminator => Three different abilities + Made it a toggleable modifier during rolls + Add Load to the 'Well Programmed Hunter Robot' container(s) on 'Beast of Burden'
+		- (So) Battleborn => Implemented in the spark usage menu
+		- (So) Bodyguard => Made it a toggleable modifier during rolls
+		- (So) Brutal => Made it a toggleable modifier during rolls
+		- (So) Not To Be Trifled with => Add a mention to it after a successful Push Yourself roll
+		- (So) Robot Fighter => Made it a toggleable modifier during rolls
+		- (So) Vigorous => Add 1 to clock min on Healing Clock
+		- (T) Fortitude => Implemented in the spark usage menu
+		- (T) Researcher => +1 result on Manufacture rolls
+		- (T) Saboteur => Made it a toggleable modifier during rolls
+		- (T) Simulation => +1d to Engagement rolls, the rest is manual
+	Vehicle Gear:
+		- (A) Boosted Reactors => Made it a toggleable modifier during rolls, it's only visible if Boosted Reactors can be used
+		- (A) Reflex Adjustment and Guidance Engine (R.A.G.E) => Made it a toggleable modifier during maneuver rolls
+		- (Sc) Special Ammunition => Made it a toggleable modifier during rolls and added a dropdown menu to choose the ammo type (flak, armor-piercing, incendiary, other)
+		- (So) Scary Weapon or Tool => Made it a toggleable modifier during rolls
+		- (T) Payload Bay => Added toggles for uses
+		- Armor => Changed how it's handled
+	Items:
+		- (H) Hackrig => Made it as a container + Added field for type (tablet, laptop, tower, other)
+		- (H) Quantum Drive => Add Load to the 'Hackrig' container(s)
+		- (Sc) Special Ammo => Added field for type (EMP => drones, hollow-point => people, gel rounds => less lethal) + Made its effects toggleable modifiers during rolls
+		- (Sc) Well Programmed Hunter Robot => Made a Cohort for it + Made it as a container
+		- (So) Stimpack => Made it a toggleable modifier during rolls
+		- (T) Bandolier => Add toggles for uses
+		- (T) Custom Gadgets => Add text field for details
+		- Armor => Changed how it's handled
+		- Heavy Armor => Changed how it's handled
+		- Intel => Made it a toggleable modifier during Gather Infomation rolls
+	Squad Abilities:
+		- (█) Predators => Made it a toggleable modifier during rolls
+		- (C) Accord => Count +3 Relationship Factions as +1 Heart (max: 3)
+		- (C) Friends in High Places => +1d in Supply rolls & Note in End Mission pipeline
+		- (C) High Society => Second part: Made it a toggleable modifier during Gather Information rolls
+		- (C) Noble Officer => Made both a toggleable modifier during rolls
+		- (C) PR Campaign => Group actions don't exist in the system yet, but when they do, made it a toggleable modifier during rolls for Pilots & Cohorts
+		- (F) Blood Brothers => First part: Made it a toggleable modifier during Action and Group action rolls, Second part: Reworked how Fire team types are selectable, automation + Ctrl+Click to select multiple fire team types
+		- (F) Fiends => Count -3 Relationship Factions as +1 Heart (max: 3)
+		- (F) Forged in the Fire => Made it a toggleable modifier during Resistance rolls
+		- (F) Shock and Awe => Made it a toggleable modifier during Engagement rolls
+		- (L) On the Move => Second part: Made it a toggleable modifier during Gather Information rolls
+		- (M) Air Superiority => Made it a toggleable modifier during rolls
+		- (M) Custom Work => Made it a toggleable modifier during Engineer rolls
+		- (M) Formation => Made it a toggleable modifier during Group action rolls
+		- (M) Reavers => Make it a toggleable modifier during rolls + Only enable its effect during a failed roll
+		- (P) Hooked => Would need a quick tweak on how Cohorts compute their Tier and Quality
+		- (P) Of the People => First part: Made it a toggleable modifier during Action rolls, Second part: Made it a toggleable modifier during Gather Information rolls
+		- (R) Second Story => Made it a toggleable modifier during Engagement rolls
+		- (R) Synchronised => Group actions now count having several successes as having a critical success
+		- (RD) Conviction => Third part: Made it a toggleable modifier during rolls and added a "Conviction Uses" field in the character sheet
+		- (RD) For the Greater Good => Made it a toggleable modifier during Cohort rolls
+		- (RD) Grounded => Made it a toggleable modifier during Resistance and Recover rolls
+	Squad Upgrades:
+		- (█)/(R) Elite Skulks => Made it a toggleable modifier during Cohort rolls
+		- (█)/(F)/(P)/(RD) Elite Toughs => Made it a toggleable modifier during Cohort rolls
+		- (C)/(M)/(RD) Elite Adepts => Made it a toggleable modifier during Cohort rolls
+		- (C)/(P)/(R) Elite Rooks => Made it a toggleable modifier during Cohort rolls
+		- (F)/(L)/(M) Elite Rovers => Made it a toggleable modifier during Cohort rolls
+		- (█) ████████ Rigging / (F) Frontline Rigging / (R) Recon Rigging / (RD) R&D Rigging => Reduce Pilot load by 2
+		- (█)/(F)/(RD) Hardened
+		- (C)/(P)/(R) Composed
+		- (C) Consulate Rigging => Add Hidden checkbox on pilots' item list
+		- (L) Reliable
+		- (L) Smuggler Panels => Add Hidden checkbox on pilots' mech load list
+		- (M) Cavalry Hardpoints => Reduce Vehicle load by 2
+		- (P) Profiteer Rigging => Add Hidden checkbox on pilots' item list & Discount load from item
+		- Barracks => Add Cohort selector on upgrade & Change how scale is computed
+		- CCTV Network => Made it a toggleable modifier during Survey rolls
+		- Commissary => Made it a toggleable modifier during Consort rolls
+		- Forger's Workshop => Made it a toggleable modifier during Engagement rolls
+		- Guerilla Hideout => Made it a toggleable modifier during Engagement rolls
+		- Hack Lab => Made it a toggleable modifier during Interface rolls
+		- Holo-grid => Made it a toggleable modifier during Consort rolls
+		- Loyal Bar => Made it a toggleable modifier during Gather Information rolls
+		- Luxury Venue => Made it a toggleable modifier during Sway rolls
+		- Personal Clothier => Made it a toggleable modifier during Engagement rolls
+		- Private Office => Made it a toggleable modifier during Command rolls
+		- Public Works => +1 Heart per time it's taken
+		- Quality (Gear/Outfits/Pilot Weapons/Programs/Supplies/Tools/Vehicle Weapons) => Made them a toggleable modifier during Action rolls
+		- Radar Station => Made it a toggleable modifier during Scan rolls
+		- Regional Records => Made it a toggleable modifier during Engagement rolls
+		- Secret Routes => Made it a toggleable modifier during Engagement rolls
+		- Supercomputer => Made it a toggleable modifier during Engagement rolls
+		- Training Center => Reworked how Fire team types are selectable, automation + Ctrl+Click to select multiple types
+		- Tunnels => Made it a toggleable modifier during Prowl rolls

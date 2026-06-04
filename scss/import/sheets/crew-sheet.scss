@@ -1,0 +1,336 @@
+.top {
+  white-space: nowrap;
+
+  & a:not(.item-name), & label {
+    font-family: "Kirsty", serif;
+  }
+
+  & > div {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    gap: 1em;
+  }
+
+  .name, .lair {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  .add-group-action {
+    width: 24px;
+    height: 24px;
+  }
+
+  .start-mission, .end-mission, .end-session {
+    font-size: 24px;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.25);
+    }
+  }
+
+  .is-player-crew {
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .item-class-label {
+    align-self: center;
+  }
+
+  .item {
+    .item-name {
+      width: auto;
+    }
+  }
+}
+
+.vendetta {
+  color: $red;
+}
+
+nav {
+  width: 100%;
+}
+
+.item-crew-rep {
+  justify-content: space-between;
+  gap: 1em;
+}
+
+// Reputation
+.crew-reputation {
+  border-top: 3px solid $almost_black;
+  @include toothradio(17px, 50px, "assets/teeth/stresstooth-halfgrey.png", "assets/teeth/stresstooth-red.png");
+
+  input:disabled + label {
+    background-image: url(assets/teeth/stresstooth-black.png);
+  }
+}
+
+
+.crew-hold {
+  border-top: 3px solid $almost_black;
+  @include toothradio_single(17px, 50px, "assets/teeth/stresstooth-halfgrey.png", "assets/teeth/stresstooth-red.png");
+  width: 221px;
+}
+
+.crew-tier {
+  background-color: $gray;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  border-top: 3px solid $almost_black;
+  @include custom_radio_round(18px, gray, $almost_white, $almost_black);
+
+  > * {
+    margin-right: 5px;
+  }
+}
+
+.crew-supply-container {
+  gap: 2em;
+
+  & > div {
+    font-family: "Kirsty", serif;
+    align-self: center;
+  }
+
+  .supply {
+    min-width: 72px;
+    max-width: 144px;
+  }
+}
+
+.heat-wanted {
+  .small-teeth {
+    height: 20px;
+
+    label {
+      height: 100%;
+      width: 100%;
+      cursor: default;
+    }
+  }
+}
+
+.experience-clues-container {
+  width: 340px;
+  font-size: 14px;
+
+  .experience-clues-description {
+    font-weight: bold;
+  }
+
+  .experience-clues {
+    font-style: italic;
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.crew-class-container {
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+
+  .class-name {
+    min-width: 400px;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 48px;
+    text-transform: uppercase;
+    border: 3px solid $almost_black;
+
+    .big-name {
+      font-weight: bold;
+      font-family: "Kirsty", serif;
+    }
+
+    .big-description {
+      font-size: 20px;
+      font-family: "Crimson Text", serif;
+      color: $almost_black;
+    }
+  }
+}
+
+.cohorts {
+  flex-wrap: wrap;
+
+  .cohort-block-wrapper {
+    width: 50%;
+
+    .item-body {
+      justify-content: unset;
+      align-items: unset;
+      width: auto;
+    }
+
+    .d20-svg {
+      height: 16px;
+      width: 16px;
+    }
+
+    img {
+      margin-right: 0px;
+    }
+  }
+
+  .label-stripe {
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 0px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+
+  .cohort-body {
+    img {
+      border: 2px solid #191813;
+      width: 1.75rem;
+      height: 1.75rem;
+      border-top: none;
+    }
+
+    > div {
+      margin-bottom: 10px;
+    }
+  }
+
+  .cohort-block-harm {
+    justify-content: space-around;
+    width: 100%;
+
+    input[type=radio] {
+      display: none;
+
+      &:checked + label {
+        color: $almost_white;
+        font-weight: bold;
+        background-color: $almost_black;
+      }
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1 0 0;
+      border: 2px solid #191813;
+      border-top: none;
+      border-left: none;
+      padding: 0 5px;
+      text-align: center;
+    }
+  }
+
+  .cohort-armor {
+    display: none;
+  }
+
+  .radio-toggle {
+    display: flex;
+    min-width: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #191813;
+    border-top: none;
+    border-left: none;
+    padding: 0 5px;
+
+    a > i {
+      &.fa-shield {
+        &.fas {
+          color: $gold;
+        }
+        &.fa-regular {
+          color: $almost_black;
+        }
+      }
+      &:before {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .cohort-description {
+    margin: 0 10px;
+  }
+}
+
+.projects {
+  margin: 0px;
+
+  tr {
+    display: flex;
+  }
+
+  .clock-settings {
+    align-self: center;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .project-text {
+    width: 100%;
+    gap: 5px;
+
+    .project-description {
+      height: 100%;
+    }
+  }
+
+  .add-project {
+    font-weight: bold;
+  }
+}
+
+header {
+  margin-bottom: 10px;
+}
+
+.tab-content {
+  .tab.members, .tab.upgrades, .tab.abilities, .tab.relationships, .tab.all-items {
+    > .tab-list, .item-container-list, .relationship-child-list {
+      background: rgba(0, 0, 0, 0.05);
+
+      > * {
+        &:nth-child(odd) {
+          background-color: var(--table-row-color-odd);
+        }
+
+        &:nth-child(even) {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+
+      .cohort-choice, .training-center, .collection-agency, .side-business {
+        text-align: center;
+        align-self: center;
+        align-items: center;
+
+        input {
+          text-align: left;
+          margin: 0px;
+        }
+      }
+    }
+  }
+  .tab.relationships {
+    .item {
+      align-items: center;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+<div class="item flex-horizontal" data-item-id="{{item._id}}">
+  <div class="item-body flex-horizontal">
+    <div class="item-name"><p>{{item.name}}</p></div>
+    <div class="item-description">{{{item.system.description}}}</div>
+  </div>
+  {{#if (ne item.system.barracks_cohort_id undefined)}}
+  <div class="cohort-choice flex-vertical">
+    <label for="{{actor.type}}-{{actor._id}}-upgrade-{{id}}-barracks-cohort"><b>{{localize 'TYPES.Item.cohort'}}</b></label>
+    <select id="{{actor.type}}-{{actor._id}}-upgrade-{{id}}-barracks-cohort">
+      <option value="0" {{#if (eq item.system.barracks_cohort_id 0)}}selected{{/if}}>{{localize 'BITD.None'}}</option>
+      {{#each actor.items as |item2 id2|}}
+      {{#if (and (eq item2.type "cohort") (eq item2.system.type "Gang"))}}
+      <option value="{{item2._id}}" {{#if (eq ../item.system.barracks_cohort_id item2._id)}}selected{{/if}}>{{item2.name}}</option>
+      {{/if}}
+      {{/each}}
+    </select>
+  </div>
+  {{/if}}
+  {{#if item.system.training_center}}
+  <div class="training-center flex-vertical">
+    <label for="{{actor.type}}-{{actor._id}}-upgrade-{{id}}-training-center"><b>{{localize 'BITD.Gang'}}</b></label>
+    <select id="{{actor.type}}-{{actor._id}}-upgrade-{{id}}-training-center">
+      {{#each item.system.gang_types as |gang_type id2|}}
+      <option value="{{gang_type}}" {{#if (eq ../item.system.training_center_type gang_type)}}selected{{/if}}>{{gang_type}}</option>
+      {{/each}}
+    </select>
+  </div>
+  {{/if}}
+  {{#if item.system.collection_agency}}
+  <div class="collection-agency">
+    <button>{{localize 'BITD.Roll'}}</button>
+  </div>
+  {{/if}}
+  {{#if item.system.side_business}}
+  <div class="side-business">
+    <button>{{localize 'BITD.Roll'}}</button>
+  </div>
+  {{/if}}
+  <div class="item-controls flex-horizontal">
+    <a class="item-control delete-item" data-tooltip="{{localize 'BITD.TitleDeleteItem'}}"><i class="fas fa-trash"></i></a>
+    <a class="item-control item-post" data-tooltip="{{localize 'BITD.TitlePostItem'}}"><i class="fas fa-comment"></i></a>
+  </div>
+</div>

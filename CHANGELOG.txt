@@ -1,244 +1,52 @@
-v.5.3.1
-- Fixed Simple Roller bug when character had no crew
-- Localization Update (#16 @Azaun)
+v0.6.0 (21-11-2025)
+- Removed the illegible Orbitron font
+- Reviewed and fixed all compendiums
+- Remodeled many sheets
+- Added Projects tab to Squad, added Connections tab to Character
+- Removed more Blades In The Dark references
+- Moved Faction Status actor data to Squad by adding a Relationships tab to it
+- Updated version compatibility to 13
+- Confirmed functioning for Version 13 (build 351)
 
-v.5.3.0
-- Added a "0d" indicator to dice roll chat messages
-- Dice Roller inherits stress and tier from selected token (#4)
-- Replaced Select helper with SelectOptions helper
-- Expanded healing clock usage on character sheets
-- Migrated data preparation from actor-sheet to actor for module compatibility (#14)
+--------------------------RhenaudTheLukark changes Start----------------------------
 
-v.5.2.0
-- Added ability for turf to changed manually by active effects (#8)
-- NPC and Faction Status tokens now link to actors (#12)
-- Added ability to change portrait and name of Faction Status Tracker (#12) and minor UI tweaks
-- Updated NPC sheet to enable longer notes and descriptions (#11)
-- Enabled linking Characters to a crew and inheriting bonuses to max trauma, stress, and action ratings
-- Enabled active effects to affect action ratings on character sheet
-- Added Italian Language (#9)
+v0.5.3 (30-7-2022)
+- merged in the compatibility changes
+- Reverted the author details for the project in this repo
+- Changed to ORbitron to improve legibility but keep the scifi - its ok at the moment
+- fixed the character sheet to say Spark but fix the startup problems
+- Confirmed functioning for Version 9 (build 269)
 
-v.5.1.2
-- Fixed Dice-So-Nice Integration for Foundry v11
-- Removed false text from Dice Roller (#4, #6 @Dez384, @linxcat)
-- Updated tooltips to Foundry standard
-- Added color to dice in chat messages and added indicator of roll method for manual rolling
-- Added Github Actions and updated the README
+------------------------------Grankless changes End---------------------------------
 
-v.5.1.1
-- Dice-So-Nice intregration fix #3 (@justinross)
+v0.5.2 (6/13/22)
+Update font to Arial instead of the unreadable Exan.
+Rename "special" to "spark". Removed "special" from vehicle section since there's just one spark.
+Todo list is chilling in the issues. Would love MRs or issue requests.
 
-v.5.1.0
-- Fixes for v12 Foundry #1 (@drewg13, @justinross)
-- Additional v12 fixes
+v0.5.1 -
+Forked system to make changes.
+Merged https://github.com/megastruktur/foundryvtt-blades-in-the-dark/commit/241345bf0a68921fa7d4ecb97f597ee4f2ad68ba to fix fortune roll CSS.
+Updated version compatibility to v9.
 
-v.5.0.0
-- Added options for clock actors to go to 10 and 12 parts and have color. Edited the layout of the clock sheet html.
-- Added acquintances to character sheet and to crew sheet with the option to import the default acquaintances by playbook
-- Added Prison claims to the crew sheet
-- Added a spot to include crew Hunting Grounds on Crew Sheet
-- Added Active Effects to the crew sheet
-- organized the compendiums into folders
-- Traumas pull from system.trauma.options instead of being hardcoded into HTML
-- Fixed entanglements macro to keep highest die when rolling more than one die
-- Added French language
-- Other minor html updates for better usability
-- Other minor fixes and updates
+------------------------------Grankless changes Start---------------------------------
 
-v.4.8
-- Fix CSS namespace collisions #202 (@drewg13)
-- Adds Automatic generated version in system.json
-
-v.4.7
-- Missing coma fix #195 (@hendryl)
-- Make action ratings variable and modifiable by Active Effects #197 (@drewg13)
-- Add additional UI for choosing a Crew Type #199 (@drewg13)
-- Fix Faction goal clocks #200 (Fixes !186 @drewg13)
-- Add options to send item descriptions to chat #198 (@drewg13)
-
-v.4.5
-- Added additional dice roll types #188 by anthonywaters
-- Modified Clock Sheet for Customization #185 by WillLaWill
-- Fixing 0d rolls from left side controls #189 by richmusser
-- Use official German translation #190 by Graffini
-- Updated visual display of cohorts #193 by CarlosFdez
-
-v.4.4
-- Added acquaintances to en.json #179
-- Feature: Owned clocks. #180 
---  Adds an "owned" field to the clock actor type, to allow clocks to be easily associated with a specific character/faction
-- Fix: Clocks update with no active scene fix.
-
-v.4.3
-- System.json V9 backward compat
-
-v.4.1
-- Update manifest link
-
-v.4.0
-- Update to FoundryVTT v10 with migrations by @drewg13
-
-v.3.19
-- system.json updated to v3.19
-
-v.3.18
-- Minor syntax fixes to crew types #176 (mikehoyle)
-- Feature/roll notes #177 (justinross)
-- Added a couple of extra fields to the "item" Item type for sheet/homebrew flexibility #178 (justinross)
-
-v.3.17
-- Fix Dice Roll icon in toolbar in V9 #172
-
-v.3.16
-- Fixes German translation
-
-v.3.15
-- Update system.json with the new version.
-
-v.3.14
-- Added friends/rivals labels to en.json #164 (justinross)
-- Fixes #165 [Multiple Clocks] (justinross)
-- fix faction sheet vanishing on faction delete #167 (Arnatious)
-
-v.3.13
-- Fix playbook max exp to depend on settings rather be hardcoded
-
-v.3.12
-- Fix cohort scale and quality calculation #161
-- Removed itemLogic calls #160
-
-v.3.11
-- Fix the version number
-
-v.3.10
-- Fix bug with setting crew xp and tier display #158
-
-v.3.9
-- Fixes.
-
-v.3.8
-- Filled in the "weird" playbooks #152
-- Added template.json fields for alternate sheet module flexibility #150
-- Add a custom class for ActiveEffects #151
-- CSS and Handlebars/HTML cleanup #153
-
-v.3.7
-- Entanglement tables cleanup #148
-
-v.3.6
-- Fixes system.json versioning.
-- Adds Entanglements Rolltables (#147)
-
-v.3.5
-- Portuguese Translation
-- Tidied up CSS errors
-- Fix faction sheet goal clocks
-
-v.3.4
-- Update items to use effects system
-- Properly sort item lists alphabetically
-
-v.3.3
-- Adds effects instead of item logic fields
-- Several image path fixes
-
-v3.2
-- Fix issue #120 (Load dropdown)
-- Fix issue #122 (Faction tracker labels)
-
-v3.1
-- Moving Hooks calls to Methods (@drewg13)
-
-v3.0
-- FoundryVTT 0.8.x support
-
-v2.17
-- Adds German translation
-- Fixes Spanish translation typo
-- Adds NPC actor type and NPC compendium
-
-v2.16
-- Changes to the item logic process to eliminate DB write-locking
-- Loadout selector
-- Added Faction tracker (by @jonasPri)
-
-v2.15
-- Fixes all Tokens to be force "actor linked"
-
-v2.14
-- Fixes Dice-so-Nice integration
-
-v2.13
-- Adds Polish translation (thanks rajmundg10)
-
-v2.12
-- Fix turf and cohort edge/flaws checkboxes
-
-v2.11
-- Fix localize for Rolls (@kinote)
-- Adjust avatar image position for Actor, Crew and Item (@olivier-grech)
-- Adjust FVTT version compatibility
-
-v2.10
-- Fix clock styles
-
-v2.9
-- Minor style fixes
-
-v2.8
-- Clocks rebuilt to be Actors.
-- Fixed Dice-so-nice integration.
-
-v2.7
-- Clocks added!
-
-v2.6
-- Fixed bug with upgrade
-- Fixed bug with Gang Type (checkboxes in Foundry can not be used to pass string values so changed to multiple select)
-
-v2.5
-- Updates the functionality with checkboxes and new FormDataExtended api.
-- Fixes Traumas for FVTT 0.7.2+.
-- Version update to be FVTT 0.7.2+ compatible.
-- Fixes improper label-id for radio buttons in Character.
-
-v2.4
-- Fixed Rolls: roll position is shown correctly now
-
-v2.3
-- Added shortened attribute names to use in templates
-- Handlebars "concat" helper added
-
-v2.2
-- Spanish translation added
-- Cohorts localization fix
-
-v2.1
-- Minor css improvements
-
-v2.0
-- Refactored the Stress to have dynamic Max value
-- Added Hull
-- Added Ghost
-- Added Vampire
-- Added Logic field to Item, Class and Ability
-- Removed dice icons on Attributes
-- Added new logic operator "attribute_change"
-
-v1.2
-- Non-Turf claims are no longer counted against Rep-Turf limit
-
-v1.1
-- Fixes
-
-v1.0
-
-- Added Localization for text (except Items) + Migrations (megastruktur)
-- Added Rolls mod and styling (dunderjester)
-- Added Russian localization (Cododoc)
-- Added design improvements and quality of life hinting to character sheet (OctarineSourcerer)
-- Changed the Versioning for easier tracking
+v0.5.0
+- Removed Blades in the Dark references
+- Updated the localisation to reference Beamsaber terminology (but removed all languages apart from English, sorry)
+- Updated the Character sheet to include Vehicle Stats
+- Updated the Classes to reference Beamsaber classes
+- Added the Beamsaber attributes
+- Added Materiel, Personnel and supply to the Squad sheet
+- Created a basic Vehicle sheet to help GMs
+- Changed the font and some styling
+- Added all character itmes, gear and abilities
+- Added all squad abilities and Upgrades
+- Added all Vehicle gear
 
 
 TODOs:
-- Remove and Re-add ALL items, when the item is removed to implement logic.
+- Update the visuals on repair, resources and a number of other places in the sheets
+- Setup dynamic changes for gear and abilities
+- Sort the character sheet layout
+- Dial up the Sci-fi

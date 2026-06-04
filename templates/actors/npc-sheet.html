@@ -1,0 +1,79 @@
+<form class="{{cssClass}} actor-sheet" autocomplete="off">
+  <section class="flex-horizontal">
+    <img src="{{img}}" data-edit="img" data-tooltip="{{name}}" height="200" width="200" />
+    <section class="lines flex-vertical">
+      <div class="flex-horizontal">
+        <label class="text-line" for="character-{{_id}}-name">{{localize 'BITD.Name'}}:</label>
+        <input type="text" id="character-{{_id}}-name" name="name" value="{{name}}" placeholder="{{localize 'BITD.Name'}}">
+      </div>
+      <div class="flex-horizontal">
+        <label class="text-line" for="character-{{_id}}-short-description">{{localize 'BITD.Short'}} {{localize 'BITD.Description'}}:</label>
+        <input type="text" id="character-{{_id}}-short-description" name="system.description_short" value="{{system.description_short}}">
+      </div>
+      <div class="flex-horizontal">
+        <a class="text-line item-add-popup" data-item-type="class" data-unique="true" data-value-path="system.class" data-add-as-item="true">{{localize 'BITD.Associated'}} {{localize 'BITD.Class'}}:</a>
+        {{#if (ne system.class null)}}
+        <div class="item flex-horizontal" data-item-id="{{system.class.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{system.class.img}}" data-tooltip="{{system.class.name}}" width="24" height="24"/>
+            <a class="item-name">{{system.class.name}}</a>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-class" data-tooltip="{{localize 'BITD.TitleDeleteClass'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/if}}
+      </div>
+      <div class="flex-horizontal">
+        <label class="text-line" for="character-{{_id}}-description">{{localize 'BITD.Full'}} {{localize 'BITD.Description'}}:</label>
+        <textarea rows="2" id="character-{{_id}}-description" name="system.description">{{system.description}}</textarea>
+      </div>
+      <div class="flex-horizontal">
+        <a class="text-line actor-add-popup" data-actor-type="crew" data-unique="true" data-value-path="system.crew">{{localize 'BITD.Associated'}} {{localize 'BITD.Squad'}}:</a>
+        {{#if (ne system.crew null)}}
+        <div class="item flex-horizontal" data-item-id="{{system.crew.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{system.crew.img}}" data-tooltip="{{system.crew.name}}" width="24" height="24"/>
+            <a class="item-name">{{system.crew.name}}</a>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-crew" data-tooltip="{{localize 'BITD.TitleDeleteCrew'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/if}}
+      </div>
+      <div class="flex-horizontal">
+        <a class="text-line actor-add-popup" data-actor-type="region" data-unique="true" data-value-path="system.region">{{localize 'BITD.Current'}} {{localize 'BITD.Region'}}:</a>
+        {{#if (ne system.region null)}}
+        <div class="item flex-horizontal" data-item-id="{{system.region.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{system.region.img}}" data-tooltip="{{system.region.name}}" width="24" height="24"/>
+            <a class="item-name">{{system.region.name}}</a>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-region" data-tooltip="{{localize 'BITD.TitleDeleteRegion'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/if}}
+      </div>
+      <div class="flex-horizontal">
+        <a class="text-line actor-add-popup" data-actor-type="faction" data-unique="true" data-value-path="system.faction">{{localize 'BITD.Associated'}} {{localize 'BITD.Faction'}}:</a>
+        {{#if (ne system.faction null)}}
+        <div class="item flex-horizontal" data-item-id="{{system.faction.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{system.faction.img}}" data-tooltip="{{system.faction.name}}" width="24" height="24"/>
+            <a class="item-name">{{system.faction.name}}</a>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-faction" data-tooltip="{{localize 'BITD.TitleDeleteFaction'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/if}}
+      </div>
+      <div class="flex-horizontal">
+        <label class="text-line" for="character-{{_id}}-notes">{{localize 'BITD.Notes'}}:</label>
+        <textarea rows="2" id="character-{{_id}}-notes" name="system.notes">{{system.notes}}</textarea>
+      </div>
+    </section>
+  </section>
+</form>

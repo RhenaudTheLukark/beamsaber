@@ -1,0 +1,201 @@
+<form class="{{cssClass}} actor-sheet" autocomplete="off">
+  <div class="flex-horizontal">
+    <img {{#if system.dead}}class="dead"{{/if}} src="{{img}}" data-edit="img" data-tooltip="{{name}}" height="200" width="200"/>
+    <section class="lines flex-vertical">
+      <div class="flex-horizontal">
+        <label class="text-line" for="vehicle-{{_id}}-name" >{{localize 'BITD.Name'}}:</label>
+        <input type="text" id="vehicle-{{_id}}-name" name="name" value="{{name}}">
+      </div>
+      <div class="flex-horizontal">
+        <label class="text-line" for="vehicle-{{_id}}-model">{{localize 'BITD.VehicleModel'}}:</label>
+        <input type="text" id="vehicle-{{_id}}-model" name="system.model" value="{{system.model}}">
+      </div>
+      <div class="flex-horizontal">
+        <label class="text-line" for="vehicle-{{_id}}-description">{{localize 'BITD.VehicleDescrition'}}:</label>
+        <textarea rows="2" id="vehicle-{{_id}}-description" name="system.description">{{system.description}}</textarea>
+      </div>
+      <div class="flex-horizontal">
+        <a class="text-line actor-add-popup" data-actor-type="faction" data-unique="true" data-value-path="system.faction">{{localize 'BITD.VehicleFaction'}}:</a>
+        {{#if (ne system.faction null)}}
+        <div class="item flex-horizontal" data-item-id="{{system.faction.uuid}}">
+          <div class="open-actor flex-horizontal">
+            <img src="{{system.faction.img}}" data-tooltip="{{system.faction.name}}" width="24" height="24"/>
+            <a class="item-name">{{system.faction.name}}</a>
+          </div>
+          <div class="item-controls flex-horizontal">
+            <a class="item-control delete-faction" data-tooltip="{{localize 'BITD.TitleDeleteFaction'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/if}}
+      </div>
+      <div class="flex-horizontal">
+        <label class="text-line" for="vehicle-{{_id}}-difficulty">{{localize 'BITD.Difficulty'}}:</label>
+        <input type="text" id="vehicle-{{_id}}-difficulty" name="system.difficulty" value="{{system.difficulty}}">
+      </div>
+      <div class="flex-horizontal">
+        <label class="text-line" for="vehicle-{{_id}}-notes">{{localize 'BITD.Notes'}}:</label>
+        <textarea rows="2" id="vehicle-{{_id}}-notes" name="system.notes">{{system.notes}}</textarea>
+      </div>
+    </section>
+  </div>
+
+  {{!-- Vehicle Damage and Armor --}}
+  <section id="vehicle-{{_id}}-damage-armor" class="damage-armor">
+    {{#if (not system.dead)}}
+    <table>
+      <thead>
+        <th class="black-white-header" colspan="4">{{localize 'BITD.VehicleDamage'}}</th>
+        <th class="black-white-header">{{localize 'BITD.VehicleRepair'}}</th>
+        {{#if (gt system.armor.max 0)}}
+        <th class="black-white-header">{{localize 'BITD.VehicleArmor'}}</th>
+        {{/if}}
+      </thead>
+      <tbody>
+        <tr>
+          <td>3</td>
+          <td colspan="2">
+            <input class="pilot-shared-data" type="text" id="vehicle-{{_id}}-damage-3-1" name="system.damage.heavy.one" value="{{system.damage.heavy.one}}" placeholder=" ">
+          </td>
+          <td>{{localize 'BITD.NeedHelp'}}<a class="death-toggle"><i class="fa-regular fa-skull"></i></a></td>
+          <td rowspan="3">
+            <div id="vehicle-{{_id}}-repair-clock" class="vehicle-repair-clock clocks-{{system.repair_clock.max}}">
+              {{{blades-clock-object system.repair_clock 'system.repair_clock' 'repair-clock' defaultClockThemeColor false true}}}
+            </div>
+          </td>
+          {{#if (gt system.armor.max 0)}}
+          <td rowspan="3" id="vehicle-{{_id}}-armor" class="vehicle-armor">
+            <div class="flex-horizontal">
+              {{#multiboxes system.armor.value}}
+              <input class="pilot-shared-data" type="radio" id="vehicle-{{_id}}-armor-0" name="system.armor.value" value="0" dtype="Radio">
+
+              {{#times_from 1 system.armor.max}}
+              <input class="pilot-shared-data" type="radio" id="vehicle-{{../_id}}-armor-{{this}}" name="system.armor.value" value="{{this}}" dtype="Radio">
+              <label class="radio-toggle{{#if (lteq this ../system.armor.value)}} enabled{{/if}}"><a><i class="fa{{#if (lteq this ../system.armor.value)}}s{{else}}-regular{{/if}} fa-shield"></i></a></label>
+              {{/times_from}}
+              {{/multiboxes}}
+            </div>
+          </td>
+          {{/if}}
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>
+            <input class="pilot-shared-data" type="text" id="vehicle-{{_id}}-damage-2-1" name="system.damage.medium.one" value="{{system.damage.medium.one}}" placeholder=" ">
+          </td>
+          <td>
+            <input class="pilot-shared-data" type="text" id="vehicle-{{_id}}-damage-2-2" name="system.damage.medium.two" value="{{system.damage.medium.two}}" placeholder=" ">
+          </td>
+          <td>-1D</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>
+            <input class="pilot-shared-data" type="text" id="vehicle-{{_id}}-damage-1-1" name="system.damage.light.one" value="{{system.damage.light.one}}" placeholder=" ">
+          </td>
+          <td>
+            <input class="pilot-shared-data" type="text" id="vehicle-{{_id}}-damage-1-2" name="system.damage.light.two" value="{{system.damage.light.two}}" placeholder=" ">
+          </td>
+          <td>{{localize 'BITD.LessEffect'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    {{else}}
+    <div class="flex-vertical">
+      <div class="black-white-header">{{localize 'BITD.VehicleDamage'}}</div>
+      <div>
+        <div class="flex-horizontal death-block">
+          <div>4</div>
+          <input type="text" id="vehicle-{{_id}}-damage-4-1" name="system.damage.deadly.one" value="{{system.damage.deadly.one}}" placeholder=" ">
+          <a class="death-toggle"><i class="fas fa-skull"></i></a></span>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+  </section>
+
+  {{!-- Vehicle Quirks --}}
+  <section id="vehicle-{{_id}}-quirks" class="vehicle-quirks">
+    <table class="quirks">
+      <thead>
+        <th class="black-white-header" colspan="4">
+          {{localize 'BITD.VehicleQuirks'}}
+          <a class="add-quirk flex-horizontal pilot-shared-data"><i class="fas fa-plus-square"></i></a>
+        </th>
+      </thead>
+      {{#each system.quirks as |quirk id|}}
+      {{#if (eq (modulo id 2) 0)}}
+      <tr>
+      {{/if}}
+        <td id="vehicle-{{../_id}}-quirk-{{id}}" class="flex-horizontal grow-two item" data-quirk-id="{{id}}">
+          <input class="pilot-shared-data" type="text" id="vehicle-{{../_id}}-quirk-{{id}}-name" name="system.quirks.{{id}}.name" value="{{quirk.name}}">
+          <input class="pilot-shared-data" type="checkbox" id="vehicle-{{../_id}}-quirk-{{id}}-usable" name="system.quirks.{{id}}.usable" {{checked quirk.usable}}>
+          <a class="item-control delete-quirk pilot-shared-data" data-tooltip="{{localize 'BITD.TitleDeleteQuirk'}}"><i class="fas fa-trash"></i></a>
+        </td>
+      {{#if (or (eq (modulo id 2) 1) @last)}}
+      </tr>
+      {{/if}}
+      {{/each}}
+    </table>
+  </section>
+
+  {{!-- Vehicle Breakdown & Enhance --}}
+  <section id="vehicle-{{_id}}-breakdown-enhance" class="vehicle-enhance-breakdown">
+    <div class="big-teeth-section flex-horizontal">
+      <div id="vehicle-{{_id}}-enhance" class="big-teeth vehicle-enhance">
+        {{#multiboxes system.enhance}}
+        <input class="pilot-shared-data" type="radio" id="vehicle-{{_id}}-enhance-0" name="system.enhance" value="0" dtype="Radio">
+        <div class="black-label">{{localize 'BITD.VehicleEnhance'}}</div>
+
+        {{#times_from 1 system.enhance_max}}
+        <input class="pilot-shared-data" type="radio" id="vehicle-{{../_id}}-enhance-{{this}}" name="system.enhance" value="{{this}}" dtype="Radio">
+        <label class="radio-toggle"></label>
+        {{/times_from}}
+        {{/multiboxes}}
+      </div>
+      <div id="vehicle-{{_id}}-breakdown" class="big-teeth vehicle-breakdown">
+        {{#multiboxes system.breakdown}}
+        <input class="pilot-shared-data" type="radio" id="vehicle-{{_id}}-breakdown-0" name="system.breakdown" value="0" dtype="Radio">
+        <div class="black-label">{{localize 'BITD.VehicleBreakdown'}}</div>
+
+        {{#times_from 1 system.breakdown_max}}
+        <input class="pilot-shared-data" type="radio" id="vehicle-{{../_id}}-breakdown-{{this}}" name="system.breakdown" value="{{this}}" dtype="Radio">
+        <label class="radio-toggle"></label>
+        {{/times_from}}
+        {{/multiboxes}}
+      </div>
+    </div>
+  </section>
+
+  <section class="gear-ability flex-horizontal">
+    <div class="tab-content flex-vertical grow-two">
+      <div id="vehicle-{{_id}}-mech-load" class="flex-vertical mech-load" data-tab="mech-load">
+        <div class="label-stripe flex-horizontal">
+          <p>{{localize 'BITD.VehicleLoadout'}} <a class="item-add-popup" data-item-type="vehicle_gear"><i class="fas fa-plus-square"></i></a></p>
+          <p>{{system.load}}/{{localize system.load_level}} </p>
+          <div class="dropdown">
+            <select class="pilot-shared-data" name="system.selected_load_level">
+              {{selectOptions system.load_levels selected=system.selected_load_level localize=true}}
+            </select>
+          </div>
+        </div>
+        <div class="tab-list">
+          {{#each gearOwner.items as |item id|}}
+          {{#if (and (eq item.type "vehicle_gear") (eq item.system.owner null))}}
+          {{> "systems/beamsaber/templates/parts/item_display/vehicle_gear.html" item=item id=id actor=../this gearOwner=../gearOwner}}
+          {{/if}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
+    {{!-- Attributes --}}
+    <div class="flex-vertical">
+      {{> "systems/beamsaber/templates/parts/attributes.html" actor=actor vehicle=this}}
+      <div class="extra-content">
+        <div class="flex-horizontal second-form">
+          <label id="vehicle-{{_id}}-second-form"><b>{{localize 'BITD.UsingSecondForm'}}</b></label>
+          <input class="pilot-shared-data" type="checkbox" id="vehicle-{{_id}}-second-form" name="system.is_second_form" {{checked system.is_second_form}}>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

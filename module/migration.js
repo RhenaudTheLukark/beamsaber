@@ -1,46 +1,75 @@
+import { BladesHelpers } from "./blades-helpers.js";
+
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
-export const migrateWorld = async function() {
-  ui.notifications.info(`Applying BITD Actors migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
+export const migrateWorld = async function(oldVersion, newVersion) {
+  ui.notifications.info(`Applying Beamsaber Actors migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
 
   // Migrate World Actors
-  for ( let a of game.actors.contents ) {
-    if (a.type === 'character') {
-      try {
-        const updateData = _migrateActor(a);
-        if ( !isObjectEmpty(updateData) ) {
-          console.log(`Migrating Actor entity ${a.name}`);
-          await a.update(updateData, {enforceTypes: false});
-        }
-      } catch(err) {
-        console.error(err);
+  let actors = foundry.utils.deepClone(game.actors.contents);
+  actors.sort(BladesHelpers._relationshipCompareFunc);
+  for (let a of actors) {
+    try {
+      const updateActorData = await _migrateActor(a, oldVersion);
+      if (Object.keys(updateActorData).length > 0) {
+        console.log(`Migrating ${game.i18n.localize(`TYPES.Actor.${a.type}`)} entity ${a.name}`);
+        await BladesHelpers.tryUpdate(a, updateActorData);
       }
+
+      // Migrate Actor Items as well
+      for (let i of a.items.contents) {
+        try {
+          const updateItemData = await _migrateItem(i, oldVersion);
+          if (Object.keys(updateItemData).length > 0) {
+            console.log(`Migrating ${game.i18n.localize(`TYPES.Item.${i.type}`)} entity ${i.name} from ${game.i18n.localize(`TYPES.Actor.${a.type}`)} entity ${a.name}`);
+            await BladesHelpers.tryUpdate(i, updateItemData);
+          }
+        } catch(err) {
+          console.error(err);
+        }
+      }
+    } catch(err) {
+      console.error(err);
     }
 
-    // Migrate Token Link for Character and Crew
-    if (a.type === 'character' || a.type === 'crew') {
+    // Migrate Token Link for Character and Squad
+    /*if (a.type === 'character' || a.type === 'crew') {
       try {
         const updateData = _migrateTokenLink(a);
-        if ( !isObjectEmpty(updateData) ) {
+        if (Object.keys(updateData).length > 0) {
           console.log(`Migrating Token Link for ${a.name}`);
-          await a.update(updateData, {enforceTypes: false});
+          await BladesHelpers.tryUpdate(a, updateData);
         }
       } catch(err) {
         console.error(err);
       }
-    }
-
+    }*/
   }
 
   // Migrate Actor Link
-  for ( let s of game.scenes.contents ) {
+  /*
+  for (let s of game.scenes.contents) {
     try {
       const updateData = _migrateSceneData(s);
-      if ( !isObjectEmpty(updateData) ) {
+      if (Object.keys(updateData).length > 0) {
         console.log(`Migrating Scene entity ${s.name}`);
-        await s.update(updateData, {enforceTypes: false});
+        await BladesHelpers.tryUpdate(s, updateData);
+      }
+    } catch(err) {
+      console.error(err);
+    }
+  }*/
+
+  // Migrate Items
+  let items = foundry.utils.deepClone(game.items.contents);
+  for (let i of items) {
+    try {
+      const updateData = await _migrateItem(i, oldVersion);
+      if (Object.keys(updateData).length > 0) {
+        console.log(`Migrating ${game.i18n.localize(`TYPES.Item.${i.type}`)} entity ${i.name}`);
+        await BladesHelpers.tryUpdate(i, updateData);
       }
     } catch(err) {
       console.error(err);
@@ -48,8 +77,8 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("bitd", "systemMigrationVersion", game.system.version);
-  ui.notifications.info(`BITD System Migration to version ${game.system.version} completed!`, {permanent: true});
+  game.settings.set("beamsaber", "systemMigrationVersion", newVersion);
+  ui.notifications.info(`Beamsaber System Migration to version ${game.system.version} completed!`, {permanent: true});
 };
 
 
@@ -81,67 +110,105 @@ export const _migrateSceneData = function(scene) {
 /**
  * Migrate the actor attributes
  * @param {Actor} actor   The actor to Update
- * @return {Object}       The updateData to apply
+ * @return {Promise<Object>}       The updateData to apply
  */
-function _migrateActor(actor) {
+async function _migrateActor(actor, version) {
+  let updateData = null;
 
-  let updateData = {}
+  if (version < 3.0) {
+    // Migrate Faction Relationship
+    if (actor.type == 'faction') {
+      // Merge Allies & Enemies Relationships into one object
+      if (actor.system.allies) {
+        let allies = actor.system.allies;
+        let enemies = actor.system.enemies;
+        let relationships = Object.assign({}, Object.values(allies).concat(Object.values(enemies)));
+        relationships = Object.assign({}, BladesHelpers.sortObjects(relationships, BladesHelpers.fetchRelationshipData, BladesHelpers._relationshipCompareFunc, BladesHelpers.rebuildRelationshipListFromData));
+        updateData = {system: {'==allies': null, '==enemies': null, '==relationships': relationships}};
+      }
 
-  // Migrate Skills
-  const attributes = game.model.Actor.character.attributes;
-  for ( let attribute_name of Object.keys(actor.system.attributes || {}) ) {
-
-    // Insert attribute label
-    if (typeof actor.system.attributes[attribute_name].label === 'undefined') {
-      updateData[`system.attributes.${attribute_name}.label`] = attributes[attribute_name].label;
-    }
-    for ( let skill_name of Object.keys(actor.system.attributes[attribute_name]['skills']) ) {
-
-      // Insert skill label
-      // Copy Skill value
-      if (typeof actor.system.attributes[attribute_name].skills[skill_name].label === 'undefined') {
-
-        // Create Label.
-        updateData[`system.attributes.${attribute_name}.skills.${skill_name}.label`] = attributes[attribute_name].skills[skill_name].label;
-        // Migrate from skillname = [0]
-        let skill_tmp = actor.system.attributes[attribute_name].skills[skill_name];
-        if (Array.isArray(skill_tmp)) {
-          updateData[`system.attributes.${attribute_name}.skills.${skill_name}.value`] = [skill_tmp[0]];
+      // Add Trust for Relationships involving Squads
+      let addedTrust = false;
+      let relationships = updateData?.system['==relationships'] ?? actor.system.relationships;
+      for (let [relationshipId, relationship] of Object.entries(relationships)) {
+        let entityFull = BladesHelpers.resolveActor(relationship.uuid);
+        if (entityFull?.type == 'crew' && relationship.trust === undefined) {
+          addedTrust = true;
+          relationships[relationshipId].trust = 5;
         }
-
+      }
+      if (addedTrust && !updateData) {
+        if (!updateData)
+          updateData = {system: {'==relationships': relationships}};
+        else
+          updateData.system['==relationships'] = relationships;
+      }
+    } else if (actor.type == 'crew') {
+      // Mirror Relationships from Factions
+      if (Object.values(actor.system.relationships).length == 0) {
+        let relationships = BladesHelpers.rebuildRelationshipListFromData(await BladesHelpers.fetchAllRelationships(actor, true, true));
+        updateData = {system: {'==relationships': relationships}};
       }
     }
   }
 
-  // Migrate Stress to Array
-  if (typeof actor.system.stress[0] !== 'undefined') {
-    updateData[`system.stress.value`] = actor.system.stress;
-    updateData[`system.stress.max`] = 9;
-    updateData[`system.stress.max_default`] = 9;
-    updateData[`system.stress.name_default`] = "BITD.Stress";
-    updateData[`system.stress.name`] = "BITD.Stress";
+  if (version < 3.2) {
+    if (actor.type == 'character') {
+      // Migrate Pilot Vehicle XP to Vehicle sheet
+      const attributes = game.model.Actor.vehicle.attributes;
+      const vehicleFull = BladesHelpers.resolveActor(actor.system.vehicle);
+      if (vehicleFull) {
+        for (let [attributeName, attributeData] of Object.entries(actor.system.attributes)) {
+          if (Object.keys(attributes).includes(attributeName)) {
+            let vehicleUpdateObject = {system: {attributes: {}}};
+            vehicleUpdateObject.system.attributes[attributeName] = {'==exp': Number(attributeData.exp)};
+            BladesHelpers.tryUpdate(vehicleFull, vehicleUpdateObject);
+          }
+        }
+      }
+    }
   }
 
-  // Migrate Trauma to Array
-  if (typeof actor.system.trauma === 'undefined') {
-    updateData[`system.trauma.list`] = actor.system.traumas;
-    updateData[`system.trauma.value`] = [actor.system.traumas.length];
-    updateData[`system.trauma.max`] = 4;
-    updateData[`system.trauma.max_default`] = 4;
-    updateData[`system.trauma.name_default`] = "BITD.Trauma";
-    updateData[`system.trauma.name`] = "BITD.Trauma";
+  if (version < 3.3) {
+    if (actor.type == 'region') {
+      // Rename faction to owner
+      updateData = {system: {'==faction': null, '==owner': actor.system.faction}};
+    }
+    if (actor.type == 'vehicle') {
+      // Rename quirk used to usable
+      updateData = {system: {quirks: {}}};
+      for (let [quirkId, quirk] in Object.entries(actor.system.quirks))
+        updateData.system.quirks[quirkId] = {'==used': null, '==usable': actor.system.quirks[quirkId].used};
+    }
   }
 
-  return updateData;
+  if (version < 3.4) {
+    if (actor.type == '\uD83D\uDD5B clock') {
+      // Change clock data
+      updateData = {system: {'==type': null, '==size': Number(actor.system.type), '==value': Number(actor.system.value), '==styleId': null, "theme_color": 'default/black'}};
+    }
+  }
 
-  // for ( let k of Object.keys(actor.system.attributes || {}) ) {
-  //   if ( k in b ) updateData[`system.bonuses.${k}`] = b[k];
-  //   else updateData[`system.bonuses.-=${k}`] = null;
-  // }
+  return updateData ?? {};
+}
+
+/**
+ * Migrate the itrm attributes
+ * @param {Item} item   The item to Update
+ * @return {Promise<Object>}    The updateData to apply
+ */
+async function _migrateItem(item, version) {
+  let updateData = null;
+
+  if (version < 3.1)
+    // Update Cohort Quality & Scale
+    if (item.type == 'cohort')
+      item.updateCohortQualityScale();
+
+  return updateData ?? {};
 }
 
 /* -------------------------------------------- */
-
 
 /**
  * Make Token be an Actor link.
@@ -149,7 +216,6 @@ function _migrateActor(actor) {
  * @return {Object}       The updateData to apply
  */
 function _migrateTokenLink(actor) {
-
   let updateData = {}
   updateData['prototypeToken.actorLink'] = true;
 

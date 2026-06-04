@@ -1,0 +1,91 @@
+<div class="dice-tooltip blades-die-tooltip">
+  <div class="chat-label label-stripe-chat">{{localize 'BITD.LongTermProjectRoll'}}</div>
+  {{#if (or zeromode (eq extraFields.actor.type 'cohort'))}}
+  <div class="chat-label-small label-stripe-chat-small">
+    {{#if (eq extraFields.actor.type 'cohort')}}{{extraFields.actor.name}}{{/if}}
+    {{#if zeromode}}
+      {{#if (eq extraFields.actor.type 'cohort')}}| {{/if}}
+      0d
+    {{/if}}
+  </div>
+  {{/if}}
+
+  <div class="die {{roll_status}}">
+    {{#if (eq roll_status "critical-success")}}
+      {{localize 'BITD.RollCriticalSuccess'}}
+    {{else if (eq roll_status "success")}}
+      {{localize 'BITD.RollSuccess'}}
+    {{else if (eq roll_status "partial-success")}}
+      {{localize 'BITD.RollPartialSuccess'}}
+    {{else}}
+      {{localize 'BITD.RollFailure'}}
+    {{/if}}
+  </div>
+
+  <div class="description">
+    <p>
+      {{#if extraFields.ltpIds}}
+        {{{localize 'BITD.RollLongTermProjectIronsInTheFire' ltps=extraFields.projects tick=tick}}}
+        {{#if extraFields.allProjectsDone}}
+          {{{localize 'BITD.RollLongTermProjectAllFull'}}}
+        {{else}}
+          {{#if (ne roll_status 'critical-success')}}
+            {{{localize 'BITD.RollLongTermProjectExtraResult'}}}
+          {{/if}}
+          {{#if extraFields.projectsDone}}
+            {{{localize 'BITD.RollLongTermProjectFullMultiple' ltps=extraFields.projectsDone}}}
+          {{/if}}
+        {{/if}}
+        {{#if (gt extraFields.tickRemainder 0)}}
+          {{{localize 'BITD.RollLongTermProjectIronsInTheFireRemainder' tick=extraFields.tickRemainder}}}
+        {{else if (gt extraFields.overTicks 0)}}
+          {{{localize 'BITD.RollLongTermProjectIronsInTheFireOverTicks' tick=extraFields.overTicks}}}
+        {{/if}}
+      {{else}}
+        {{{localize 'BITD.RollLongTermProject' ltp=extraFields.project tick=tick}}}
+        {{#if extraFields.clockFilled}}
+          {{{localize 'BITD.RollLongTermProjectFull' ltp=extraFields.project}}}
+        {{else if (ne roll_status 'critical-success')}}
+          {{{localize 'BITD.RollLongTermProjectExtraResult'}}}
+        {{/if}}
+      {{/if}}
+    </p>
+  </div>
+
+  {{#if (and (not extraFields.bonusRoll) (ne extraFields.actor.type 'cohort'))}}
+  <div class="description">
+    <p>{{{localize 'BITD.RollLongTermProjectBonusNotice'}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if (and (getSetting 'Edge') edge)}}
+  <div class="description">
+    <p>{{{localize 'BITD.GainEdge'}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if extraFields.modifier_text}}
+  <div class="description">
+    <p>{{{extraFields.modifier_text}}}</p>
+  </div>
+  {{/if}}
+
+  {{#if note}}
+  <em>{{note}}</em>
+  {{/if}}
+
+  <ol class="dice-rolls">
+    {{#each this.rolls}}
+    {{#if this.result}}
+    <li class="roll die d6 {{../this.color}}"{{#if (eq this.result 6)}}style="color: green;"{{else if (eq this.result 3)}}style="color: red;"{{else if (eq this.result 2)}}style="color: red;"{{else if (eq this.result 1)}}style="color: red;"{{/if}}>{{{this.result}}}</li>
+    {{else}}
+    <li class="roll die d6">{{{this.roll}}}</li>
+    {{/if}}
+    {{/each}}
+    {{#if @root.method}}
+    {{#unless (eq @root.method.type "mersenne")}}
+    <li class="roll method" data-tooltip="{{localize @root.method.label}}">{{{ @root.method.icon }}}</li>
+    {{/unless}}
+    {{/if}}
+  </ol>
+</div>

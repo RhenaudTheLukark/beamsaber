@@ -1,8 +1,7 @@
 # FoundryVTT Beam Saber character and Squad sheets
--- Forked by Grankless to merge system compatibility fixes; I do not have any coding expertise so do not expect future development unless this is forked again --
-
 This game system is for  Beamsaber (v0.55) by Austin Ramsay which can be found here - https://austin-ramsay.itch.io/beamsaber
 Everything is based off the Blades in the Dark system from megastruktur - https://github.com/megastruktur/foundryvtt-blades-in-the-dark
+Thanks to Grankless for the v9 compatibility update - https://github.com/grankless/foundryvtt-beamsaber
 
 The system has custom character sheets supporting Pilot and Vehicle Stats and abilities and Squad sheets for the group supporting the new currency.
 
@@ -12,8 +11,8 @@ The system has custom character sheets supporting Pilot and Vehicle Stats and ab
 - To reset reputation, exp, etc counters just click on the label name.
 - Health clock can be reset by clicking on "Healing" table header.
 - To add items you can click a corresponding link or drag items from compendium/game to the sheet.
-- All "class/Squad" specific items are prefixed with first letters
-- To see the description of Class, Vice, Background, etc you can just click added item and see all the info in the popup.
+- All "class/squad" specific items are prefixed with first letters
+- To see the description of a Class, etc you can just click added item and see all the info in the popup.
 - When adding a new item you can hover a "question-circle" icon to see the item's description.
 - To add Custom abilities just add a new "Foundry Item" of the corresponding type and fill all the necessary info. Then drag it to the sheet or add via button on a sheet.
 
@@ -29,7 +28,7 @@ Classes:
 - (Sc) Scout
 - (T)  Technician
 
-Crew Types:
+Squad Types:
 - (C)  Consulate
 - (F)  Frontline
 - (L)  Logistics
@@ -45,7 +44,7 @@ Crew Types:
 
 ## To be done in the nearest future
 - Update all character sheet styling
-- Support How armour functions
+- Support How armor functions
 - Support Junking equipment
 - Dynamic updates to stats based on abilities and crew upgrades
 
