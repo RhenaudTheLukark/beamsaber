@@ -461,7 +461,7 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
   for (const button of html.querySelectorAll('.work-hard-play-hard-roll'))
     button.addEventListener('click', async (ev) => {
       let element = ev.currentTarget;
-      let speakerFull = ChatMessage.getSpeakerActor(message.speaker);
+      let speakerFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
       let otherCharacterFull = BladesHelpers.resolveActor(element.dataset.actorId);
       if (!speakerFull)
         ui.notifications.warn(game.i18n.localize('BITD.log.warn.WorkHardPlayHardNoActor'));

@@ -1,5 +1,5 @@
 # FoundryVTT Beam Saber character and Squad sheets
-This game system is for  Beamsaber (v0.55) by Austin Ramsay which can be found here - https://austin-ramsay.itch.io/beamsaber
+This game system is for Beamsaber (v0.55) by Avalyn Ramsay which can be found here - https://austin-ramsay.itch.io/beamsaber
 Everything is based off the Blades in the Dark system from megastruktur - https://github.com/megastruktur/foundryvtt-blades-in-the-dark
 Thanks to Grankless for the v9 compatibility update - https://github.com/grankless/foundryvtt-beamsaber
 
@@ -52,4 +52,4 @@ Squad Types:
 - If you can't find the drag-n-dropped item, refer to "All Items" tab on each sheet.
 
 ## Credits
-- This work is based on Beamsaber by Austin Ramsay which can be found here - https://austin-ramsay.itch.io/beamsaber
+- This work is based on Beamsaber by Avalyn Ramsay which can be found here - https://austin-ramsay.itch.io/beamsaber

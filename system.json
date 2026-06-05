@@ -1,7 +1,7 @@
 {
   "id": "beamsaber",
   "title": "Beam Saber",
-  "description": "Beam Saber game system based on the game from Austin Ramsay - https://austin-ramsay.itch.io/beamsaber",
+  "description": "Beam Saber game system based on the game from Avalyn Ramsay - https://austin-ramsay.itch.io/beamsaber",
   "version": "0.6.0",
   "license": "./LICENSE",
   "manifest": "https://raw.githubusercontent.com/conordjpc/foundryvtt-beamsaber/master/system.json",

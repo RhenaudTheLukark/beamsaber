@@ -15,7 +15,7 @@ export const bladesRollModifierList = {
     name: 'BITD.PushYourself',
     rollTypes: ['actionRoll', 'groupAction', 'fortune'],
     fields: {
-      'BITD.Effect': ['BITD.ExtraDie', 'BITD.ImprovedEffect', 'BITD.DireAction']
+      'BITD.Effect': ['BITD.ExtraDie', 'BITD.ImprovedEffect', 'BITD.IgnoreHarmDamage']
     },
     resolveFunc: (fields, extraData) => {
       return { stress: extraData.isVehicle ? 0 : 2, dice: fields['BITD.Effect'] == 'BITD.ExtraDie' ? 1 : 0, effect: fields['BITD.Effect'] == 'BITD.ImprovedEffect' ? 1 : 0, rollText: 'BITD.PushYourselfEffect', pushYourself: true };

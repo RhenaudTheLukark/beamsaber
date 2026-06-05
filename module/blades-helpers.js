@@ -354,12 +354,11 @@ export class BladesHelpers {
   static async tryDelete(objectFull, parentFull) {
     if (!objectFull)
       return;
-    if (objectFull.canUserModify(game.user, 'delete')) {
-      if (parentFull)
-        await parentFull.deleteEmbeddedDocuments('Item', [objectFull._id]);
-      else
-        await objectFull.delete();
-    } else {
+    if (parentFull && parentFull.canUserModify(game.user, 'delete'))
+      await parentFull.deleteEmbeddedDocuments('Item', [objectFull._id]);
+    else if (!parentFull && objectFull.canUserModify(game.user, 'delete'))
+      await objectFull.delete();
+    else {
       // Send a specific message to the GM to delete the object
       let speaker = ChatMessage.getSpeaker();
       let messageData = {
