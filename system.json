@@ -15,6 +15,7 @@
   "background": "systems/beamsaber/images/BS_title.png",
   "authors": [
     { "name": "conordjpc" },
+    { "name": "grankless" },
     { "name": "RhenaudTheLukark" }
   ],
   "esmodules": [ "module/blades.js" ],
