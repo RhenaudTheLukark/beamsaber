@@ -1,0 +1,65 @@
+{
+  "name": "Climbing Gear",
+  "type": "item",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "QjkIQV4d2t6TOJ47",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768602811992,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.yf9w2fEOoeQH5Whj",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>[Load 2] Ascenders, descenders, fast rope, harnesses, and more. Everything you need to climb a wall or rappel down one for a dynamic entry.</p>",
+    "logic": "",
+    "class": "",
+    "load": "2",
+    "uses": {
+      "value": "1"
+    },
+    "additional_info": "",
+    "equipped": false,
+    "num_available": "1",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!QjkIQV4d2t6TOJ47"
+}

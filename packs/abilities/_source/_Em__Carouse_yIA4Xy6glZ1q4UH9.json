@@ -1,0 +1,120 @@
+{
+  "name": "(Em) Carouse",
+  "type": "ability",
+  "effects": [
+    {
+      "name": "Carouse Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.yIA4Xy6glZ1q4UH9",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "DfWxjRi3m2Uivvqz",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.carouse",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1780855090544,
+        "modifiedTime": 1780855105334,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!yIA4Xy6glZ1q4UH9.DfWxjRi3m2Uivvqz"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "yIA4Xy6glZ1q4UH9",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1777793996002,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.UXY1wXycy4tHUlBA",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>When you participate in a Cut Loose downtime activity, choose one of the following:<br>- The Pilot cutting loose cannot overindulge, but only heals half the Stress rolled (rounded up).<br>- Your relationship with them improves by an additional +1.<br>- Their relationship with you improves by an additional +1.</p>",
+    "class": "Empath",
+    "price": 1,
+    "uses": {
+      "max": 0,
+      "value": 1,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": ""
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!yIA4Xy6glZ1q4UH9"
+}

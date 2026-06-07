@@ -1,0 +1,65 @@
+{
+  "name": "(O) Concealed Gun",
+  "type": "vehicle_gear",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "yc3N73Uf3lbFOhym",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768430005821,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.s07m3Bhs7OAMyCmx",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>[Load 0] A small firearm that is almost impossible to find. Only effective at close range.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "class": "Officer",
+    "load": "0",
+    "experimental": false
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!yc3N73Uf3lbFOhym"
+}

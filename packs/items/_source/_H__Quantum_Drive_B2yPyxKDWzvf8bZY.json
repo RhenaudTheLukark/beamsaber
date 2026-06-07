@@ -1,0 +1,118 @@
+{
+  "name": "(H) Quantum Drive",
+  "type": "item",
+  "effects": [
+    {
+      "name": "Quantum Drive Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.item.Item.B2yPyxKDWzvf8bZY",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "IUQE2XrKzG0mA1Ne",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.hackrig_load",
+          "mode": 2,
+          "value": "1",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1774216203177,
+        "modifiedTime": 1774216288902,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!B2yPyxKDWzvf8bZY.IUQE2XrKzG0mA1Ne"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "B2yPyxKDWzvf8bZY",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1774216234864,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.8ShdOlzegENSvoyo",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>[Load 1] A portable QD, about the size of a brick, that can store an astounding amount of data. Each increases the Hackrig's Load by +1.</p>",
+    "logic": "",
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [],
+    "collapsed": false,
+    "class": "Hacker",
+    "load": 1,
+    "uses": {
+      "value": "1",
+      "max": 1
+    },
+    "extra_description": "",
+    "additional_info": "",
+    "equipped": false,
+    "hidden": false,
+    "num_available": "1",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!B2yPyxKDWzvf8bZY"
+}

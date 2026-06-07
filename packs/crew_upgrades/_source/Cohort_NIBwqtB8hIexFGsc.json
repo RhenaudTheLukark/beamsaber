@@ -1,0 +1,65 @@
+{
+  "name": "Cohort",
+  "type": "crew_upgrade",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "NIBwqtB8hIexFGsc",
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": "Item.t4KMiCc87s4Kz7pB",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "crew_type": "",
+    "description": "<p>Gain a fire team (a group of agents) or specialist (an especially skilled agent) that works for the squad. Requires 2 squad upgrades to purchase.</p>",
+    "class": "",
+    "price": "2",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!NIBwqtB8hIexFGsc"
+}

@@ -1,0 +1,111 @@
+{
+  "_id": "P6LMZBrG5U9eCjhX",
+  "name": "Hacker",
+  "type": "class",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.1_77.png",
+  "effects": [
+    {
+      "name": "Hacker Action Ratings",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.class.Item.P6LMZBrG5U9eCjhX",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "SDtgkXcI27KMgBwy",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.insight.actions.study.min",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.resolve.actions.interface.min",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1763475052096,
+        "modifiedTime": 1778503615664,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!P6LMZBrG5U9eCjhX.SDtgkXcI27KMgBwy"
+    }
+  ],
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763475537442,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": "<p>Technology fills the lives of the masses and programming computers has become as important as literacy. However, there are those who make that skill into an art, a direct expression of their will. These people are hackers and they bend augmented reality to suit their desires. Apps and proxies pose little obstacle to them, with the most skilled being able to challenge AIs. Bring a Hacker with you if you plan to confront the digital realm and live.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "experience_clues": "- You addressed a challenge with knowledge or digital power."
+  },
+  "_key": "!items!P6LMZBrG5U9eCjhX"
+}

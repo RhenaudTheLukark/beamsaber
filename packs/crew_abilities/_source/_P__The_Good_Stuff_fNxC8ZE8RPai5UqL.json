@@ -1,0 +1,118 @@
+{
+  "name": "(P) The Good Stuff",
+  "type": "crew_ability",
+  "effects": [
+    {
+      "name": "The Good Stuff Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_ability.Item.fNxC8ZE8RPai5UqL",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ZO6be4s2JBtNfyeV",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.conditional_roll_modifiers.character.the_good_stuff",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1778448511586,
+        "modifiedTime": 1778448535129,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!fNxC8ZE8RPai5UqL.ZO6be4s2JBtNfyeV"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "fNxC8ZE8RPai5UqL",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1778448536954,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.kZ5YhxTGmSPmgYef",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "MLPPiZLSXgYeAHo7": 3
+  },
+  "system": {
+    "description": "<p>Your merchandise is exquisite. The product Quality is equal to your Tier+2. When you deal with a squad or Faction, the GM will tell you who among them is hooked on your product (one, a few, many, or all).</p>",
+    "class": "Profiteers",
+    "price": 1,
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item"
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!fNxC8ZE8RPai5UqL"
+}

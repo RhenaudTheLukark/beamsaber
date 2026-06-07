@@ -1,0 +1,202 @@
+{
+  "name": "(M) The Mechanized Cavalry",
+  "type": "crew_type",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.1_78.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "dkUOiF6NOSKxyY9S",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763664202838,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.2X9c3L7HsxJmfxjt",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "short_name": "Mech. Cavalry",
+    "short_description": "Roaring Machine Beasts",
+    "description": "<p>Always on the move, your strides span cities. Your grasp mechanically meets your reach. This machine throne is your divine right to rule.</p>",
+    "journal_description": "<p>Every time we run into Lady Elreth, it hits me how much of a difference there is between us. Like not just me, the whole Cenotaph. I do most of the repairs on Bert alone. Lady Elreth is the only Pilot in a whole squad dedicated to upkeep and other support for her AWV Starfall, and there's plenty of stories about how she's wiped out whole squads alone. The wildest part of all of this for me is the fact that no one even knows exactly what Starfall is. No one who's faced it head on has survived. What kind of AWV can even do all that?</p>",
+    "experience_clues": "<p>- Execute a successful Battle, Delivery, or Rescue operation.<br>- Face off against challenges above your pay grade.<br>- Bolster your squad's reputation or develop a new one.<br>- Express the goals, inner conflict, or essential nature of the squad.</p>",
+    "turfs": {
+      "1": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "2": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "3": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "4": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "5": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "6": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "7": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "8": {
+        "name": "BITD.Lair",
+        "value": 1,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "9": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "10": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "11": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "12": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "13": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "14": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "15": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      }
+    }
+  },
+  "_key": "!items!dkUOiF6NOSKxyY9S"
+}

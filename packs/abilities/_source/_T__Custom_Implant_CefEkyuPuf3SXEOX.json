@@ -1,0 +1,66 @@
+{
+  "name": "(T) Custom Implant",
+  "type": "ability",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "CefEkyuPuf3SXEOX",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1769394247214,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.OxdaKVUVR6lJU9lX",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "zXCvNIJfikphkIHv": 3
+  },
+  "system": {
+    "description": "<p>Choose a chemical or gadget you have already researched and can build. The chemical's delivery system or the gadget itself is perfectly concealed inside of your body and has 0 Load. Spend 1 Stress to use the implant. Changing the implant is a 4-Tick Long-Term Project Clock.</p>",
+    "class": "Technician",
+    "price": "1",
+    "uses": {
+      "max": "0",
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!CefEkyuPuf3SXEOX"
+}

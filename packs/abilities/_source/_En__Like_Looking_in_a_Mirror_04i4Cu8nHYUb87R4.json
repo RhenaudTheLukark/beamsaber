@@ -1,0 +1,64 @@
+{
+  "name": "(En) Like Looking in a Mirror",
+  "type": "ability",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "04i4Cu8nHYUb87R4",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768054076209,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.Vo1EmzP6E6tDnzZZ",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>You can always tell when someone is lying to you.</p>",
+    "class": "Envoy",
+    "price": "1",
+    "uses": {
+      "max": "0"
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!04i4Cu8nHYUb87R4"
+}

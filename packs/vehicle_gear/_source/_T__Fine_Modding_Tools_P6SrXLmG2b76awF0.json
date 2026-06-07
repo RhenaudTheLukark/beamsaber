@@ -1,0 +1,65 @@
+{
+  "name": "(T) Fine Modding Tools",
+  "type": "vehicle_gear",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "P6SrXLmG2b76awF0",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768430000221,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.45YMked4S3BgK6dJ",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "zXCvNIJfikphkIHv": 3
+  },
+  "system": {
+    "description": "<p>[Load 1] Excellent tools for modifying large objects on the fly.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "class": "Technician",
+    "load": "1",
+    "experimental": false
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!P6SrXLmG2b76awF0"
+}

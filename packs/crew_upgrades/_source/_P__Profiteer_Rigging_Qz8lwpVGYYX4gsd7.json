@@ -1,0 +1,112 @@
+{
+  "name": "(P) Profiteer Rigging",
+  "type": "crew_upgrade",
+  "effects": [
+    {
+      "name": "Profiteer Rigging Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_upgrade.Item.Qz8lwpVGYYX4gsd7",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "mZ761yTnoJOxhJsE",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.hide_items_load",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1768610560844,
+        "modifiedTime": 1768611037212,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!Qz8lwpVGYYX4gsd7.mZ761yTnoJOxhJsE"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "Qz8lwpVGYYX4gsd7",
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": "Item.nYlbZTftHQBVPtvZ",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "MLPPiZLSXgYeAHo7": 3
+  },
+  "system": {
+    "description": "<p>Each pilot gets one item that is concealed and has no Load.</p>",
+    "class": "Profiteers",
+    "price": "1",
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "crew_type": ""
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!Qz8lwpVGYYX4gsd7"
+}

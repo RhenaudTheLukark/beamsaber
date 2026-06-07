@@ -1,0 +1,120 @@
+{
+  "name": "(T) Researcher",
+  "type": "ability",
+  "effects": [
+    {
+      "name": "Researcher Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.325gThPnsspakOYe",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "GQlE4pF4uvHjYETb",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.roll_modifiers.researcher",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1777795786327,
+        "modifiedTime": 1777829811349,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!325gThPnsspakOYe.GQlE4pF4uvHjYETb"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "325gThPnsspakOYe",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1777810304225,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.PoXxvAE8YMiQvvr7",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "zXCvNIJfikphkIHv": 3
+  },
+  "system": {
+    "description": "<p>When you design or manufacture a creation, take +1 result level to your roll. You begin with one special design already known.</p>",
+    "class": "Technician",
+    "price": 1,
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": ""
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!325gThPnsspakOYe"
+}

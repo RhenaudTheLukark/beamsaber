@@ -1,0 +1,65 @@
+{
+  "name": "(L) Leverage",
+  "type": "crew_ability",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "78pcXUWldtBQxGQA",
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": "Item.JKJ13pI9wJkoWdpO",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>Your squad supplies contraband for all Factions. Your success is good for them. Whenever you gain Rep, gain an extra +1 Rep.</p>",
+    "class": "Logistics",
+    "price": "1",
+    "purchased": false,
+    "class_default": false,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!78pcXUWldtBQxGQA"
+}

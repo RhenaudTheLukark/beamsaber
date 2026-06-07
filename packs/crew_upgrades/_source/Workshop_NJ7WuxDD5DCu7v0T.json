@@ -1,0 +1,134 @@
+{
+  "name": "Workshop",
+  "type": "crew_upgrade",
+  "effects": [
+    {
+      "name": "Workshop Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_upgrade.Item.NJ7WuxDD5DCu7v0T",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "4S5NvZzRA7WDardc",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.workshop",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        },
+        {
+          "key": "system.real_workshop",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1776607206614,
+        "modifiedTime": 1777258336710,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!NJ7WuxDD5DCu7v0T.4S5NvZzRA7WDardc"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "NJ7WuxDD5DCu7v0T",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1776608815288,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.p4py3WBzYcPYfBgL",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>The FOB has a space filled with tools, materials, and a database such that the long term project, salvage, and fix downtime activities can be worked on without leaving the FOB.</p>",
+    "class": "",
+    "price": 1,
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "crew_type": "",
+    "training_center_type": "Adepts",
+    "gang_types": [
+      "Adepts",
+      "Rooks",
+      "Rovers",
+      "Skulks",
+      "Toughs"
+    ]
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!NJ7WuxDD5DCu7v0T"
+}

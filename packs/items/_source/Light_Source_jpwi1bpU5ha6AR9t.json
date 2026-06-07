@@ -1,0 +1,65 @@
+{
+  "name": "Light Source",
+  "type": "item",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "jpwi1bpU5ha6AR9t",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768602870071,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.MOG58z5i8iAlYKXc",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>[Load 1] A simple form of illumination that can be activated when needed. Can be a flashlight, flares or glowsticks.</p>",
+    "logic": "",
+    "class": "",
+    "load": "1",
+    "uses": {
+      "value": "1"
+    },
+    "additional_info": "",
+    "equipped": false,
+    "num_available": "1",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!jpwi1bpU5ha6AR9t"
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Brutal",
+  "type": "crew_reputation",
+  "folder": null,
+  "sort": 200001,
+  "flags": {},
+  "_id": "LvYh7PiLfkKQDucv",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": ""
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!LvYh7PiLfkKQDucv"
+}

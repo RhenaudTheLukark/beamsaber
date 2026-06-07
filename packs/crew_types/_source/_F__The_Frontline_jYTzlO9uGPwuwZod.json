@@ -1,0 +1,202 @@
+{
+  "name": "(F) The Frontline",
+  "type": "crew_type",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.1_43.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "jYTzlO9uGPwuwZod",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763664146257,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.qb3EX3i6dL6ZbLIh",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "short_name": "Frontline",
+    "short_description": "Blood And Steel",
+    "description": "<p>Advanced tech. Fancy flying. Clever words. Sure, sounds good. At the end of the day, The War demands violence. You provide.</p>",
+    "journal_description": "<p>Harrow told me someone from the Paladins of Saint Nqabutho has been asking after me. Didn't really tell me much more, but like, are they thinking of transferring me? Can't think of another reason unless I'm in deep shit, and for that, the Breath would probably look into it. It would definitely be a promotion, but… I don't know if I could do it. The Paladins are who keep the other factions from moving in on Myriad territory, and even other Myriad squads are afraid of them. It would almost certainly be nonstop skirmishes, and I would be right at the front of an offensive. I'm no good with artillery.</p>",
+    "experience_clues": "<p>- Execute a successful Battle, Defense, Sabotage, or Smash &amp; Grab operation.<br>- Face off against challenges above your pay grade.<br>- Bolster your squad's reputation or develop a new one.<br>- Express the goals, inner conflict, or essential nature of the squad.</p>",
+    "turfs": {
+      "1": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "2": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "3": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "4": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "5": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "6": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "7": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "8": {
+        "name": "BITD.Lair",
+        "value": 1,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "9": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "10": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "11": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "12": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "13": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "14": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "15": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      }
+    }
+  },
+  "_key": "!items!jYTzlO9uGPwuwZod"
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Spotlight or Flare Mortar",
+  "type": "vehicle_gear",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "0ZxYQUoA1WEoMRFu",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763660392455,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.RFKYYUVNoxqBkcgI",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>[Load 1] A source of illumination mounted on the vehicle; a spotlight offers directed light, and flare mortars are launched into the air to illuminate a wide area for several minutes.</p>",
+    "logic": "",
+    "class": "",
+    "load": "1",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!0ZxYQUoA1WEoMRFu"
+}

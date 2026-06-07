@@ -1,0 +1,64 @@
+{
+  "name": "(En) Read'em and Weep",
+  "type": "ability",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "bShIDJL7bSw5S2uh",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768054077674,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.e7u7htk8wraxVmBv",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>Spend 2 Stress to ask one of the following questions about someone you have observed either in secret or openly. You may ask additional questions by spending 1 Stress per question.<br>- What was their lowest moment?<br>- What do they crave forgiveness for and from whom?<br>- What are their secret pains?<br>- In what ways are their mind and soul vulnerable?</p>",
+    "class": "Envoy",
+    "price": "1",
+    "uses": {
+      "max": "0"
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!bShIDJL7bSw5S2uh"
+}

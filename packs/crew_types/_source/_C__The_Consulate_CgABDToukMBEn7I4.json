@@ -1,0 +1,202 @@
+{
+  "name": "(C) The Consulate",
+  "type": "crew_type",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.3_91.png",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "CgABDToukMBEn7I4",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763662711145,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.nTJyJJlZSMSHKtVa",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "short_name": "Consulate",
+    "short_description": "Ten-Dollar Words",
+    "description": "<p>The War complicates everything, especially communication. The right gesture, sound, or look can launch a thousand ships. You've got the skills to gesture those ships toward the right place at the right time.</p>",
+    "journal_description": "<p>This is true about life in general, too, but like, the consequences of our actions in The War? Really unpredictable and unfair. Sometimes we lose face just for misunderstanding one small part of our orders. Sometimes there's massive collateral damage, but another Myriad squad comes in and talks everyone down, gets on the cameras, and makes the whole thing fade away. All of their AWVs were spotless ceramic and gold detailing too, I can't imagine any of them ever see combat. I wonder about them sometimes. I guess there's ways to avoid The War, even if you have to be involved somehow.</p>",
+    "experience_clues": "<p>- Execute a successful Negotiation, Espionage, Sabotage, or Propaganda operation.<br>- Face off against challenges above your pay grade.<br>- Bolster your squad's reputation or develop a new one.<br>- Express the goals, inner conflict, or essential nature of the squad.</p>",
+    "turfs": {
+      "1": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "2": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "3": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "4": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "5": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "6": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "7": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "8": {
+        "name": "BITD.Lair",
+        "value": 1,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "9": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "10": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "11": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "12": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "13": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "14": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      },
+      "15": {
+        "name": "",
+        "value": false,
+        "description": "",
+        "connects": {
+          "left": false,
+          "top": false,
+          "right": false,
+          "bottom": false
+        }
+      }
+    }
+  },
+  "_key": "!items!CgABDToukMBEn7I4"
+}

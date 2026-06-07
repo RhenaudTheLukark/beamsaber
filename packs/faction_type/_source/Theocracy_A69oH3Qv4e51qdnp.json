@@ -1,0 +1,33 @@
+{
+  "name": "Theocracy",
+  "type": "faction_type",
+  "_id": "A69oH3Qv4e51qdnp",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>- A leadership comprised of one or more entities of great spiritual power.<br>- Mortal clergy who employ political power.<br>- Leaders who are kept in power by the populace&rsquo;s belief in their divine authority.<br>- A political structure where mundane failures and a perceived lack of religiosity may cause the populace to believe that its leaders have lost their divine authority.<br>- Access to +2 Personnel during the reward process.</p>",
+    "name": "",
+    "rewards": {
+      "personnel": 2
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": 1763918114072,
+    "modifiedTime": 1763926548165,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!A69oH3Qv4e51qdnp"
+}

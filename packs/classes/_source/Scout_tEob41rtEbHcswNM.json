@@ -1,0 +1,111 @@
+{
+  "_id": "tEob41rtEbHcswNM",
+  "name": "Scout",
+  "type": "class",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.2_22.png",
+  "effects": [
+    {
+      "name": "Scout Action Ratings",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.class.Item.tEob41rtEbHcswNM",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "BhgQ4nmNi92RrZZS",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.insight.actions.hunt.min",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.insight.actions.survey.min",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1763475207094,
+        "modifiedTime": 1778503657670,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!tEob41rtEbHcswNM.BhgQ4nmNi92RrZZS"
+    }
+  ],
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763475524475,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": "<p>Despite all the signs and guidebooks, the world is filled with hidden paths. People, whether consciously or by accident, hide things. Sometimes it's where they've gone, or their favourite bauble, or a route through dangerous places. It's a Scout's job to find these secrets, then help clear the path from a safe distance.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "experience_clues": "- You addressed a challenge with exploration or violence."
+  },
+  "_key": "!items!tEob41rtEbHcswNM"
+}

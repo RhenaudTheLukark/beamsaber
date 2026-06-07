@@ -1,0 +1,65 @@
+{
+  "name": "(T) Payload Bay",
+  "type": "vehicle_gear",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "bMrT4F16R45CoFSb",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768429998416,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.HVW0De9Z4J5W7wPx",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "zXCvNIJfikphkIHv": 3
+  },
+  "system": {
+    "description": "<p>[Load 1 per 3 uses] Can contain three special warheads that hold much larger amounts of the same chemicals as the Bandolier. The contents are debuted with each use. These warheads can be fired by a weapon on the vehicle designated at the time it is first used. Uses refill at the start of a mission.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "3",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "class": "Technician",
+    "load": "1",
+    "experimental": false
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!bMrT4F16R45CoFSb"
+}

@@ -1,0 +1,64 @@
+{
+  "name": "(Em) Carry That Weight",
+  "type": "ability",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "6jzO095Nzgu3edL4",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768054063444,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.mHgU5NNF4z09tQY2",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>After you see the results of an action roll, you can push yourself or assist (if no one else assisted on the roll). If 0d were rolled, roll again with 1d. When you have a personal moment with someone, you can take any amount of Stress (up to your max Stress) to heal that person the same amount of Stress.</p>",
+    "class": "Empath",
+    "price": "1",
+    "uses": {
+      "max": "0"
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!6jzO095Nzgu3edL4"
+}

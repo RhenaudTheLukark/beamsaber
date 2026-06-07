@@ -1,0 +1,65 @@
+{
+  "name": "(Sc) Fine Sniper Rifle",
+  "type": "item",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "VVLUDQzLG3VqfBmE",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768602706456,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.EpECKV6kmdYGsMRE",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>[Load 2] A high quality bolt action rifle that's extremely lethal at long range but unsuitable in close quarters.</p>",
+    "logic": "",
+    "class": "Scout",
+    "load": "2",
+    "uses": {
+      "value": "1"
+    },
+    "additional_info": "",
+    "equipped": false,
+    "num_available": "1",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!VVLUDQzLG3VqfBmE"
+}

@@ -1,0 +1,112 @@
+{
+  "name": "(F) Hardened",
+  "type": "crew_upgrade",
+  "effects": [
+    {
+      "name": "Hardened Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_upgrade.Item.hDlsjbOIamYF9hib",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "9C0NqwZYeLu83Z9Q",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.character_modifier.trauma.max",
+          "mode": 2,
+          "value": "1",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1764301778482,
+        "modifiedTime": 1766208689590,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!hDlsjbOIamYF9hib.9C0NqwZYeLu83Z9Q"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "hDlsjbOIamYF9hib",
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": "Item.ZDLjBwbovQma9n1g",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>Each pilot gets +1 Scar box. This costs three squad upgrades to unlock.</p>",
+    "class": "Frontline",
+    "price": "3",
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "crew_type": ""
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!hDlsjbOIamYF9hib"
+}

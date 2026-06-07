@@ -1,0 +1,65 @@
+{
+  "name": "Junk",
+  "type": "vehicle_gear",
+  "_id": "YKdIkKk56f4yuCWr",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>Destroyed vehicle gear which cannot be used anymore. Has no purpose other than needing to be uninstalled.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "class": "",
+    "load": "1",
+    "experimental": false,
+    "hidden": false,
+    "special_ammunition_type": "other"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": 1771655341978,
+    "modifiedTime": 1771655408593,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!YKdIkKk56f4yuCWr"
+}

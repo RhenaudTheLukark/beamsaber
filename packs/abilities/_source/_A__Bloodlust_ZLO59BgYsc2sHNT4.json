@@ -1,0 +1,64 @@
+{
+  "name": "(A) Bloodlust",
+  "type": "ability",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "ZLO59BgYsc2sHNT4",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768054017249,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.MUY17Pmu1MTK06ra",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "zXCvNIJfikphkIHv": 3
+  },
+  "system": {
+    "description": "<p>Gain the tragedy 'Seeks violence'. When you defeat a worthy foe (or a gang of the unworthy) in battle, heal 2 Stress.</p>",
+    "class": "Ace",
+    "price": "1",
+    "uses": {
+      "max": "0"
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!ZLO59BgYsc2sHNT4"
+}

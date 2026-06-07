@@ -1,0 +1,117 @@
+{
+  "name": "(T) Fortitude",
+  "type": "ability",
+  "effects": [
+    {
+      "name": "Fortitude Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.6kfvzkI5EGNxSTpq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "mGMlkwHH0sHOMeKB",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.spark_options",
+          "mode": 2,
+          "value": "BITD.SparkOptions.Fortitude1",
+          "priority": 30
+        },
+        {
+          "key": "system.spark_options",
+          "mode": 2,
+          "value": "BITD.SparkOptions.Fortitude2",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1769394296597,
+        "modifiedTime": 1769394477143,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!6kfvzkI5EGNxSTpq.mGMlkwHH0sHOMeKB"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "6kfvzkI5EGNxSTpq",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1769394478529,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.7GWwHUupWpqKCQj6",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "zXCvNIJfikphkIHv": 3
+  },
+  "system": {
+    "description": "<p>You may spend your Spark to resist a consequence of fatigue, weakness, or chemical effects, or to push yourself when working with technical skill or handling chemicals.</p>",
+    "class": "Technician",
+    "price": "1",
+    "uses": {
+      "max": "0",
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!6kfvzkI5EGNxSTpq"
+}

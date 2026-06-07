@@ -1,0 +1,111 @@
+{
+  "_id": "YUGDdyADj0PTBVcP",
+  "name": "Officer",
+  "type": "class",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.6_96.png",
+  "effects": [
+    {
+      "name": "Officer Action Ratings",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.class.Item.YUGDdyADj0PTBVcP",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "eKR798caQnsU0krU",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.insight.actions.survey.min",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.resolve.actions.command.min",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1763475153918,
+        "modifiedTime": 1778503640227,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!YUGDdyADj0PTBVcP.eKR798caQnsU0krU"
+    }
+  ],
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763475528930,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": "<p>Any conflict is chaos, whether it's an explosion filled battlefield or posturing for status in a masquerade. Except it's not really chaos, not if you know how to look. Lines of attack and defense, routes for flanking and retreat, all exist no matter the arena. There's a way around, through, or over if you're properly prepared. An Officer always has a plan.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "experience_clues": "- You addressed a challenge with coordination or a ruse."
+  },
+  "_key": "!items!YUGDdyADj0PTBVcP"
+}

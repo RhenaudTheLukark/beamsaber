@@ -1,0 +1,73 @@
+{
+  "name": "Armor",
+  "type": "item",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "oZTUOvYKoIdwenXw",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1773942279745,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.GTzB7CEpSMVFrUEC",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>[Load 2] A tactical vest with matching gloves, boots, and pads.</p>",
+    "logic": "",
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [],
+    "class": "",
+    "load": 2,
+    "uses": {
+      "value": "1",
+      "max": 1
+    },
+    "extra_description": "",
+    "additional_info": "",
+    "equipped": false,
+    "hidden": false,
+    "num_available": "1",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "armor": true
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!oZTUOvYKoIdwenXw"
+}

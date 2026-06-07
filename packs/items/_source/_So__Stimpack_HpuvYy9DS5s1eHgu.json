@@ -1,0 +1,119 @@
+{
+  "name": "(So) Stimpack",
+  "type": "item",
+  "effects": [
+    {
+      "name": "Stimpack Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.item.Item.HpuvYy9DS5s1eHgu",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "2KwNfp0vSHpaHf1H",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.conditional_roll_modifiers.stimpack_position",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        },
+        {
+          "key": "system.conditional_roll_modifiers.stimpack_effect",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1771651885840,
+        "modifiedTime": 1771651925348,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!HpuvYy9DS5s1eHgu.2KwNfp0vSHpaHf1H"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "HpuvYy9DS5s1eHgu",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1768602772977,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.NZUg2C9wzE7UI3Kv",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>[Load 0] An injector filled with a drug cocktail giving a burst of energy, resilience, and aggression. This will modify your Position and Effect as suitable. Gain two consequences 'Can't Tell Friend From Foe' and 'Destroy Everything', which can be resisted as normal. The modified Position and Effect, and any unresisted consequences, last until the end of the next scene.</p>",
+    "logic": "",
+    "class": "",
+    "load": "0",
+    "uses": {
+      "value": "1",
+      "max": 1
+    },
+    "extra_description": "",
+    "additional_info": "",
+    "equipped": false,
+    "hidden": false,
+    "num_available": "1",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!HpuvYy9DS5s1eHgu"
+}

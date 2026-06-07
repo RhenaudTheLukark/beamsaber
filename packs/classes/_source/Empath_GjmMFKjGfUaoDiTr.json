@@ -1,0 +1,167 @@
+{
+  "_id": "GjmMFKjGfUaoDiTr",
+  "name": "Empath",
+  "type": "class",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.1_79.png",
+  "effects": [
+    {
+      "name": "Empath Action Ratings",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.class.Item.GjmMFKjGfUaoDiTr",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "mQCXwMvTbmJZPGP8",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.insight.actions.study.min",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.insight.actions.survey.min",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1763474958285,
+        "modifiedTime": 1778503597442,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!GjmMFKjGfUaoDiTr.mQCXwMvTbmJZPGP8"
+    }
+  ],
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763475550810,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": "<p>An empathetic and compassionate psychic. When someone looks at you, they aren't seeing you. When they hear you, they don't listen. They touch, but don't feel. The pressures of population density and society play a joke on the heart. But people are changing. Not the person you look at, hear, and touch someone else. Something else. Evolution shifts to bring people together beyond just population density, and these new types of people are Empaths.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "experience_clues": "- You addressed a challenge with understanding or poise.",
+    "base_skills": {
+      "hunt": [
+        0
+      ],
+      "study": [
+        0
+      ],
+      "survey": [
+        0
+      ],
+      "tinker": [
+        1
+      ],
+      "finesse": [
+        0
+      ],
+      "prowl": [
+        0
+      ],
+      "skirmish": [
+        0
+      ],
+      "wreck": [
+        0
+      ],
+      "attune": [
+        0
+      ],
+      "command": [
+        0
+      ],
+      "consort": [
+        0
+      ],
+      "sway": [
+        0
+      ],
+      "battle": [
+        0
+      ],
+      "destroy": [
+        0
+      ],
+      "maneuver": [
+        2
+      ],
+      "bombard": [
+        0
+      ],
+      "manipulate": [
+        0
+      ],
+      "scan": [
+        0
+      ]
+    }
+  },
+  "_key": "!items!GjmMFKjGfUaoDiTr"
+}

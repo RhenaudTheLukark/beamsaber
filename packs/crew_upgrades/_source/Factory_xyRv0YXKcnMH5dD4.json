@@ -1,0 +1,128 @@
+{
+  "name": "Factory",
+  "type": "crew_upgrade",
+  "effects": [
+    {
+      "name": "Factory Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_upgrade.Item.xyRv0YXKcnMH5dD4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "vYkfFLPml8D7jGkJ",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.roll_modifiers.character.factory",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1778946952936,
+        "modifiedTime": 1778947073159,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!xyRv0YXKcnMH5dD4.vYkfFLPml8D7jGkJ"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "xyRv0YXKcnMH5dD4",
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": "Item.2u3nW7Ie9T9vWYwQ",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "JVvMbwnked5Yb4AD": 3
+  },
+  "system": {
+    "description": "<p>You get +1d to Fix rolls. <i>Any factory can churn out military parts.</i></p>",
+    "class": "",
+    "price": "1",
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "crew_type": "",
+    "training_center_type": "Adepts",
+    "gang_types": [
+      "Adepts",
+      "Rooks",
+      "Rovers",
+      "Skulks",
+      "Toughs"
+    ]
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!xyRv0YXKcnMH5dD4"
+}

@@ -1,0 +1,111 @@
+{
+  "_id": "CAHfNrPDJZKVNMrH",
+  "name": "Bureaucrat",
+  "type": "class",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.2_16.png",
+  "effects": [
+    {
+      "name": "Bureaucrat Action Ratings",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.class.Item.CAHfNrPDJZKVNMrH",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ppJhqlnuwT86ealw",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.insight.actions.study.min",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.resolve.actions.consort.min",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1763474829878,
+        "modifiedTime": 1778503589296,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!CAHfNrPDJZKVNMrH.ppJhqlnuwT86ealw"
+    }
+  ],
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763475557426,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": "<p>An overworked and undervalued clerk. Resource management is something few people understand. The War might seem like constant bombs and blood, but that hides its true face. Paperwork and red tape. It's a relay race no one watches-requests, orders, and communiques changing hands from nobody to nobody. When those documents arrive, and whether they're unchanged, is left up to the Bureaucrats.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "experience_clues": "- You addressed a challenge with procedure or management."
+  },
+  "_key": "!items!CAHfNrPDJZKVNMrH"
+}

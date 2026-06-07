@@ -1,0 +1,45 @@
+{
+  "name": "(A) Fine Environmental Suit (Stashed)",
+  "type": "item",
+  "_id": "ln2uJoR9gbVfDt3D",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>[Load 0 if worn, Load 2 if carried as a secondary outfit] A well-crafted suit that protects the wearer from hazards, such as lack of air, vacuum, and radiation. Also has maneuvering thrusters for use in microgravity.</p>",
+    "logic": "",
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [],
+    "class": "Ace",
+    "load": 2,
+    "uses": {
+      "value": "1",
+      "max": 1
+    },
+    "extra_description": "",
+    "additional_info": "",
+    "equipped": false,
+    "hidden": false,
+    "num_available": "1"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": 1763579140335,
+    "modifiedTime": 1773971745329,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!ln2uJoR9gbVfDt3D"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Environmental Suit (Stashed)",
+  "type": "item",
+  "_id": "UkxZEcqzhsXXWKUf",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>[Load 0 if worn, Load 2 if carried as a secondary outfit] A bulky suit that protects the wearer from lack of oxygen, vacuum, or radiation. It has maneuvering thrusters for use in microgravity.</p>",
+    "logic": "",
+    "class": "",
+    "load": "2",
+    "uses": {
+      "value": "1"
+    },
+    "additional_info": "",
+    "equipped": false,
+    "num_available": "1"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": 1763583583976,
+    "modifiedTime": 1768602805520,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!UkxZEcqzhsXXWKUf"
+}

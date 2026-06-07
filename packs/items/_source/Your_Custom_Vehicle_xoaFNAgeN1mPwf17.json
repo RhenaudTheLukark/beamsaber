@@ -1,0 +1,38 @@
+{
+  "name": "Your Custom Vehicle",
+  "type": "item",
+  "_id": "xoaFNAgeN1mPwf17",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>[Load 0] The vehicle assigned to you, suitable to your needs. It's represented by the vehicle entry on your Pilot sheet.</p>",
+    "logic": "",
+    "class": "",
+    "load": "0",
+    "uses": {
+      "value": "1"
+    },
+    "additional_info": "",
+    "equipped": false,
+    "num_available": "1"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": 1763581252511,
+    "modifiedTime": 1768602847648,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!xoaFNAgeN1mPwf17"
+}

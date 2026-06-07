@@ -1,0 +1,112 @@
+{
+  "_id": "a7F0Mr49FFuycsAr",
+  "name": "(A) More Than Meets The Eye",
+  "type": "ability",
+  "effects": [
+    {
+      "name": "More Than Meets The Eye Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.a7F0Mr49FFuycsAr",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "kmJBkv4cCzHiHKQK",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.more_than_meets_the_eye",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1773531223601,
+        "modifiedTime": 1773531246246,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!a7F0Mr49FFuycsAr.kmJBkv4cCzHiHKQK"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1773606329514,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.9d2Iy9OS3ZKX96tz",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>Your custom vehicle can transform into a secondary form. Detail that second form. Select 2 Load worth of vehicle gear and 3 action points that your vehicle has. It lacks this gear and these action points when in its secondary form. Select 2 Load worth of vehicle gear and 3 action points that your vehicle lacks. It has this gear and these action points when in its secondary form.</p>",
+    "class": "Ace",
+    "price": "1",
+    "uses": {
+      "max": "0",
+      "value": 1,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "expertise_action": ""
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!a7F0Mr49FFuycsAr"
+}

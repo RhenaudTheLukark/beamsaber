@@ -1,0 +1,111 @@
+{
+  "_id": "QzcDnJbWCY1ueVt7",
+  "name": "Infiltrator",
+  "type": "class",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.6_10.png",
+  "effects": [
+    {
+      "name": "Infiltrator Action Ratings",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.class.Item.QzcDnJbWCY1ueVt7",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "jY8jVAIrklSRaUIY",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.prowess.actions.finesse.min",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.prowess.actions.prowl.min",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1763475103831,
+        "modifiedTime": 1778503625069,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!QzcDnJbWCY1ueVt7.jY8jVAIrklSRaUIY"
+    }
+  ],
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": null,
+    "modifiedTime": 1763475533874,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": "<p>Privacy is a rare commodity in the technologically advanced lives of those touched by The War. Many keep their secrets locked in physical spaces far from prying eyes. This is when you need an Infiltrator. Able to get past the security measures of the most paranoid and then fight their way out if necessary, they'll get you what you want. Make sure you treat them right because they can get into your home too.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "experience_clues": "- You addressed a challenge with stealth or evasion."
+  },
+  "_key": "!items!QzcDnJbWCY1ueVt7"
+}

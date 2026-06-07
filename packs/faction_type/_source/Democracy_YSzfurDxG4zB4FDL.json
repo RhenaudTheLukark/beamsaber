@@ -1,0 +1,34 @@
+{
+  "name": "Democracy",
+  "type": "faction_type",
+  "_id": "YSzfurDxG4zB4FDL",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>- A populace that expresses political power through voting.<br>- A leader with limited political power.<br>- A leader that must justify their actions to the populace.<br>- Universal or near universal suffrage.<br>- Access to +1 Materiel and +1 Personnel during the reward process.</p>",
+    "name": "",
+    "rewards": {
+      "material": 1,
+      "personnel": 1
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": 1763918026392,
+    "modifiedTime": 1763918046080,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!YSzfurDxG4zB4FDL"
+}

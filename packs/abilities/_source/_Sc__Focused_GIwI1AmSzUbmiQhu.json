@@ -1,0 +1,117 @@
+{
+  "name": "(Sc) Focused",
+  "type": "ability",
+  "effects": [
+    {
+      "name": "Focused Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.GIwI1AmSzUbmiQhu",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "7HdjBOPIlDhKraUF",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.spark_options",
+          "mode": 2,
+          "value": "BITD.SparkOptions.Focused1",
+          "priority": 30
+        },
+        {
+          "key": "system.spark_options",
+          "mode": 2,
+          "value": "BITD.SparkOptions.Focused2",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1769325926788,
+        "modifiedTime": 1769328956937,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!GIwI1AmSzUbmiQhu.7HdjBOPIlDhKraUF"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "GIwI1AmSzUbmiQhu",
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1769328959825,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.v5K9mOwDiI93tpoH",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>You may spend your Spark to resist a consequence of surprise or mental harm (fear, confusion, losing track of someone), or to push yourself for ranged combat or exploration.</p>",
+    "class": "Scout",
+    "price": "1",
+    "uses": {
+      "max": "0",
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!GIwI1AmSzUbmiQhu"
+}

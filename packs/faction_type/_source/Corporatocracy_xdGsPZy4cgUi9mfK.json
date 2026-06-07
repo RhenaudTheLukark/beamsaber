@@ -1,0 +1,33 @@
+{
+  "name": "Corporatocracy",
+  "type": "faction_type",
+  "_id": "xdGsPZy4cgUi9mfK",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>- A political system that gives direct power to corporations.<br>- Wealth as the primary measure of competence.<br>- A small group of corporate representatives that lead the Faction.<br>- Corporate representatives that are disposable, and will be readily replaced by their corporation.<br>- Access to +2 Materiel during the reward process.</p>",
+    "name": "",
+    "rewards": {
+      "materiel": 2
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": 1763917993827,
+    "modifiedTime": 1763926535845,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!xdGsPZy4cgUi9mfK"
+}

@@ -1,0 +1,65 @@
+{
+  "name": "(P) Friends Everywhere",
+  "type": "crew_upgrade",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_id": "k2VXjCRHoNv7yOhi",
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": "Item.v5Sx41VJFJW6epBW",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "MLPPiZLSXgYeAHo7": 3
+  },
+  "system": {
+    "crew_type": "",
+    "description": "<p>Your squad's Tier and other squads' Tiers count as one lower for entanglements.</p>",
+    "class": "Profiteers",
+    "price": "1",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    }
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!k2VXjCRHoNv7yOhi"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Autocracy",
+  "type": "faction_type",
+  "_id": "AAIztUGqX8fpvhxA",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p>- A single leader who holds the vast majority of political power.<br>- A military that is the most important organization in society.<br>- A populace that is afraid of being perceived as unsupportive of the government.<br>- A social order that is commonly enforced with physical violence.<br>- Access to +1 Materiel and +1 Trust during the reward process</p>",
+    "name": "",
+    "rewards": {
+      "materiel": 1,
+      "trust": 1
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "YR7rqLkjCwcJpOjY": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.5.3",
+    "createdTime": 1763888318616,
+    "modifiedTime": 1763917960537,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+  },
+  "_key": "!items!AAIztUGqX8fpvhxA"
+}

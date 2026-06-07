@@ -1,0 +1,122 @@
+{
+  "_id": "uiIkyf2bIXZzgwzH",
+  "name": "(A) Adaptable",
+  "type": "ability",
+  "effects": [
+    {
+      "name": "Adaptable Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.uiIkyf2bIXZzgwzH",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "cLPfYwmkJfHkKOle",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.spark_options",
+          "mode": 2,
+          "value": "BITD.SparkOptions.Adaptable1",
+          "priority": 30
+        },
+        {
+          "key": "system.spark_options",
+          "mode": 2,
+          "value": "BITD.SparkOptions.Adaptable2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1769235668159,
+        "modifiedTime": 1769235701661,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!uiIkyf2bIXZzgwzH.cLPfYwmkJfHkKOle"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
+    "createdTime": null,
+    "modifiedTime": 1773971741570,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
+    "compendiumSource": "Item.Y5QbZTTFBs435jKF",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "YtbLeFrI7dsNHViN": 3
+  },
+  "system": {
+    "description": "<p>You may spend your Spark to uninstall up to two points of your vehicle's Load, or to push yourself in a vehicular maneuver.</p>",
+    "class": "Ace",
+    "price": 1,
+    "uses": {
+      "max": 0,
+      "value": 1,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [],
+    "expertise_action": ""
+  },
+  "img": "icons/svg/item-bag.svg",
+  "_key": "!items!uiIkyf2bIXZzgwzH"
+}

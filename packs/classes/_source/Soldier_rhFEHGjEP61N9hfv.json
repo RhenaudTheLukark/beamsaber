@@ -1,0 +1,167 @@
+{
+  "_id": "rhFEHGjEP61N9hfv",
+  "name": "Soldier",
+  "type": "class",
+  "img": "systems/beamsaber/styles/assets/icons/Icon.2_01.png",
+  "effects": [
+    {
+      "name": "Soldier Action Ratings",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.class.Item.rhFEHGjEP61N9hfv",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Wfby3ecebhrFCnKI",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.attributes.prowess.actions.struggle.min",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.resolve.actions.command.min",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.5.3",
+        "createdTime": 1763475256878,
+        "modifiedTime": 1778503666519,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!rhFEHGjEP61N9hfv.Wfby3ecebhrFCnKI"
+    }
+  ],
+  "folder": null,
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": "<p>The War touches everyone, demanding some form of violence be committed on its behalf. Those who embody this ferocity in its most primal form are the Soldiers. While others perform violence, they ARE violence. They reek of blood, gunpowder, and dominance. Even when they don't wound their victims, they staple fear onto their bloody, beating hearts.</p>",
+    "logic": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "experience_clues": "- You addressed a challenge with violence or coercion",
+    "base_skills": {
+      "hunt": [
+        0
+      ],
+      "study": [
+        0
+      ],
+      "survey": [
+        0
+      ],
+      "tinker": [
+        1
+      ],
+      "finesse": [
+        0
+      ],
+      "prowl": [
+        0
+      ],
+      "skirmish": [
+        0
+      ],
+      "wreck": [
+        0
+      ],
+      "attune": [
+        0
+      ],
+      "command": [
+        0
+      ],
+      "consort": [
+        0
+      ],
+      "sway": [
+        0
+      ],
+      "battle": [
+        0
+      ],
+      "destroy": [
+        0
+      ],
+      "maneuver": [
+        2
+      ],
+      "bombard": [
+        0
+      ],
+      "manipulate": [
+        0
+      ],
+      "scan": [
+        0
+      ]
+    }
+  },
+  "_key": "!items!rhFEHGjEP61N9hfv"
+}
