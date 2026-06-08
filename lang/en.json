@@ -884,6 +884,8 @@
     "EndMissionFromFactionBonus": " from their Faction's bonus",
     "EndMissionFromFinishingMission": " from finishing the mission",
     "EndMissionFromTrophiesRoom": " from your Trophies Room",
+    "EndMissionLost": "lost",
+    "EndMissionGained": "gained",
     "EndMissionTrustRecap": "You <strong>{lostGained} {num} Trust</strong> with your {titleText} Faction, {faction}.",
     "EndMissionHealUp": "All Pilots have had their <strong>Level 1 Harm removed</strong>, and all Vehicles have had their <strong>Level 1 Damage removed</strong>. Pilots may roll an Upkeep roll that doesn't count as a Downtime Activity if they so wish.",
     "EndMissionAirfieldSupply": "You have gained <strong>{num} Supply Point(s)</strong> from your Aircraft, remember to turn them into Materiel or Personnel Points before the end of Downtime.",
