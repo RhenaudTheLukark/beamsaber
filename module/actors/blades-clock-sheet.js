@@ -43,15 +43,17 @@ export class BladesClockSheet extends BladesSheet {
     for (let [sizeName, size] of Object.entries(clockStyles[themeColor[0]][themeColor[1]]))
       if (sizeName != 'dataReason') {
         if (!addedCurrentSize) {
-          if (sizeName == sheetData.system.size)
+          if (Number(sizeName) == sheetData.system.size)
             addedCurrentSize = true;
-          else if (sizeName < sheetData.system.size) {
+          else if (Number(sizeName) > sheetData.system.size) {
             sheetData.sizeDropdown[sheetData.system.size] = sheetData.system.size;
             addedCurrentSize = true;
           }
         }
         sheetData.sizeDropdown[sizeName] = sizeName;
       }
+    if (!addedCurrentSize)
+      sheetData.sizeDropdown[sheetData.system.size] = sheetData.system.size;
 
     sheetData.system.theme = themeColor[0];
     sheetData.system.color = themeColor[1];
