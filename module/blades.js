@@ -6,6 +6,7 @@
 
 // Import Modules
 import { registerSystemSettings } from "./settings.js";
+import { registerSystemKeybinds } from"./keybinds.js";
 import { preloadHandlebarsTemplates } from "./blades-templates.js";
 import { bladesRoll, cancelRollResult, simpleRollPopup } from "./blades-roll.js";
 import { BladesHelpers } from "./blades-helpers.js";
@@ -49,8 +50,9 @@ Hooks.once("init", async function () {
   CONFIG.ActiveEffect.documentClass = BladesActiveEffect;
   CONFIG.ChatMessage.documentClass = BeamChatMessage;
 
-  // Register System Settings
+  // Register System Settings & Keybinds
   registerSystemSettings();
+  registerSystemKeybinds();
 
   // Register sheet application classes
   foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);

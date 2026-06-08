@@ -8214,6 +8214,10 @@
 .application.dialog.start-mission input[type=checkbox].automated:checked::after, .application.dialog.end-mission input[type=checkbox].automated:checked::after, .application.dialog.end-session input[type=checkbox].automated:checked::after {
   color: #12a012;
 }
+.application.dialog.start-mission .centered, .application.dialog.end-mission .centered, .application.dialog.end-session .centered {
+  width: 100%;
+  text-align: center;
+}
 .application.dialog.clock-style-picker .clock-style {
   align-items: center;
   white-space: nowrap;

@@ -25,30 +25,36 @@ To Implement:
 	Squad Abilities:
 		- (█) Dire Needs => Add a note to it in the End Mission pipeline
 		- (█) No Traces => First effect: Half rep gain from Hidden mission, Second effect: +1 Rep if no trust loss with the Employer Faction
-		- (█)/(C)/(F)/(P)/(R) Sponsor => Modify the Tier up message numbers
 		- (L) Leverage => Add +1 Rep when gaining Rep
 		- (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (AAAAAAAAA)
-		- (M) Scorched Earth => Add a note to it in the End Mission pipeline
 	Squad Upgrades:
 		- Cover Business => Reduce Trust loss from the Mission Target by 2
 		- Propaganda Radio => Reduce Trust loss from the Mission Employer by 2
 		- Refit Station => Add an entry in the Start Mission pipeline
 		- Transmitter Array => Make it a toggleable roll modifier
-		- Trophies Room => End Mission pipeline: +1 Rep for free
 
 Changelog since 26/06/01:
 + BUG: Repair clock doesn't work on the Pilot sheet
 + BUG: Long-Term Project completion: shows undefined
 + Added a tooltip note for the Hidden option of the Reputation line of the End Mission pipeline
 + Added time travel to rolls (specifically Cut Loose rolls), they can be fully reverted (only used for Carouse)
++ Changed how Compendium items are handled, I'm hopeful it works properly on the old system
 + Compendium Items:
 	+ Pilot Abilities:
-		+ (Em) Carouse: Choice to be made AFTER the roll (add buttons on the Cut Loose message to revert it, or add extra connection tick)
+		+ (Em) Carouse => Choice to be made AFTER the roll (add buttons on the Cut Loose message to revert it, or add extra connection tick)
 			+ Itemize roll data changes (materiel, personnel, stress, trust, other resources?, don't forget to store theoretical & factual changes for each value for roll reversion)
 			+ Allow starting a roll with forced modifiers/rolls
 			+ Allow different relationship increases than just 1 for the Pilot to the person they Cut Loose
 				+ Allow +2 relationship from Pilot to assistant
 				+ Allow +1 relationship from Pilot to assistant, +1 relationship from assistant to Pilot
+	+ Squad Abilities:
+		+ (█)/(C)/(F)/(P)/(R) Sponsor => Divides the Tier up Supply Points requirements by 2 in the End Mission message
+		+ (M) Scorched Earth => Added a note to it in the End Mission pipeline
+	+ Squad Upgrades:
+		+ Trophies Room => End Mission pipeline: +1 Rep for free
++ Keybinds:
+	+ Ctrl+M => Adds a tick to all selected clocks, maxxes out clocks if Shift is also held
+	+ Ctrl+L => Removes a tick from all selected clocks, empties clocks if Shift is also held
 
 + => Means it's done
 - => Means it has to be done

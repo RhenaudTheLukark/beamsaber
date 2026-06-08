@@ -199,6 +199,11 @@ fieldset.form-group {
   input[type=checkbox].automated:checked::after {
     color: $light_green;
   }
+
+  .centered {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 &.clock-style-picker {

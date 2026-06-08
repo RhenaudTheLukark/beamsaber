@@ -765,8 +765,8 @@
     "ReputationHoldUp": "Your Reputation tracker is full, your <strong>Hold</strong> has increased to <strong>Strong</strong>.",
     "ReputationNotifyTierUp": "Your Reputation tracker is full, you may spend {cost} Materiel and Personnel to increase your squad's Tier by 1.",
 
-    "GenericSquadGain": "Your squad <strong>gained {num} {name}</strong>.",
-    "GenericSquadLoss": "Your squad <strong>lost {num} {name}</strong>.",
+    "GenericSquadGain": "Your squad <strong>gained {num} {name}</strong>{reason}.",
+    "GenericSquadLoss": "Your squad <strong>lost {num} {name}</strong>{reason}.",
 
     "Short": "Short",
     "Full": "Full",
@@ -856,8 +856,10 @@
     "EndMissionRecoverFixUpkeep": "Every Pilot can spend Materiel then roll dice to refresh Quirks equal to the highest result.<br/>Every Pilot removes all Level 1 Harm, and every Vehicle removes all Level 1 Damage.<br/>Cohorts may heal one Level of Harm if the environment is suitable for healing. (Manual)",
     "EndMissionFactionGoal": "If the mission supported the Patron Faction's goal, add 1 Tick to the goal's Clock.<br/>If the Clock is filled, all squads patronized by the faction gain a benefit,<br/>then choose a new Patron Faction goal.",
     "EndMissionNoFactionGoal": "No Goal",
+    "EndMissionTrophiesRoom": "Trophies Room: +1 Rep",
     "EndMissionSquadStatus": "If a squad benefited from the mission, consider giving +1 to that squad's Status.<br/>If a squad was harmed by the mission, consider giving -1 or -2 to that squad's Status depending on how bad the damage was.<br/>For every squad Status point above or below zero, add a descriptor that expresses how that squad views the players' squad.",
     "EndMissionFactionTrust": "Faction Trust Changes",
+    "EndMissionScorchedEarthNote": "NOTE: The Squad has Scorched Earth, meaning they shouldn't lose Trust when they cause property damage.",
     "EndMissionTargetFaction": "Mission Target Faction",
     "EndMissionEmployerFaction": "Mission Employer Faction",
     "EndMissionPatronFaction": "Patron Faction",
@@ -879,9 +881,10 @@
     "EndMissionAnotherFactionHelped": "Another Faction was aided",
     "EndMissionInterestsHarmed": "Patron's interests were harmed",
     "EndMissionJustPassingThrough": "Just Passing Through: +1 Trust",
+    "EndMissionFromFactionBonus": " from their Faction's bonus",
+    "EndMissionFromFinishingMission": " from finishing the mission",
+    "EndMissionFromTrophiesRoom": " from your Trophies Room",
     "EndMissionTrustRecap": "You <strong>{lostGained} {num} Trust</strong> with your {titleText} Faction, {faction}.",
-    "EndMissionLost": "lost",
-    "EndMissionGained": "gained",
     "EndMissionHealUp": "All Pilots have had their <strong>Level 1 Harm removed</strong>, and all Vehicles have had their <strong>Level 1 Damage removed</strong>. Pilots may roll an Upkeep roll that doesn't count as a Downtime Activity if they so wish.",
     "EndMissionAirfieldSupply": "You have gained <strong>{num} Supply Point(s)</strong> from your Aircraft, remember to turn them into Materiel or Personnel Points before the end of Downtime.",
     "EndMissionFactionGoalUp": "The goal {goal} of your Patron Faction has progressed.",
@@ -1115,6 +1118,16 @@
       },
       "Reset": "Reset",
       "SaveChanges": "Save Changes"
+    },
+    "Keybinds": {
+      "IncrementClock": {
+        "Name": "Increment Clock",
+        "Hint": "Adds 1 tick to all selected clocks if they're not full.\nClocks are maxed if Shift is also pressed."
+      },
+      "DecrementClock": {
+        "Name": "Decrement Clock",
+        "Hint": "Rermoves 1 tick from all selected clocks if they're not empty.\nClocks are emptied if Shift is also pressed."
+      }
     },
     "log": {
       "info": {

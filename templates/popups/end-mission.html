@@ -64,6 +64,12 @@
       </div>
     </div>
   </div>
+  {{#if extraData.trophiesRoom}}
+  <div class="form-group-inline">
+    <input type="checkbox" class="automated" name="trophiesRoom" checked>
+    <label>{{{localize 'BITD.EndMissionTrophiesRoom'}}}</label>
+  </div>
+  {{/if}}
 </fieldset>
 
 <div class="form-group-inline">
@@ -74,6 +80,9 @@
 <div class="category-collapse">{{localize 'BITD.EndMissionFactionTrust'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
 <fieldset class="collapse-category collapsed-category">
   <legend>{{localize 'BITD.EndMissionFactionTrust'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>
+  {{#if extraData.scorchedEarth}}
+  <label class="centered">{{{localize 'BITD.EndMissionScorchedEarthNote'}}}</label>
+  {{/if}}
   <div class="category-collapse">{{localize 'BITD.EndMissionTargetFaction'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
   <fieldset class="collapse-category collapsed-category faction-category target-faction">
     <legend>{{localize 'BITD.EndMissionTargetFaction'}} ({{localize 'BITD.EndMissionClickHereToCollapse'}})</legend>

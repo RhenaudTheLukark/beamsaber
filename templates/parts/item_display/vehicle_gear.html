@@ -53,10 +53,12 @@
     </div>
     {{/if}}
     {{/if}}
+    {{#if (or (eq actor.type 'vehicle') gearOwner.system.more_than_meets_the_eye)}}
     <div class="form-toggle flex-vertical">
       <label for="{{actor.type}}-{{actor._id}}-vehicle-form-{{id}}"><b>{{localize 'BITD.Form'}}</b></label>
       <button class="pilot-shared-data" id="{{actor.type}}-{{actor._id}}-vehicle-form-{{id}}">{{#if (eq item.system.form 0)}}{{localize 'BITD.No'}}{{else}}{{item.system.form}}{{/if}}</button>
     </div>
+    {{/if}}
     <div class="item-controls flex-horizontal">
       <a class="item-control delete-{{#if (eq actor.type 'vehicle')}}vehicle-{{/if}}item" data-tooltip="{{localize 'BITD.TitleDeleteItem'}}"><i class="fas fa-trash"></i></a>
       <a class="item-control item-post" data-tooltip="{{localize 'BITD.TitlePostItem'}}"><i class="fas fa-comment"></i></a>

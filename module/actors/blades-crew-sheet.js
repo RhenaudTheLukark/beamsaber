@@ -350,6 +350,8 @@ export class BladesSquadSheet extends BladesSheet {
     extraData.patronFaction = patronFactionFull;
     extraData.independentSupplyRoll = game.i18n.localize(`BITD.EndMissionSupplyRollIndependent${this.actor.system.friends_in_high_places ? '' : 'None'}`);
     extraData.airfieldSupply = this.actor.system.airfield_supply;
+    extraData.trophiesRoom = this.actor.system.trophies_room;
+    extraData.scorchedEarth = this.actor.system.scorched_earth;
     extraData.highSociety = this.actor.system.high_society;
     extraData.justPassingThrough = this.actor.system.just_passing_through;
     extraData.region = BladesHelpers.resolveActor(this.actor.system.region);
@@ -383,16 +385,16 @@ export class BladesSquadSheet extends BladesSheet {
           let bonusMessage = '';
           if (factionBonus.rewards.materiel) {
             updateObject.system.materiel = {'==value': Math.min(Math.max(Number(this.actor.system.materiel.value) + factionBonus.rewards.materiel, 0), Number(this.actor.system.materiel.max))};
-            bonusMessage += ` ${game.i18n.format(`BITD.GenericSquad${factionBonus.rewards.materiel < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(factionBonus.rewards.materiel), name: game.i18n.localize('BITD.Materiel')})}`;
+            bonusMessage += ` ${game.i18n.format(`BITD.GenericSquad${factionBonus.rewards.materiel < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(factionBonus.rewards.materiel), name: game.i18n.localize('BITD.Materiel'), reason: game.i18n.localize('BITD.EndMissionFromFactionBonus')})}`;
           }
           if (factionBonus.rewards.personnel) {
             updateObject.system.personnel = {'==value': Math.min(Math.max(Number(this.actor.system.personnel.value) + factionBonus.rewards.personnel, 0), Number(this.actor.system.personnel.max))};
-            bonusMessage += ` ${game.i18n.format(`BITD.GenericSquad${factionBonus.rewards.personnel < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(factionBonus.rewards.personnel), name: game.i18n.localize('BITD.Personnel')})}`;
+            bonusMessage += ` ${game.i18n.format(`BITD.GenericSquad${factionBonus.rewards.personnel < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(factionBonus.rewards.personnel), name: game.i18n.localize('BITD.Personnel'), reason: game.i18n.localize('BITD.EndMissionFromFactionBonus')})}`;
           }
           if (factionBonus.rewards.trust)
             bonusMessage += ` ${(await BladesHelpers.handleTrust(patronFactionFull, this.actor, factionBonus.rewards.trust))[0]}`;
           if (factionBonus.rewards.reputation)
-            bonusMessage += ` ${await BladesHelpers.handleReputation(this.actor, factionBonus.rewards.reputation)}`;
+            bonusMessage += ` ${await BladesHelpers.handleReputation(this.actor, factionBonus.rewards.reputation, false, game.i18n.localize('BITD.EndMissionFromFactionBonus'))}`;
           BladesHelpers.tryUpdate(this.actor, updateObject);
           messageContents += `<div class="description"><p>${bonusMessage.trimStart()}</p></div>`;
         }
@@ -401,7 +403,7 @@ export class BladesSquadSheet extends BladesSheet {
           if (dialog.element.querySelector('[name="repHidden"]').checked)
             repChange = 0;
           if (repChange > 0)
-            messageContents += `<div class="description"><p>${await BladesHelpers.handleReputation(this.actor, repChange)}</p></div>`;
+            messageContents += `<div class="description"><p>${await BladesHelpers.handleReputation(this.actor, repChange, false, game.i18n.localize('BITD.EndMissionFromFinishingMission'))}</p></div>`;
         }
         if (dialog.element.querySelector('[name="airfield"]')?.checked) {
           messageContents += `<div class="description"><p>${game.i18n.format('BITD.EndMissionAirfieldSupply', {num: this.actor.system.airfield_supply})}</p></div>`;
@@ -430,6 +432,8 @@ export class BladesSquadSheet extends BladesSheet {
             factionGoalMessage += ` ${game.i18n.localize('BITD.EndMissionFactionGoalDone')}`;
           messageContents += `<div class="description"><p>${factionGoalMessage}</p></div>`;
         }
+        if (dialog.element.querySelector('[name="trophiesRoom"]')?.checked)
+          messageContents += `<div class="description"><p>${await BladesHelpers.handleReputation(this.actor, 1, false, game.i18n.localize('BITD.EndMissionFromTrophiesRoom'))}</p></div>`;
 
         let titles = [];
 

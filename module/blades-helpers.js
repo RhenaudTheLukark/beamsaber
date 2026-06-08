@@ -131,7 +131,7 @@ export class BladesHelpers {
     return [resultString.trimStart(), statusDelta];
   }
 
-  static async handleReputation(squadFull, repChange, set = false) {
+  static async handleReputation(squadFull, repChange, set = false, reason = '') {
     let maxRep = Number(squadFull.system.reputation.max) - Number(squadFull.system.heart);
     let resultRep = Math.max(set ? Number(repChange) : (Number(squadFull.system.reputation.value) + Number(repChange)), 0);
     let repDelta = resultRep - Number(squadFull.system.reputation.value);
@@ -151,18 +151,20 @@ export class BladesHelpers {
       }
       break;
     }
-
+    let realRepDelta = resultRep - Number(squadFull.system.reputation.value);
     let holdIncrease = squadHold != oldSquadHold;
-    let repHasChanged = repDelta != 0;
+    let repHasChanged = realRepDelta != 0 || holdIncrease;
     let resultString = '';
-    if (holdIncrease || repHasChanged) {
+    if (repHasChanged) {
       if (repHasChanged)
-        resultString = game.i18n.format(`BITD.GenericSquad${repDelta < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(repDelta), name: game.i18n.localize('BITD.Reputation')})
+        resultString = game.i18n.format(`BITD.GenericSquad${repDelta < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(repDelta), name: game.i18n.localize('BITD.Reputation'), reason: reason})
       if (holdIncrease)
         resultString += ` ${game.i18n.localize('BITD.ReputationHoldUp')}`;
       let maxTier = squadFull.system.is_player_crew ? 4 : 5;
-      if (notifyTierUp && Number(squadFull.system.tier.value) < maxTier)
-        resultString += ` ${game.i18n.format('BITD.ReputationNotifyTierUp', {cost: 4 * (Number(squadFull.system.tier.value) + 1)})}`;
+      if (notifyTierUp && Number(squadFull.system.tier.value) < maxTier) {
+        let costPerTier = Math.max(4 / squadFull.system.sponsor, 1);
+        resultString += ` ${game.i18n.format('BITD.ReputationNotifyTierUp', {cost: costPerTier * (Number(squadFull.system.tier.value) + 1)})}`;
+      }
       await BladesHelpers.tryUpdate(squadFull, {system: {reputation: {'==value': resultRep}, '==hold': squadHold}});
     }
     return resultString.trimStart();
@@ -1316,6 +1318,13 @@ export class BladesHelpers {
       factionSquadsArray.splice(factionSquadsArray.map(e => e.uuid).indexOf(squadFull.uuid), 1);
       let newFactionSquads = Object.assign({}, factionSquadsArray);
       await BladesHelpers.tryUpdate(factionFull, {system: {'==squads': newFactionSquads}});
+
+      // Remove NPCs from the faction
+      for (let member of Object.values(squadFull.system.members)) {
+        let memberFull = BladesHelpers.resolveActor(member);
+        if (memberFull?.type == 'npc')
+          await BladesHelpers.removeFactionNPC(memberFull);
+      }
     }
     await BladesHelpers.tryUpdate(squadFull, {system: {'==faction': null}});
   }

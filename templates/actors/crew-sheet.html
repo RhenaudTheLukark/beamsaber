@@ -23,6 +23,7 @@
           {{/multiboxes}}
         </div>
         {{#if isGM}}
+        {{#if system.is_player_crew}}
         <div class="add-group-action" data-tooltip="{{localize 'BITD.GroupActionRoll'}}">
           {{> 'systems/beamsaber/templates/svg/d20.hbs'}}
         </div>
@@ -32,6 +33,7 @@
         <a class="end-mission" data-tooltip="{{localize 'BITD.EndMission'}}"><i class="fas fa-bed"></i></a>
         {{/if}}
         <a class="end-session" data-tooltip="{{localize 'BITD.EndSessionCheatSheet'}}"><i class="fas fa-clock"></i></a>
+        {{/if}}
         <div class="is-player-crew flex-vertical">
           <label for="crew-{{_id}}-is-player-crew">{{localize 'BITD.IsPlayerSquad'}}</label>
           <input type="checkbox" id="crew-{{_id}}-is-player-crew" name="system.is_player_crew" {{checked system.is_player_crew}}>

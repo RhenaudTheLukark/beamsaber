@@ -68,6 +68,7 @@
       "notes": "",
       "extra_downtime": 0,
       "airfield_supply": 0,
+      "sponsor": 1,
       "cohort_downtime_done": false,
       "region_collapsed": false
     },

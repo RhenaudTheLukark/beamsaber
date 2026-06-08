@@ -62,8 +62,12 @@ export class BladesClockSheet extends BladesSheet {
   /* -------------------------------------------- */
   /** @override */
   async _updateObject(event, formData) {
+    let value = formData['system.value'] ?? this.actor.system.value;
+    let size = formData['system.size'] ?? this.actor.system.size;
+    let theme_color = formData['system.theme_color'] ?? this.actor.system.theme_color;
+
     let clockStyles = BladesHelpers.clockStyles;
-    let themeColor = formData['system.theme_color'].split('/');
+    let themeColor = theme_color.split('/');
     let clockColor = clockStyles?.[themeColor[0]]?.[themeColor[1]];
     if (clockColor === undefined) {
       formData['system.theme_color'] = 'default/black';
@@ -71,30 +75,43 @@ export class BladesClockSheet extends BladesSheet {
       return;
     }
 
-    if (formData['system.value'] > formData['system.size'])
-      formData['system.value'] = formData['system.size'];
+    if (value > size) {
+      formData['system.value'] = size;
+      value = size;
+    }
+    
+    formData = await this.updateTokens(formData);
 
-    let clockData = clockColor[formData['system.size']];
+    // Update the Actor
+    return this.actor.update(formData);
+  }
+
+  async updateTokens(updateData) {
+    let value = updateData['system.value'] ?? this.actor.system.value;
+    let size = updateData['system.size'] ?? this.actor.system.size;
+    let theme_color = updateData['system.theme_color'] ?? this.actor.system.theme_color;
+
+    let clockStyles = BladesHelpers.clockStyles;
+    let themeColor = theme_color.split('/');
+    let clockColor = clockStyles?.[themeColor[0]]?.[themeColor[1]];
+    let clockData = clockColor[size];
     let imagePath;
     if (!clockData)
-      imagePath = 'systems/beamsaber/themes/error.png';
+      imagePath = 'systems/beamsaber/themes/cross.png';
     else
-      imagePath = `${BladesHelpers.getClockSpritePath(clockData)}${formData['system.size']}clock_${formData['system.value']}.${clockData.extension}`;
+      imagePath = `${BladesHelpers.getClockSpritePath(clockData)}${size}clock_${value}.${clockData.extension}`;
 
-    formData['img'] = imagePath;
-    formData['prototypeToken.texture.src'] = imagePath;
+    updateData['img'] = imagePath;
+    updateData['prototypeToken.texture.src'] = imagePath;
 
     let data = [];
     let update = { "texture.src": imagePath };
 
     let tokens = this.actor.getActiveTokens();
-    tokens.forEach(function(token) {
-      data.push(foundry.utils.mergeObject({ _id: token.id }, update));
-    });
-    if(game.scenes.current)
-      await TokenDocument.updateDocuments(data, { parent: game.scenes.current })
+    tokens.forEach((token) => data.push(foundry.utils.mergeObject({ _id: token.id }, update)));
+    if (game.scenes.current)
+      await TokenDocument.updateDocuments(data, { parent: game.scenes.current });
 
-    // Update the Actor
-    return this.actor.update(formData);
+    return updateData;
   }
 }
