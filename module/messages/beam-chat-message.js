@@ -98,7 +98,7 @@ export class BeamChatMessage extends foundry.documents.ChatMessage {
     const document = BladesHelpers.resolveActor(this.system.objectUuid);
     if (document) {
       if (parent && this.system.objectEmbeddedName)
-        await parent.deleteEmbeddedDocuments(this.system.objectEmbeddedName, document._id);
+        await parent.deleteEmbeddedDocuments(this.system.objectEmbeddedName, [document.id]);
       else if (!parent && !this.system.objectEmbeddedName)
         await document.delete();
     }

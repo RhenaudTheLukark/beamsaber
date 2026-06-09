@@ -160,6 +160,7 @@ export class BladesActor extends Actor {
     let attributes = this.getComputedAttributes(this.system.modifiers?.mastery);
 
     for (var attributeName in attributes) {
+      diceAmount[attributeName] = 0;
       for (var actionName in attributes[attributeName].actions) {
         let value = parseInt(attributes[attributeName].actions[actionName]['value']);
         // Get vehicle form bonus
