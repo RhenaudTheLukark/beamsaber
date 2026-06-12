@@ -15,6 +15,7 @@ TODO list:
 - Look into making up a way to drag actors without the Create Tokens permission (low priority)
 	- Only allow Token creation if the Create Tokens permission is OK
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
+- Add the ability to use Spark to cancel Push Yourself costs in rolls
 
 To Implement:
 	Pilot Abilities:

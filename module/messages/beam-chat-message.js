@@ -77,7 +77,7 @@ export class BeamChatMessage extends foundry.documents.ChatMessage {
 
   async handleCreateRequestMessage(html) {
     // Perform the create operation, then delete the message
-    let parent = BladesHelpers.resolveActor(this.system.parentUuid);
+    const parent = BladesHelpers.resolveActor(this.system.parentUuid);
     if (parent && this.system.objectEmbeddedName == 'Item')
       await Item.create(this.system.objectData, {parent: parent});
     return html;

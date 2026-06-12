@@ -2007,11 +2007,12 @@ export function buildRollPopup(popupTitle, actor, rollTypes, missingRollTypes = 
     ${!actor ? `<p>${game.i18n.localize('BITD.RollTokenDescription')}</p>` : ''}
     <form>
       <div class="form-group">
-        ${!strict ? `
-          <label>${game.i18n.localize('BITD.RollNumberOfDice')}:</label>
-          <select id="qty" name="qty">
-            ${Array(11).fill().map((_, i) => `<option value="${i}">${i}d</option>`).join('')}
-          </select>` : `<label>${game.i18n.localize('BITD.Modifier')}:</label>
+        ${!strict ? `<label>${game.i18n.localize('BITD.RollNumberOfDice')}:</label>
+        <select id="qty" name="qty">
+          <option value="0" selected disabled hidden>0d</option>
+          ${Array(14).fill().map((_, i) => `<option value="${i-3}">${i-3}d</option>`).join('')}
+        </select>`
+        : `<label>${game.i18n.localize('BITD.Modifier')}:</label>
         <select id="mod" name="mod">
           ${createListOfDiceMods(-3, +3, 0)}
         </select>`}
