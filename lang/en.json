@@ -724,7 +724,7 @@
 
     "ToggleableModifiers": "Toggleable Modifiers",
     "CollateralDie": "Collateral Die",
-    "CollateralDieEffect": "You took a collateral die. Roll it. Its results are unavoidable, nor can they be reduced or negated with a resistance roll or armor.",
+    "CollateralDieEffect": "You took a collateral die. Its consequences are unavoidable, nor can they be reduced or negated with a resistance roll or armor.",
     "PushYourself": "Push Yourself",
     "PushYourselfEffect": "You pushed yourself. You suffered <strong>2 Stress</strong> if it was a Pilot action, or expend <strong>1 Quirk</strong> if it was a Vehicle action.",
     "Assist": "Assist",
