@@ -2088,7 +2088,7 @@ export async function simpleRollPopup(title1 = 'BITD.SimpleRoll', title2 = 'BITD
         let extraFields = { roll_type: rollType, modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: targetActor };
         switch (rollType) {
           case 'engagement':
-            await bladesRoll(diceQty + 1, 'BITD.EngagementRoll', note, extraFields);
+            await bladesRoll(diceQty, 'BITD.EngagementRoll', note, extraFields);
             break;
           case 'entanglement':
             let table = dialog.element.querySelector('[name="table"]').value;
