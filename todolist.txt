@@ -28,15 +28,18 @@ To Implement:
 		- (█) No Traces => First effect: Half rep gain from Hidden mission, Second effect: +1 Rep if no trust loss with the Employer Faction
 		- (L) Leverage => Add +1 Rep when gaining Rep
 		- (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (AAAAAAAAA)
-	Squad Upgrades:
-		- Cover Business => Reduce Trust loss from the Mission Target by 2
-		- Propaganda Radio => Reduce Trust loss from the Mission Employer by 2
-		- Refit Station => Add an entry in the Start Mission pipeline
-		- Transmitter Array => Make it a toggleable roll modifier
 
 Changelog since 08/06/2026:
 + Resistance: NaN quirks
 + Unable to remove a Vehicle Load from the Pilot sheet as a Player
++ Allow the use of a negative dice base for Miscellaneous rolls
++ Removed the automatic die for sheer luck for Engagement rolls
++ Compendium Items (to replace if used):
+	Squad Upgrades:
+		+ Cover Business => Reduce Trust loss from the Mission Target by 2
+		+ Propaganda Radio => Reduce Trust loss from the Mission Employer by 2
+		+ Refit Station => Added an entry in the Start Mission pipeline
+		+ Transmitter Array => Made it a toggleable roll modifier for all rolls
 
 + => Means it's done
 - => Means it has to be done
