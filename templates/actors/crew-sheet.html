@@ -75,7 +75,7 @@
           <div class="item-crew-rep flex-horizontal">
             <div class="item-class-label"><a class="item-add-popup" data-item-type="crew_reputation" data-unique="true" data-value-path="system.crew_reputation" data-add-as-item="true">{{localize 'BITD.Reputation'}}:</a></div>
             {{#if (ne system.crew_reputation null)}}
-            <div class="item flex-horizontal" data-item-id="{{system.crew_reputation.uuid}}">
+            <div class="item flex-horizontal" data-item-id="{{system.crew_reputation._id}}">
               <div class="open-actor flex-horizontal" data-item-path="system.crew_reputation">
                 <img src="{{system.crew_reputation.img}}" data-tooltip="{{system.crew_reputation.name}}" width="24" height="24"/>
                 <a class="item-name">{{system.crew_reputation.name}}</a>

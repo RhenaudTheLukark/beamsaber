@@ -327,9 +327,8 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
       if (owner != this.actor)
         // Update sheet for everyone
         await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
-    } else if (addAsItem && itemsToAdd.length)
-      await this.addItemAsObjectAndStoreReference(itemsToAdd[0], valuePath);
-    await this.actor.sheet.handleAddedObjects(itemsToAdd);
+    } else if (addAsItem)
+      await this.actor.sheet.handleAddedObjects(itemsToAdd);
   }
 
   async addItemAsObjectAndStoreReference(itemToAdd, valuePath) {

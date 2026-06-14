@@ -296,7 +296,14 @@ export class BladesCharacterSheet extends BladesSheet {
 
     // Delete Character's Class
     html.find('.delete-class').click(async ev => {
-      await BladesHelpers.tryUpdate(this.actor, {system: {'==class': null}});
+      let element = $(ev.currentTarget).closest('.item');
+      let item = this.actor.items.get(element.data('itemId'));
+      if (element.parent().hasClass('item-with-container'))
+        element = element.parent();
+      element.slideUp(200, async () => {
+        await this.actor.removeItem(item);
+        await BladesHelpers.tryUpdate(this.actor, {system: {'==class': null}});
+      });
     });
 
     // Remove Squad from character sheet

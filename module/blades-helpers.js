@@ -359,7 +359,7 @@ export class BladesHelpers {
     if (!objectFull)
       return;
     if (parentFull && parentFull.canUserModify(game.user, 'delete'))
-      await parentFull.deleteEmbeddedDocuments('Item', [objectFull._id]);
+      await parentFull.deleteEmbeddedDocuments('Item', [objectFull._id ?? objectFull]);
     else if (!parentFull && objectFull.canUserModify(game.user, 'delete'))
       await objectFull.delete();
     else {
@@ -572,8 +572,8 @@ export class BladesHelpers {
     }
   }
 
-  static async preDeleteItem(item, actor, realDelete = true) {
-    let [owner, _] = actor.getItemOwner(item);
+  static async preDeleteItem(item, actorFull, realDelete = true) {
+    let [owner, _] = actorFull.getItemOwner(item);
 
     // Well-Trained Hunter Robot: Remove the special Cohort
     if (item.system.hunter_robot) {
@@ -583,16 +583,16 @@ export class BladesHelpers {
       if (squadFull) {
         let cohortIds = squadFull.items.filter(i => i.system.owner == owner.uuid).map(i => i._id);
         if (cohortIds.length)
-          await BladesHelpers.tryDelete(cohortIds[0], actor);
+          await BladesHelpers.tryDelete(cohortIds[0], squadFull);
       }
     }
 
     // Pilot & Vehicle Armor
     if (['item', 'vehicle_gear'].includes(item.type)) {
       if (item.system.armor) {
-        let shieldOwner = actor;
+        let shieldOwner = actorFull;
         if (item.type == 'vehicle_gear' && shieldOwner.type != 'vehicle')
-          shieldOwner = BladesHelpers.resolveActor(actor.system.vehicle);
+          shieldOwner = BladesHelpers.resolveActor(actorFull.system.vehicle);
         let armorData = shieldOwner.system.armor;
         armorData.max --;
         armorData.value = Math.min(armorData.max, armorData.value);
