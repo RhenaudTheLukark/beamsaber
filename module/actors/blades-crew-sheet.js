@@ -243,7 +243,7 @@ export class BladesSquadSheet extends BladesSheet {
    */
   async startMissionPopup() {
     let extraData = {};
-    extraData.a_little_something_on_the_side = Object.values(this.actor.system.members).map(m => BladesHelpers.resolveActor(m)).filter(m => m != null && m.system.a_little_something_on_the_side).map(m => m.name).join(', ');
+    extraData.aLittleSomethingOnTheSide = Object.values(this.actor.system.members).map(m => BladesHelpers.resolveActor(m)).filter(m => m != null && m.system.a_little_something_on_the_side).map(m => m.name).join(', ');
     extraData.tier = this.actor.system.tier.value;
 
     let scarredPilotsWithNoCutLoose = [];
@@ -254,8 +254,10 @@ export class BladesSquadSheet extends BladesSheet {
       if (scars > 0 && !memberFull.system.downtime_activities.cutLoose)
         scarredPilotsWithNoCutLoose.push(memberFull);
     }
-    extraData.scarred_pilots = scarredPilotsWithNoCutLoose.map(p => `<option value="${p.uuid}" selected>${p.name}</option>`);
-    extraData.scarred_pilots_count = scarredPilotsWithNoCutLoose.length;
+    extraData.scarredPilots = scarredPilotsWithNoCutLoose.map(p => `<option value="${p.uuid}" selected>${p.name}</option>`);
+    extraData.scarredPilotsCount = scarredPilotsWithNoCutLoose.length;
+
+    extraData.refitStation = this.actor.system.refit_station;
 
     let dialog = new foundry.applications.api.DialogV2({
       window: { title: `${game.i18n.localize('BITD.StartMission')}` },

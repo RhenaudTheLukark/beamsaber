@@ -1,7 +1,58 @@
 {
   "name": "Transmitter Array",
   "type": "crew_upgrade",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Transmitter Array Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_upgrade.Item.9TOmYQaYLN6dMdov",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "jbvcvoEGSiHOy9N7",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.conditional_roll_modifiers.character.transmitter_array",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        },
+        {
+          "key": "system.conditional_roll_modifiers.cohort.transmitter_array",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1781458469097,
+        "modifiedTime": 1781458502351,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!9TOmYQaYLN6dMdov.jbvcvoEGSiHOy9N7"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -9,12 +60,12 @@
   },
   "_id": "9TOmYQaYLN6dMdov",
   "_stats": {
-    "coreVersion": "13.350",
-    "systemId": null,
-    "systemVersion": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1781458504280,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.jgSpnlYuciCzBsVV",
     "duplicateSource": null,
     "exportSource": null
@@ -24,10 +75,16 @@
     "JVvMbwnked5Yb4AD": 3
   },
   "system": {
-    "crew_type": "",
     "description": "<p>-1 Stress cost for all digital powers and app usage. This effect applies to the entire Squad, everywhere. You don't have to be at the array to benefit from it.</p>",
     "class": "",
-    "price": "1",
+    "price": 1,
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
+    "purchased": false,
+    "class_default": false,
     "logic": "",
     "activation": {
       "type": "",
@@ -49,16 +106,28 @@
       "long": null,
       "units": ""
     },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
     "consume": {
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "crew_type": "",
+    "training_center_type": "Adepts",
+    "gang_types": [
+      "Adepts",
+      "Rooks",
+      "Rovers",
+      "Skulks",
+      "Toughs"
+    ]
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!9TOmYQaYLN6dMdov"

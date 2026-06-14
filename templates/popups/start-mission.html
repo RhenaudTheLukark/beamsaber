@@ -9,21 +9,27 @@
   <input type="checkbox" checked>
   <label>{{{localize 'BITD.StartMissionRemainingDowntime'}}}</label>
 </div>
-{{#if (ne extraData.a_little_something_on_the_side '')}}
+{{#if (ne extraData.aLittleSomethingOnTheSide '')}}
 <div class="form-group-inline">
   <input type="checkbox" checked>
-  <label>{{{localize 'BITD.StartMissionALittleSomethingOnTheSide' members=extraData.a_little_something_on_the_side tier=extraData.tier}}}</label>
+  <label>{{{localize 'BITD.StartMissionALittleSomethingOnTheSide' members=extraData.aLittleSomethingOnTheSide tier=extraData.tier}}}</label>
+</div>
+{{/if}}
+{{#if extraData.refitStation}}
+<div class="form-group-inline">
+  <input type="checkbox" checked>
+  <label>{{{localize 'BITD.StartMissionRefitStation'}}}</label>
 </div>
 {{/if}}
 <div class="form-group-inline">
-  <input type="checkbox" class="automated" name="cutLooseScar"{{#if (gt extraData.scarred_pilots_count 0)}} checked{{/if}}>
+  <input type="checkbox" class="automated" name="cutLooseScar"{{#if (gt extraData.scarredPilotsCount 0)}} checked{{/if}}>
     <div>
       <label>{{{localize 'BITD.StartMissionNoCutLooseScar'}}}</label>
       <div class="flex-horizontal actor-contents">
         <label>{{localize 'BITD.Pilot'}}:</label>
-        {{#if (gt extraData.scarred_pilots_count 0)}}
-        <select name="cutLooseScarPilots" data-tooltip="{{localize 'BITD.MultipleSelectUsage'}}" size="{{extraData.scarred_pilots_count}}" multiple>
-          {{{extraData.scarred_pilots}}}
+        {{#if (gt extraData.scarredPilotsCount 0)}}
+        <select name="cutLooseScarPilots" data-tooltip="{{localize 'BITD.MultipleSelectUsage'}}" size="{{extraData.scarredPilotsCount}}" multiple>
+          {{{extraData.scarredPilots}}}
         </select>
         {{else}}
         {{localize 'BITD.None'}}

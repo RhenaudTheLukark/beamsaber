@@ -604,6 +604,11 @@ export const bladesRollModifierList = {
     rollType: 'engagement',
     dice: 1
   },
+  transmitter_array: {
+    name: 'BITD.SquadUpgrade.TransmitterArrayTitle',
+    notRollTypes: ['enhance', 'train', 'moveBase'],
+    stress: -1
+  },
   tunnels: {
     name: 'BITD.SquadUpgrade.TunnelsTitle',
     rollTypes: ['actionRoll', 'groupAction'],
