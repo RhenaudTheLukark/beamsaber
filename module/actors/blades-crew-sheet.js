@@ -353,6 +353,8 @@ export class BladesSquadSheet extends BladesSheet {
     extraData.trophiesRoom = this.actor.system.trophies_room;
     extraData.scorchedEarth = this.actor.system.scorched_earth;
     extraData.highSociety = this.actor.system.high_society;
+    extraData.coverBusiness = this.actor.system.cover_business;
+    extraData.propagandaRadio = this.actor.system.propaganda_radio;
     extraData.justPassingThrough = this.actor.system.just_passing_through;
     extraData.region = BladesHelpers.resolveActor(this.actor.system.region);
     extraData.regionFaction = BladesHelpers.resolveActor(this.actor.system.owner);
@@ -437,36 +439,47 @@ export class BladesSquadSheet extends BladesSheet {
 
         let titles = [];
 
+        function handleTrust(value, base, trustLossPrevention) {
+          if (value < 0 && trustLossPrevention > 0) {
+            let shift = Math.min(-value, trustLossPrevention);
+            value += shift;
+            trustLossPrevention -= shift;
+          }
+          return [base + value, trustLossPrevention];
+        }
+
         let targetTrust = 0;
+        let targetTrustLossPrevention = this.actor.system.cover_business ? 2 : 0;
         let targetUuid = dialog.element.querySelector('.target-faction .actor-data > .actor-contents')?.dataset.actorId;
         let targetFactionFull = BladesHelpers.resolveActor(targetUuid);
         if (targetFactionFull) {
           if (dialog.element.querySelector('[name="repHidden"]').checked)
-            targetTrust = -1;
+            [targetTrust, targetTrustLossPrevention] = handleTrust(-1, targetTrust, targetTrustLossPrevention);
           else {
-            if (dialog.element.querySelector('[name="targetImportantInfrastructure"]').checked) targetTrust -= 2;
-            if (dialog.element.querySelector('[name="targetVIPKilled"]').checked) targetTrust -= 2;
-            if (dialog.element.querySelector('[name="targetCiviliansDied"]').checked) targetTrust -= 1;
-            if (dialog.element.querySelector('[name="targetExposedCorruption"]').checked) targetTrust -= 2;
-            if (dialog.element.querySelector('[name="targetSquadCasualties"]').checked) targetTrust -= 1;
-            if (dialog.element.querySelector('[name="targetHighProfileTarget"]').checked) targetTrust -= 1;
-            if (dialog.element.querySelector('[name="targetControlledTerritory"]').checked) targetTrust -= 1;
-            if (dialog.element.querySelector('[name="targetVendetta"]').checked) targetTrust -= 1;
+            if (dialog.element.querySelector('[name="targetImportantInfrastructure"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-2, targetTrust, targetTrustLossPrevention);
+            if (dialog.element.querySelector('[name="targetVIPKilled"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-2, targetTrust, targetTrustLossPrevention);
+            if (dialog.element.querySelector('[name="targetCiviliansDied"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-1, targetTrust, targetTrustLossPrevention);
+            if (dialog.element.querySelector('[name="targetExposedCorruption"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-2, targetTrust, targetTrustLossPrevention);
+            if (dialog.element.querySelector('[name="targetSquadCasualties"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-1, targetTrust, targetTrustLossPrevention);
+            if (dialog.element.querySelector('[name="targetHighProfileTarget"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-1, targetTrust, targetTrustLossPrevention);
+            if (dialog.element.querySelector('[name="targetControlledTerritory"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-1, targetTrust, targetTrustLossPrevention);
+            if (dialog.element.querySelector('[name="targetVendetta"]').checked) [targetTrust, targetTrustLossPrevention] = handleTrust(-1, targetTrust, targetTrustLossPrevention);
           }
           titles.push({titles: ['target'], actor: targetFactionFull, trust: targetTrust});
         }
 
         let employerTrust = 0;
+        let employerTrustLossPrevention = this.actor.system.propaganda_radio ? 2 : 0;
         let employerUuid = dialog.element.querySelector('.employer-faction .actor-data > .actor-contents')?.dataset.actorId;
         let employerFactionFull = BladesHelpers.resolveActor(employerUuid);
         if (employerFactionFull) {
-          if (dialog.element.querySelector('[name="employerCiviliansDied"]').checked) employerTrust -= 1;
-          if (dialog.element.querySelector('[name="employerRoEBroken"]').checked) employerTrust -= 2;
-          if (dialog.element.querySelector('[name="employerBadImportantInfrastructure"]').checked) employerTrust -= 2;
-          if (dialog.element.querySelector('[name="employerSquadHarmed"]').checked) employerTrust -= 2;
+          if (dialog.element.querySelector('[name="employerCiviliansDied"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-1, employerTrust, employerTrustLossPrevention);
+          if (dialog.element.querySelector('[name="employerRoEBroken"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-2, employerTrust, employerTrustLossPrevention);
+          if (dialog.element.querySelector('[name="employerBadImportantInfrastructure"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-2, employerTrust, employerTrustLossPrevention);
+          if (dialog.element.querySelector('[name="employerSquadHarmed"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-2, employerTrust, employerTrustLossPrevention);
           if (dialog.element.querySelector('[name="employerSuccessfulMission"]').checked) employerTrust += Math.min(Number(dialog.element.querySelector('[name="employerSuccessfulMissionSquadTier"]').value) * 2, 1);
           if (dialog.element.querySelector('[name="employerSecondaryObjective"]').checked) employerTrust += 2;
-          if (dialog.element.querySelector('[name="employerVendetta"]').checked) employerTrust -= 1;
+          if (dialog.element.querySelector('[name="employerVendetta"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-1, employerTrust, employerTrustLossPrevention);
           if (dialog.element.querySelector('[name="employerHighSociety"]')?.checked) employerTrust += 1;
           titles.push({titles: ['employer'], actor: employerFactionFull, trust: employerTrust});
         }
@@ -502,7 +515,7 @@ export class BladesSquadSheet extends BladesSheet {
 
         let trustRecap = ``;
         for (let title of titles) {
-          if (title.titles.length == 1 && title.trust == 0)
+          if (title.trust == 0)
             continue;
           let trustText = (await BladesHelpers.handleTrust(title.actor, this.actor, title.trust))[0];
           trustText = trustText.includes('<br/>') ? trustText.match('(?<=\<br\/\>)(.*)', 1)[0] : ''; // Only keep the Status changing part
