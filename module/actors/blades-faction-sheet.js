@@ -29,9 +29,7 @@ export class BladesFactionSheet extends BladesSheet {
     sheetData.document = superData.document;
     sheetData.isGM = game.user.isGM;
 
-    // Fetch faction types and list them, and fetch current faction type data
-    sheetData.factionTypeDropdown = BladesHelpers.prepareItemDropdown('faction_type', true, game);
-    sheetData.faction_type = BladesHelpers.resolveOwnedItem(sheetData.system.type, 'faction_type', {system: {description: 'Press F5 to reload the page if you\'ve set a value here and it doesn\'t show!'}}, game); // TODO: Remove this once we've moved to V2
+    sheetData.system.type = BladesHelpers.getOwnedItem(this.actor, sheetData.system.type);
 
     // Fetch squads, regions and npcs
     sheetData.system.squads = BladesHelpers.fetchSimpleData(sheetData.system.squads, ['status', 'trust'], BladesHelpers._factionSquadCompareFunc);
@@ -101,7 +99,7 @@ export class BladesFactionSheet extends BladesSheet {
 
       switch (droppedEntityFull.type) {
         case "faction_type":
-          await BladesHelpers.tryUpdate(this.actor, {system: {'==type': droppedEntityFull._id}});
+          await this.addItemAsObjectAndStoreReference(droppedEntityFull, 'system.type');
         default:
           break;
       }
@@ -116,6 +114,18 @@ export class BladesFactionSheet extends BladesSheet {
 
     // Everything below here is only needed if the sheet is editable
     if (!this.options.editable) return;
+
+    // Delete Faction Type
+    html.find('.delete-faction-type').click(async ev => {
+      let element = $(ev.currentTarget).closest('.item');
+      let item = this.actor.items.get(element.data('itemId'));
+      if (element.parent().hasClass('item-with-container'))
+        element = element.parent();
+      element.slideUp(200, async () => {
+        await this.actor.removeItem(item);
+        await BladesHelpers.tryUpdate(this.actor, {system: {'==type': null}});
+      });
+    });
 
     // Delete Squad
     html.find('.delete-squad').click(async ev => {

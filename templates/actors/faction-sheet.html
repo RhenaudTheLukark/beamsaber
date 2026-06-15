@@ -28,13 +28,25 @@
 
   <div class="flex-horizontal faction-type">
     <div class="flex-vertical faction-type-select">
-      <div>{{localize 'BITD.FactionType'}}:</div>
-      <select data-type="String" name="system.type">
-        {{selectOptions factionTypeDropdown selected=system.type localize=true}}
-      </select>
+      <div class="item-class-label"><a class="item-add-popup" data-item-type="faction_type" data-unique="true" data-value-path="system.type">{{localize 'BITD.FactionType'}}:</a></div>
+      {{#if (ne system.type null)}}
+      <div class="item flex-horizontal" data-item-id="{{system.type._id}}" data-item-uuid="{{system.type.uuid}}">
+        <div class="open-actor flex-horizontal" data-item-path="system.type">
+          <img src="{{system.type.img}}" data-tooltip="{{system.type.name}}" width="24" height="24"/>
+          <a class="item-name">{{system.type.name}}</a>
+        </div>
+        <div class="item-controls flex-horizontal">
+          <a class="item-control delete-faction-type" data-tooltip="{{localize 'BITD.TitleDeleteFactionType'}}"><i class="fas fa-trash"></i></a>
+        </div>
+      </div>
+      {{else}}
+      <label>{{localize 'BITD.None'}}</label>
+      {{/if}}
     </div>
     <div class="faction-type-description">
-      {{html text=faction_type.system.description}}
+      {{#if (ne system.type null)}}
+      {{html text=system.type.system.description}}
+      {{/if}}
     </div>
   </div>
 

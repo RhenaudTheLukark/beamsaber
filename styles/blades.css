@@ -5513,8 +5513,12 @@
   /*font-style: italic;*/
   text-align: justify;
 }
-.beamsaber.app.sheet.actor .item .item-controls > .item-post {
-  margin-left: 10px;
+.beamsaber.app.sheet.actor .item .item-controls {
+  gap: 10px;
+}
+.beamsaber.app.sheet.actor .item-class-label {
+  align-self: center;
+  justify-self: center;
 }
 .beamsaber.app.sheet.actor .big-teeth-section {
   border-top: 3px solid #191813;
@@ -5860,8 +5864,12 @@
   /*font-style: italic;*/
   text-align: justify;
 }
-.beamsaber.application.sheet.actor .item .item-controls > .item-post {
-  margin-left: 10px;
+.beamsaber.application.sheet.actor .item .item-controls {
+  gap: 10px;
+}
+.beamsaber.application.sheet.actor .item-class-label {
+  align-self: center;
+  justify-self: center;
 }
 .beamsaber.application.sheet.actor .big-teeth-section {
   border-top: 3px solid #191813;
@@ -6127,11 +6135,19 @@
   margin: 10px 0;
   gap: 20px;
 }
-.beamsaber.app.sheet.actor.faction .faction-type .faction-type-select > div {
+.beamsaber.app.sheet.actor.faction .faction-type .faction-type-select {
+  text-align: center;
+}
+.beamsaber.app.sheet.actor.faction .faction-type .faction-type-select > div:first-child {
   font-family: "Kirsty", serif;
+  justify-content: center;
+}
+.beamsaber.app.sheet.actor.faction .faction-type .item-name {
+  width: fit-content;
+  margin-right: 0px;
 }
 .beamsaber.app.sheet.actor.faction .faction-type .faction-type-description {
-  width: 100%;
+  flex: 1;
   font-size: 14px;
   font-style: italic;
 }
@@ -6225,9 +6241,6 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-}
-.beamsaber.app.sheet.actor.crew .top .item-class-label {
-  align-self: center;
 }
 .beamsaber.app.sheet.actor.crew .top .item .item-name {
   width: auto;
@@ -6574,14 +6587,12 @@
   margin-right: 0;
 }
 .beamsaber.app.sheet.actor.character .traits .item-class-label {
-  align-self: center;
   min-width: 100px;
 }
 .beamsaber.app.sheet.actor.character .traits .two-line {
   gap: 2em;
 }
 .beamsaber.app.sheet.actor.character .traits .two-line .item-class-label {
-  align-self: center;
   min-width: auto;
 }
 .beamsaber.app.sheet.actor.character .traits .two-line > .item-block {
@@ -6929,14 +6940,12 @@
   margin-right: 0;
 }
 .beamsaber.application.sheet.actor.character .traits .item-class-label {
-  align-self: center;
   min-width: 100px;
 }
 .beamsaber.application.sheet.actor.character .traits .two-line {
   gap: 2em;
 }
 .beamsaber.application.sheet.actor.character .traits .two-line .item-class-label {
-  align-self: center;
   min-width: auto;
 }
 .beamsaber.application.sheet.actor.character .traits .two-line > .item-block {

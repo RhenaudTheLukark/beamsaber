@@ -71,8 +71,11 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
       const element = $(ev.currentTarget).closest('.item');
       //acqId is the UUID of the Actor
       let acqId = element.data('itemId');
-      // if the Actor is not in the world the if loop will trigger
       let actor = BladesHelpers.resolveActor(acqId);
+      if (!actor) {
+        let acqUuid = element.data('itemUuid');
+        actor = BladesHelpers.resolveActor(acqUuid);
+      }
       actor?.sheet.render(true);
     });
 
@@ -135,7 +138,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     const itemTypes = $(event.currentTarget).data('itemType').split(',');
     const valuePath = $(event.currentTarget).data('valuePath');
     const unique = $(event.currentTarget).data('unique');
-    const addAsItem = $(event.currentTarget).data('addAsItem');
+    const addAsItem = $(event.currentTarget).data('addAsItem') ?? true;
     const containerId = $(event.currentTarget).data('containerId');
     let inputType = 'checkbox';
 
@@ -329,6 +332,8 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
         await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
     } else if (addAsItem)
       await this.actor.sheet.handleAddedObjects(itemsToAdd);
+    else
+      this.addItemAsReference(itemsToAdd[0], valuePath);
   }
 
   async addItemAsObjectAndStoreReference(itemToAdd, valuePath) {
@@ -345,6 +350,14 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     }
     if (typeof objectToDelete != 'undefined' && this.actor.items.find(i => i._id == objectToDelete))
       await this.actor.removeItem(await BladesHelpers.getOwnedItem(this.actor, objectToDelete));
+    await BladesHelpers.tryUpdate(this.actor, updateObject);
+  }
+
+  async addItemAsReference(itemToAdd, valuePath) {
+    if (!itemToAdd)
+      return;
+    itemToAdd = { name: itemToAdd.name, id: itemToAdd.id, img: itemToAdd.img, system: foundry.utils.deepClone(itemToAdd.system) };
+    let updateObject = BladesHelpers.createUpdateObjectFromPath(itemToAdd, valuePath);
     await BladesHelpers.tryUpdate(this.actor, updateObject);
   }
 

@@ -37,12 +37,22 @@
   margin: 10px 0;
   gap: 20px;
 
-  .faction-type-select > div {
-    font-family: "Kirsty", serif;
+  .faction-type-select {
+    text-align: center;
+
+    > div:first-child {
+      font-family: "Kirsty", serif;
+      justify-content: center;
+    }
+  }
+
+  .item-name {
+    width: fit-content;
+    margin-right: 0px;
   }
 
   .faction-type-description {
-    width: 100%;
+    flex: 1;
     font-size: 14px;
     font-style: italic;
   }

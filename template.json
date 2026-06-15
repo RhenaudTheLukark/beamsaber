@@ -4,7 +4,7 @@
     "faction": {
       "corruption": 0,
       "description": "",
-      "type": "",
+      "type": null,
       "type_description": "",
       "goals": {},
       "squads": {},

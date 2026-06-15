@@ -336,13 +336,7 @@ export class BladesSquadSheet extends BladesSheet {
     if (!patronFactionFull)
       factionBonus = {text: game.i18n.localize('BITD.Independent'), rewards: {reputation: 2}};
     else {
-      let factionType = BladesHelpers.resolveOwnedItem(patronFactionFull.system.type, 'faction_type', null, game);
-      // TODO: Remove this, this is a temporary fix
-      if (!factionType) {
-        for (let pack of game.packs)
-          await pack.getDocuments();
-        factionType = BladesHelpers.resolveOwnedItem(patronFactionFull.system.type, 'faction_type', null, game);
-      }
+      let factionType = patronFactionFull.system.type;
       if (factionType)
         factionBonus = {text: factionType.name, rewards: foundry.utils.deepClone(factionType.system.rewards)};
     }

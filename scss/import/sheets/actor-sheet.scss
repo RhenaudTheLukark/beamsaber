@@ -61,10 +61,13 @@ $supply_margin: 3px;
   }
 
   .item-controls {
-    > .item-post {
-      margin-left: 10px;
-    }
+    gap: 10px;
   }
+}
+
+.item-class-label {
+  align-self: center;
+  justify-self: center;
 }
 
 .big-teeth-section {

@@ -13,7 +13,7 @@
       <div class="flex-horizontal">
         <a class="text-line item-add-popup" data-item-type="class" data-unique="true" data-value-path="system.class" data-add-as-item="true">{{localize 'BITD.Associated'}} {{localize 'BITD.Class'}}:</a>
         {{#if (ne system.class null)}}
-        <div class="item flex-horizontal" data-item-id="{{system.class._id}}">
+        <div class="item flex-horizontal" data-item-id="{{system.class._id}}" data-item-uuid="{{system.class.uuid}}">
           <div class="open-actor flex-horizontal">
             <img src="{{system.class.img}}" data-tooltip="{{system.class.name}}" width="24" height="24"/>
             <a class="item-name">{{system.class.name}}</a>
