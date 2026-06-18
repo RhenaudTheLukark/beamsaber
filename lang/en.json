@@ -448,6 +448,7 @@
     "GatherInformationRoll": "Gather Information",
     "EngagementRoll": "Engagement",
     "EntanglementRoll": "Entanglement",
+    "SupplyRollFull": "Supply <i class=\"fas fa-question-circle\" data-tooltip=\"The amount of dice for this roll is automatically computed by the system. If the amount of dice selected is not 0, it'll add those dice to the amount that has been computed.\"></i>",
     "SupplyRoll": "Supply",
     "AcquireAssetRoll": "Acquire Asset",
     "EnhanceRoll": "Enhance",

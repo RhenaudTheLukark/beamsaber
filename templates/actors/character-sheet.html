@@ -141,8 +141,7 @@
     <div id="character-{{_id}}-stress" class="big-teeth character-stress">
       {{#multiboxes system.stress.value}}
       <input type="radio" id="character-{{_id}}-stress-0" name="system.stress.value" value="0" dtype="Radio">
-      <!--<label class="black-label" for="character-{{_id}}-stress-0">{{localize system.stress.name}}</label>-->
-      <div class="black-label">{{localize system.stress.name}}</div>
+      <div class="black-label">{{localize 'BITD.Stress'}}</div>
       {{#times_from 1 system.stress.max}}
       <input type="radio" id="character-{{../_id}}-stress-{{this}}" name="system.stress.value" value="{{this}}" dtype="Radio">
       <label class="radio-toggle"></label>

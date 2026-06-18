@@ -60,7 +60,7 @@ export const bladesRollModifierList = {
       'BITD.Effect': ['BITD.Position', 'BITD.Effect']
     },
     resolveFunc: (fields) => {
-      let isEffect = fields['BITD.Effect'] == 'BITD.Position';
+      let isEffect = fields['BITD.Effect'] == 'BITD.Effect';
       return { effect: isEffect ? 1 : 0, position: isEffect ? 0 : 1, rollText: 'BITD.SetupEffect', rollTextArgs: { effect: game.i18n.localize(fields['BITD.Effect']) } };
     }
   },
@@ -1766,7 +1766,7 @@ const rollTypeLabels = {
   gatherInfo: 'BITD.GatherInformationRoll',
   engagement: 'BITD.EngagementRoll',
   entanglement: 'BITD.EntanglementRoll',
-  supply: 'BITD.SupplyRoll',
+  supply: 'BITD.SupplyRollFull',
 
   acquireAsset: 'BITD.AcquireAssetRoll',
   enhance: 'BITD.EnhanceRoll',
