@@ -505,7 +505,7 @@
     "\uD83D\uDD5B clock": {
       "size": 4,
       "value": 0,
-      "theme_color": "default/black",
+      "theme_color": "beamsaber/cyan",
       "owner": ""
     }
   },

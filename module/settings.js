@@ -38,7 +38,7 @@ export const registerSystemSettings = function() {
               themes[`${themeName}/${colorName}`] = `${themeName}/${colorName}`;
       return themes;
     },
-    default: 'default/black'
+    default: 'beamsaber/cyan'
   });
 
   game.settings.register('beamsaber', 'DeepCutLoad', {

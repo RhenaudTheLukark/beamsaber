@@ -72,7 +72,7 @@ export class BladesClockSheet extends BladesSheet {
     let themeColor = theme_color.split('/');
     let clockColor = clockStyles?.[themeColor[0]]?.[themeColor[1]];
     if (clockColor === undefined) {
-      formData['system.theme_color'] = 'default/black';
+      formData['system.theme_color'] = 'beamsaber/cyan';
       this._updateObject(event, formData);
       return;
     }
@@ -81,7 +81,7 @@ export class BladesClockSheet extends BladesSheet {
       formData['system.value'] = size;
       value = size;
     }
-    
+
     formData = await this.updateTokens(formData);
 
     // Update the Actor
