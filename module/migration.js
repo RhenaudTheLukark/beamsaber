@@ -49,7 +49,6 @@ export const migrateWorld = async function(oldVersion, newVersion) {
   }
 
   // Migrate Actor Link
-  /*
   for (let s of game.scenes.contents) {
     try {
       const updateData = _migrateSceneData(s);
@@ -60,7 +59,7 @@ export const migrateWorld = async function(oldVersion, newVersion) {
     } catch(err) {
       console.error(err);
     }
-  }*/
+  }
 
   // Migrate Items
   let items = foundry.utils.deepClone(game.items.contents);
