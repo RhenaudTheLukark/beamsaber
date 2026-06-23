@@ -505,4 +505,8 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       await bladesRoll(0, 'BITD.CutLooseRoll', message.system.rollData.note, extraFields);
       await BladesHelpers.tryDelete(message);
     });
+  for (const element of html.querySelectorAll('.gm-only')) {
+    if (!game.user.isGM)
+      element.style.display = "none";
+  }
 });

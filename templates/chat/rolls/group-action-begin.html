@@ -14,11 +14,9 @@
 <div class="button">
   <button class="roll-group-action">{{localize 'BITD.RollGroupAction'}}</button>
 </div>
-{{#if isGM}}
-<div class="button">
+<div class="button gm-only">
   <button class="reveal-group-action-result">{{localize 'BITD.RevealGroupActionResult'}}</button>
 </div>
-{{/if}}
 
 {{#if note}}
   <p><em>{{note}}</em></p>
