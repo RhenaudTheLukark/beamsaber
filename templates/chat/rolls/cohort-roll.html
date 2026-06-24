@@ -1,6 +1,8 @@
 <div class="dice-tooltip blades-die-tooltip">
   <div class="chat-label label-stripe-chat">{{localize 'BITD.CohortRoll'}}</div>
-  <div class="chat-label-small label-stripe-chat-small">{{extraFields.actor.name}}{{#if (not extraFields.within_expertise)}} | {{localize 'BITD.NoExpertise'}} {{/if}}{{#if zeromode}} | 0d {{/if}}</div>
+  {{#if (or (not extraFields.within_expertise) zeromode)}}
+  <div class="chat-label-small label-stripe-chat-small">{{#if (not extraFields.within_expertise)}}{{localize 'BITD.NoExpertise'}}{{/if}}{{#if zeromode}}{{#if (not extraFields.within_expertise)}} | {{/if}}0d{{/if}}</div>
+  {{/if}}
 
   {{#if (eq roll_status "critical-success")}}
   <div class="die {{roll_status}}">{{localize 'BITD.RollCriticalSuccess'}}</div>
