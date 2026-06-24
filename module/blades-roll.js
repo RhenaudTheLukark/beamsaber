@@ -1033,7 +1033,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
       actor: extraFields.actor._id,
       alias: extraFields.actor.name,
       scene: null,
-      token: extraFields.actor.prototypeToken._id
+      token: extraFields.actor.prototypeToken?._id
     };
 
   let attributeLabel = BladesHelpers.getRollLabel(attributeOrRollName);
@@ -1508,7 +1508,7 @@ async function showChatMessage(dice, attributeOrRollName = '', note = '', extraF
       actor: extraFields.actor._id,
       alias: extraFields.actor.name,
       scene: null,
-      token: extraFields.actor.prototypeToken._id
+      token: extraFields.actor.prototypeToken?._id
     };
 
   let attribute_label = BladesHelpers.getRollLabel(attributeOrRollName);

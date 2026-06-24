@@ -26,6 +26,11 @@ To Implement:
 		- (L) Leverage => Add +1 Rep when gaining Rep
 		- (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (AAAAAAAAA)
 
+Changelog sine 26/06/22:
++ Made it so the Group Action Roll Result button is GM-only
++ BUG: Fix Cohort rolls
++ Only show Cohort Downtime roll amount when on a Cohort Downtime roll type
+
 + => Means it's done
 - => Means it has to be done
 

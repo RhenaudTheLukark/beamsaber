@@ -637,7 +637,7 @@ export class BladesSquadSheet extends BladesSheet {
       buttons: [
         {
           icon: 'fas fa-check',
-          label: `${game.i18n.localize('BITD.Roll')} (${game.i18n.localize(`BITD.DowntimeCohortRoll${this.actor.system.cohort_downtime_done ? 'Done' : ''}`)})`,
+          label: `${game.i18n.localize('BITD.Roll')}`,
           action: 'roll',
         },
         {
@@ -756,10 +756,14 @@ export class BladesSquadSheet extends BladesSheet {
         let rollType = element.id.split('-')[0];
         let rollButton = element.closest('.window-content').querySelector('button[data-action="roll"]');
         let allowedToRoll = true;
-        if (rollType == 'schmooze')
+        let rollButtonText = `${game.i18n.localize('BITD.Roll')} (${game.i18n.localize(`BITD.DowntimeCohortRoll${dialog.actor.system.cohort_downtime_done ? 'Done' : ''}`)})`;
+        if (rollType == 'cohort')
+          rollButtonText = `${game.i18n.localize('BITD.Roll')}`;
+        else if (rollType == 'schmooze')
           allowedToRoll = element.closest('.radio-group').querySelector('#schmoozeFaction > .actor-contents') != null;
         allowedToRoll &&= (rollType == 'cohort' || checkDowntimeRules(dialog));
         rollButton.disabled = !allowedToRoll;
+        rollButton.querySelector('span').innerHTML = rollButtonText;
       });
     }
   }
