@@ -39,13 +39,13 @@
           "priority": 30
         },
         {
-          "key": "system.conditional_roll_modifiers.character.repair_bay_salvage_fix",
+          "key": "system.conditional_roll_modifiers.character.repair_bay_salvage_repair",
           "mode": 5,
           "value": "true",
           "priority": 30
         },
         {
-          "key": "system.conditional_roll_modifiers.cohort.repair_bay_salvage_fix",
+          "key": "system.conditional_roll_modifiers.cohort.repair_bay_salvage_repair",
           "mode": 5,
           "value": "true",
           "priority": 30
