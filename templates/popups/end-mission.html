@@ -130,6 +130,9 @@
       <label>{{localize 'BITD.EndMissionEmployerFaction'}} <a><i class="fas fa-question-circle" data-tooltip="{{localize 'BITD.EmployerFactionDragDropInfo'}}"></i></a>:</label>
       <div class="actor-data">{{localize 'BITD.None'}}</div>
     </span>
+    {{#if extraData.direNeeds}}
+    <label class="centered">{{{localize 'BITD.EndMissionDireNeedsNote'}}}</label>
+    {{/if}}
     <div class="form-group-inline">
       <input type="checkbox" class="automated" name="employerCiviliansDied">
       <label>{{{localize 'BITD.EndMissionCiviliansDied'}}}</label>

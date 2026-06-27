@@ -336,7 +336,7 @@ export class BladesSquadSheet extends BladesSheet {
     if (!patronFactionFull)
       factionBonus = {text: game.i18n.localize('BITD.Independent'), rewards: {reputation: 2}};
     else {
-      let factionType = patronFactionFull.system.type;
+      let factionType = patronFactionFull.items.get(patronFactionFull.system.type);
       if (factionType)
         factionBonus = {text: factionType.name, rewards: foundry.utils.deepClone(factionType.system.rewards)};
     }
@@ -348,6 +348,7 @@ export class BladesSquadSheet extends BladesSheet {
     extraData.airfieldSupply = this.actor.system.airfield_supply;
     extraData.trophiesRoom = this.actor.system.trophies_room;
     extraData.scorchedEarth = this.actor.system.scorched_earth;
+    extraData.direNeeds = this.actor.system.dire_needs;
     extraData.highSociety = this.actor.system.high_society;
     extraData.coverBusiness = this.actor.system.cover_business;
     extraData.propagandaRadio = this.actor.system.propaganda_radio;

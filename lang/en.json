@@ -875,6 +875,7 @@
     "EndMissionHighProfileTarget": "Mission's target was high profile or well connected",
     "EndMissionControlledTerritory": "Attacked in a region they control",
     "EndMissionVendetta": "Vendetta with one of their squads at the beginning of the mission",
+    "EndMissionDireNeedsNote": "NOTE: The Squad has Dire Needs Earth, meaning they can choose not to lose Trust from breaking ROE<br/>related to the treatment of civilians and enemy soldiers on a mission.",
     "EndMissionHighSociety": "High Society: +1 Trust (Only enable one of these options)",
     "EndMissionRoEBroken": "Rules of Engagement (RoE) were broken",
     "EndMissionBadImportantInfrastructure": "Important infrastructure that was not the mission's target damaged",
