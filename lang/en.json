@@ -732,6 +732,7 @@
     "PushYourselfQuirkEffect": "You pushed yourself. You must expend <strong>1 Quirk</strong>.",
     "Assist": "Assist",
     "AssistEffect": "{pilot} assisted you. They took <strong>{num} Stress</strong>. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
+    "AssistTacticalGeniusEffect": "{pilot} assisted you. They took no Stress due to their tactical genius. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
     "DowntimeAssistEffect": "{pilot} assisted you, granting you <strong>+1d</strong>.",
     "DowntimeAssistOtherEffect": "An ally or your direct superior assisted you. It is likely to provide access to resources otherwise unavailable.",
     "Setup": "Setup",
@@ -828,6 +829,7 @@
     "User": "User",
     "Crewmate": "Crewmate",
     "Cost": "Cost",
+    "TacticalGenius": "Tactical Genius",
 
     "HunterRobotName": "{characterName}'s Hunter Robot",
 

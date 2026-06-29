@@ -294,13 +294,13 @@ export class BladesSquadSheet extends BladesSheet {
             messageContents += `<div class="description"><p>${game.i18n.localize('BITD.StartMissionNoCutLooseScarEffect')}${cutLooseScarMessage}</p></div>`;
         }
 
-        // Reset Downtime Activities and Spark for all Pilots
+        // Reset Downtime Activities, Spark, Tactical Genius for all Pilots
         let sparkUsed = false;
         for (let member of Object.values(this.actor.system.members)) {
           let memberFull = BladesHelpers.resolveActor(member.uuid);
           if (!memberFull || memberFull.type != 'character') continue;
           sparkUsed ||= !memberFull.system.spark;
-          await BladesHelpers.tryUpdate(memberFull, {system: {'==downtime_activities': {train_types: {}}, '==spark': true}});
+          await BladesHelpers.tryUpdate(memberFull, {system: {'==downtime_activities': {train_types: {}}, 'spark': true, 'tactical_genius_uses': {'value': memberFull.system.tactical_genius_uses.max}}});
         }
         if (sparkUsed)
           messageContents += `<div class="description"><p>${game.i18n.localize('BITD.StartMissionRecoverSpark')}</p></div>`;

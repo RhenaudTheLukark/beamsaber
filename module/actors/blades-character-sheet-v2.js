@@ -624,7 +624,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
     let updateObject = BladesHelpers.createUpdateObjectFromPath(value, path);
     await BladesHelpers.tryUpdate(vehicleFull, updateObject);
     await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
-  };
+  }
 
   static async #otherRolls(event, target) {
     await simpleRollPopup('BITD.OtherRoll', 'BITD.OtherRollFull', this.actor, false);

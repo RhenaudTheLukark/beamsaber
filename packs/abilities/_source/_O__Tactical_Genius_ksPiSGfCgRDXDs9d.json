@@ -1,7 +1,52 @@
 {
   "name": "(O) Tactical Genius",
   "type": "ability",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Tactical Genius Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.ksPiSGfCgRDXDs9d",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "8LNg7rFGO8gIFo5m",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.tactical_genius",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1782722423542,
+        "modifiedTime": 1782722442930,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!ksPiSGfCgRDXDs9d.8LNg7rFGO8gIFo5m"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -13,7 +58,7 @@
     "systemId": "beamsaber",
     "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": 1768054155130,
+    "modifiedTime": 1782722444093,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.7Gys1B00XkuIUxe7",
     "duplicateSource": null,
@@ -26,9 +71,11 @@
   "system": {
     "description": "<p>Two times per mission, you can assist a squadmate without paying Stress. Tell us how you prepared for this.</p>",
     "class": "Officer",
-    "price": "1",
+    "price": 1,
     "uses": {
-      "max": "2"
+      "max": 2,
+      "value": 1,
+      "per": null
     },
     "purchased": false,
     "class_default": false,
@@ -57,7 +104,16 @@
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": ""
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!ksPiSGfCgRDXDs9d"

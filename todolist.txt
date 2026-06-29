@@ -17,18 +17,23 @@ TODO list:
 To Implement:
 	Pilot Abilities:
 		- (Em) Carry That Weight => First effect: time travel on an action roll, roll +1d and add it to the roll result (or roll 1d if 0d roll) from assist or push yourself, Second effect: Stress transfer UI?
-		- (O) Tactical Genius => Display two checkboxes for uses, make it a roll modifier, refresh on mission start
 	Squad Abilities:
 		- (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (AAAAAAAAA)
 
-Changelog sine 26/06/22:
+To Re-Implement:
+	Pilot Abilities:
+		- (Em) Carouse => Do not make the other roll a Cut Loose roll, but a special Stress Loss roll
+
+Changelog since 26/06/22:
 + Made it so the Group Action Roll Result button is GM-only
 + BUG: Fix Cohort rolls
++ BUG: Fix Conviction usage not taking away Conviction uses
 + Only show Cohort Downtime roll amount when on a Cohort Downtime roll type
 + Compendium Items
 	+ Pilot Abilities:
 		+ (A) Travelling Companion => Choose between 1 Quirk or 2 Stress for Vehicle Action Push Yourself
 		+ (Em) Emoji => Second part: Make it a modifier for Action rolls
+		+ (O) Tactical Genius => Display two checkboxes for uses, make it a roll modifier, refresh on mission start
 	+ Squad Abilities:
 		+ (█) Dire Needs => Add a note to it in the End Mission pipeline
 		+ (█) No Traces => First effect: Half rep gain from Hidden mission, Second effect: +1 Rep if no trust loss with the Employer Faction

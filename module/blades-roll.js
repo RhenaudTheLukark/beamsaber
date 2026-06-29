@@ -35,6 +35,7 @@ export const bladesRollModifierList = {
     rollTypes: ['actionRoll', 'groupAction', 'resistance', 'fortune', 'gatherInfo', 'engagement'],
     fields: {
       'BITD.Connection': [],
+      'BITD.TacticalGenius': false,
       'BITD.Effects': ['BITD.ExtraDie', 'BITD.ImprovedPosition', 'BITD.ImprovedEffect', 'BITD.IgnoreHarmDamage'],
     },
     resolveFunc: (fields, extraData) => {
@@ -51,13 +52,18 @@ export const bladesRollModifierList = {
         effectText += `<li>${game.i18n.localize(choice + 'Effect')}</li>`;
       }
       let otherStress = {};
-      otherStress[connectionFull.uuid] = Math.min(connectionValue, fields['BITD.Effects'].length);
+      let otherValue = {};
+      if (!fields['BITD.TacticalGenius'])
+        otherStress[connectionFull.uuid] = Math.min(connectionValue, fields['BITD.Effects'].length);
+      else
+        otherValue[connectionFull.uuid] = {'system.tactical_genius_uses.value': -1};
       return {
         dice: dice,
         effect: effect,
         position: position,
         otherStress: otherStress,
-        rollText: 'BITD.AssistEffect',
+        otherValue: otherValue,
+        rollText: `BITD.Assist${fields['BITD.TacticalGenius'] ? 'TacticalGenius' : ''}Effect`,
         rollTextArgs: { pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', num: Math.min(connectionValue, fields['BITD.Effects'].length), effects: effectText } };
     },
     assist: true
@@ -888,6 +894,7 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
   let materielChanges = extraFields.materiel ?? 0;
   let personnelChanges = extraFields.personnel ?? 0;
   let rollTypeKey = Object.entries(rollTypeLabels).find(r => r[1] == attributeOrRollName);
+  let otherChanges = {};
   let downtimeCountChanges = rollTypeKey ? (BladesHelpers.isDowntime(rollTypeKey[0]) ? -1 : 0) : 0;
 
   // Add modifiers effects to the roll/actor
@@ -909,6 +916,9 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
       downtimeCountChanges = 0;
       extraFields.bonusRoll = true;
     }
+    if (modifier.otherValue)
+      for (let [uuid, value] of Object.entries(modifier.otherValue))
+        otherChanges[uuid] = otherChanges[uuid] ? {...otherChanges[uuid], ...value} : value;
     if (modifier.downtime) downtimeCountChanges += modifier.downtime;
     if (modifier.convictionCutLoose) extraFields.conviction = true;
     if (modifier.workHardPlayHard) extraFields.workHardPlayHard = true;
@@ -975,6 +985,32 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
   }
   if (Object.keys(squadUpdateObject.system).length)
     await BladesHelpers.tryUpdate(squadFull, squadUpdateObject);
+
+  // Other Changes
+  if (rollData.otherChanges)
+    rollData.oldOtherChanges = rollData.otherChanges;
+  rollData.otherChanges = {};
+  for (let [otherActorUuid, otherChangeObj] of Object.entries(otherChanges)) {
+    if (Object.values(otherChangeObj).length == 0) continue;
+    let otherActorFull = BladesHelpers.resolveActor(otherActorUuid);
+    if (otherActorFull) {
+      let otherChangeItem = {value: {}, realValue: {}};
+      let updateObject = {};
+      for (let [otherPath, otherChange] of Object.entries(otherChangeObj)) {
+        let otherValue = otherActorFull;
+        for (let pathPart of otherPath.split('.')) {
+          if (!otherValue)
+            break;
+          otherValue = otherValue[pathPart];
+        }
+        let resultOther = Math.max(Number(otherValue) + otherChange, 0);
+        updateObject[otherPath] = resultOther;
+        otherChangeItem.realValue[otherPath] = resultOther - Number(otherValue);
+      }
+      await BladesHelpers.tryUpdate(otherActorFull, updateObject);
+      rollData.otherChanges[otherActorFull._id] = otherChangeItem;
+    }
+  }
 
   // Update the main actor in case of no further data update
   if (extraFields.actor) {
@@ -1601,6 +1637,23 @@ export async function cancelRollResult(rollData, actorFull) {
   for (let [trustChangeId, trustChange] of Object.entries(rollData.trustChanges)) {
     let trustActorFull = BladesHelpers.resolveActor(`Actor.${trustChangeId}`);
     await BladesHelpers.handleTrust(trustActorFull, squadFull, -trustChange.realValue);
+  }
+  for (let [otherChangeId, otherChangeObj] of Object.entries(rollData.otherChanges)) {
+    let otherActorFull = BladesHelpers.resolveActor(`Actor.${otherChangeId}`);
+    if (otherActorFull) {
+      let updateObject = {};
+      for (let [otherPath, otherChange] of Object.entries(otherChangeObj.realValue)) {
+        let otherValue = otherActorFull;
+        for (let pathPart of otherPath.split('.')) {
+          if (!otherValue)
+            break;
+          otherValue = otherValue[pathPart];
+        }
+        let resultOther = Math.max(Number(otherValue) - otherChange, 0);
+        updateObject[otherPath] = resultOther;
+      }
+      await BladesHelpers.tryUpdate(otherActorFull, updateObject);
+    }
   }
 
   let actorUpdateObject = {};
@@ -2303,7 +2356,8 @@ export async function resolveRollModifierArray(modifiers, actor, attributeName) 
             // Push Yourself: Choose the right cost
             if (actor.type != 'character') continue;
             let attribute = BladesHelpers.getAttributeFromAction(attributeName);
-            if (actor.system.travelling_companion && (['expertise', 'acuity'].includes(attribute) || ['expertise', 'acuity'].includes(attributeName)))
+            let isVehicleAction = ['expertise', 'acuity'].includes(attribute) || ['expertise', 'acuity'].includes(attributeName);
+            if (actor.system.travelling_companion && isVehicleAction)
               result.fields['BITD.Cost'] = ['BITD.Quirks', 'BITD.Stress'];
             else
               result.fields['BITD.Cost'] = undefined;
@@ -2380,7 +2434,7 @@ export function pruneInvalidConditionalRollModifiers(actorFull, modifiers) {
     if (modifier.invalid) continue;
     if (modifier.itemNeeded && actorFull.items)
       if (actorFull.items.filter(i => i.system[modifier.itemNeeded] && (i.system.uses.max == i.system.uses.value || i.system.uses.value > 0)).length == 0) continue;
-    if (modifier.conviction && (!actorFull || actorFull.system.conviction_uses?.value == 0)) continue;
+    if (modifier.convictionExtra && (!actorFull || actorFull.system.conviction_uses?.value == 0)) continue;
     if (modifier.terminator) {
       let ownerFull = BladesHelpers.resolveActor(actorFull.system.owner);
       if (!ownerFull) continue;
@@ -2424,21 +2478,29 @@ export function buildConditionalModifiersHTML(modifiers, actorFull) {
       for (let [fieldName, fieldDataArray] of Object.entries(modifier.fields)) {
         if (fieldDataArray == undefined)
           continue;
-        let multiple = fieldName == 'BITD.Effects';
-        output += `<span><label>${game.i18n.localize(fieldName)}</label><select field="${fieldName}"${multiple ? ' data-tooltip="BITD.MultipleSelectUsage" multiple': ''}>`
-        let first = true;
-        if (fieldDataArray instanceof Array) {
+        output += `<span><label>${game.i18n.localize(fieldName)}</label>`
+        if (fieldDataArray == true || fieldDataArray == false)
+          output += `<input type="checkbox" name="${fieldName}" ${fieldDataArray ? ' checked' : ''}>`;
+        else if (fieldDataArray instanceof Array) {
+          let first = true;
+          let multiple = fieldName == 'BITD.Effects';
+          output += `<select field="${fieldName}"${multiple ? ' data-tooltip="BITD.MultipleSelectUsage" multiple': ''}>`
           for (let fieldData of fieldDataArray) {
             output += `<option value="${fieldData}" ${first ? 'selected' : ''}>${game.i18n.localize(fieldData)}</option>`;
             first = false;
           }
+          output += '</select>';
         } else {
+          let first = true;
+          let multiple = fieldName == 'BITD.Effects';
+          output += `<select field="${fieldName}"${multiple ? ' data-tooltip="BITD.MultipleSelectUsage" multiple': ''}>`
           for (let [fieldDataInternal, fieldData] of Object.entries(fieldDataArray)) {
             output += `<option value="${fieldDataInternal}" ${first ? 'selected' : ''}>${game.i18n.localize(fieldData)}</option>`;
             first = false;
           }
+          output += '</select>';
         }
-        output += '</select></span>'
+        output += '</span>';
       }
     }
     output += '</div>';
@@ -2486,10 +2548,13 @@ export function resolveConditionalModifiers(dialog, actorFull, attributeName) {
     let conditionalModifier = foundry.utils.deepClone(dialog.conditionalModifiers[parseInt(checkedModifier.dataset.modifierId)]);
 
     if (conditionalModifier.resolveFunc !== undefined) {
-      let fieldElements = checkedModifier.querySelectorAll('span > select');
       let fields = {};
-      for (let field of fieldElements)
-        fields[field.attributes.field.value] = $(field).val();
+      let selectElements = checkedModifier.querySelectorAll('span > select');
+      for (let select of selectElements)
+        fields[select.attributes.field.value] = $(select).val();
+      let checkboxElements = checkedModifier.querySelectorAll('span > input[type=checkbox]');
+      for (let checkbox of checkboxElements)
+        fields[checkbox.attributes.name.value] = checkbox.checked;
 
       let extraData = {actorFull: actorFull};
       if (actorFull.system.crew) {

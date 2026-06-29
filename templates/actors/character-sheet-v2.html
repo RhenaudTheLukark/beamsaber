@@ -586,6 +586,19 @@
           </div>
         </div>
         {{/if}}
+        {{#if system.tactical_genius}}
+        <div class="flex-horizontal tactical-genius">
+          <label id="character-{{_id}}-tactical-genius-uses"><b>{{localize 'BITD.TacticalGenius'}}</b></label>
+          <div class="supply tactical-genius-uses">
+            {{#multiboxes system.tactical_genius_uses.value}}
+            {{#times_from 0 system.tactical_genius_uses.max}}
+            <input id="character-{{../_id}}-tactical-genius-uses-{{this}}" type="radio" name="system.tactical_genius_uses.value" value="{{this}}">
+            <label class="radio-toggle{{#if (lteq this ../system.tactical_genius_uses.value)}} enabled{{/if}}"></label>
+            {{/times_from}}
+            {{/multiboxes}}
+          </div>
+        </div>
+        {{/if}}
         {{#if (andtest (ne system.vehicle null) (eq system.more_than_meets_the_eye true))}}
         <div class="flex-horizontal second-form">
           <label id="character-{{_id}}-vehicle-second-form"><b>{{localize 'BITD.UsingSecondForm'}}</b></label>

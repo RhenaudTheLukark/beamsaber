@@ -288,6 +288,13 @@ export class BladesActor extends Actor {
           let effectsLabelElement = $(modifierElement).find('span:last-of-type label')[0];
           if (effectsLabelElement)
             effectsLabelElement.innerText = `${game.i18n.localize('BITD.Effects')} (${game.i18n.format('BITD.ChooseX', {num: connectionValue})})`;
+          let connectionFull = BladesHelpers.resolveActor(connectionSelectElementVal);
+          let tacticalGeniusElement = connectionSelector.closest('.modifier[data-modifier="assist"]').querySelector('input[name="BITD.TacticalGenius"]');
+          let tacticalGeniusFieldGroup = tacticalGeniusElement.parentElement;
+          let activeTacticalGenius = connectionFull.system.tactical_genius && connectionFull.system.tactical_genius_uses.value > 0;
+          if (!activeTacticalGenius)
+            tacticalGeniusElement.checked = false;
+          tacticalGeniusFieldGroup.style.display = activeTacticalGenius ? 'flex' : 'none';
         });
 
         var event = new Event('change');

@@ -569,7 +569,7 @@
     <div class="flex-vertical">
       {{> "systems/beamsaber/templates/parts/attributes.html" actor=actor vehicle=system.vehicle}}
       <div class="extra-content">
-        {{#if (eq system.conditional_roll_modifiers.conviction_extra true)}}
+        {{#if system.conditional_roll_modifiers.conviction_extra}}
         <div class="flex-horizontal conviction">
           <label id="character-{{_id}}-conviction-uses"><b>{{localize 'BITD.ConvictionUses'}}</b></label>
           <div class="supply conviction-uses">
@@ -577,6 +577,19 @@
             {{#times_from 0 system.conviction_uses.max}}
             <input id="character-{{../_id}}-conviction-uses-{{this}}" type="radio" name="system.conviction_uses.value" value="{{this}}">
             <label class="radio-toggle{{#if (lteq this ../system.conviction_uses.value)}} enabled{{/if}}"></label>
+            {{/times_from}}
+            {{/multiboxes}}
+          </div>
+        </div>
+        {{/if}}
+        {{#if system.tactical_genius}}
+        <div class="flex-horizontal tactical-genius">
+          <label id="character-{{_id}}-tactical-genius-uses"><b>{{localize 'BITD.TacticalGenius'}}</b></label>
+          <div class="supply tactical-genius-uses">
+            {{#multiboxes system.tactical_genius_uses.value}}
+            {{#times_from 0 system.tactical_genius_uses.max}}
+            <input id="character-{{../_id}}-tactical-genius-uses-{{this}}" type="radio" name="system.tactical_genius_uses.value" value="{{this}}">
+            <label class="radio-toggle{{#if (lteq this ../system.tactical_genius_uses.value)}} enabled{{/if}}"></label>
             {{/times_from}}
             {{/multiboxes}}
           </div>
