@@ -32,7 +32,7 @@ export const bladesRollModifierList = {
   },
   assist: {
     name: 'BITD.Assist',
-    rollTypes: ['actionRoll', 'groupAction', 'resistance', 'fortune', 'gatherInfo', 'engagement'],
+    rollTypes: ['actionRoll', 'resistance', 'fortune', 'gatherInfo', 'engagement'],
     fields: {
       'BITD.Connection': [],
       'BITD.TacticalGenius': false,

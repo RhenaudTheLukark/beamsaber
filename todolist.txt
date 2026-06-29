@@ -29,6 +29,8 @@ Changelog since 26/06/22:
 + BUG: Fix Cohort rolls
 + BUG: Fix Conviction usage not taking away Conviction uses
 + Only show Cohort Downtime roll amount when on a Cohort Downtime roll type
++ Remove Assist from Group Action rolls
++ Added new Beamsaber clock styles (courtesy of Scironex)
 + Compendium Items
 	+ Pilot Abilities:
 		+ (A) Travelling Companion => Choose between 1 Quirk or 2 Stress for Vehicle Action Push Yourself
