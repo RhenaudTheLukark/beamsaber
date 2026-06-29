@@ -728,7 +728,8 @@
     "CollateralDie": "Collateral Die",
     "CollateralDieEffect": "You took a collateral die. Its consequences are unavoidable, nor can they be reduced or negated with a resistance roll or armor.",
     "PushYourself": "Push Yourself",
-    "PushYourselfEffect": "You pushed yourself. You suffered <strong>2 Stress</strong> if it was a Pilot action, or expend <strong>1 Quirk</strong> if it was a Vehicle action.",
+    "PushYourselfStressEffect": "You pushed yourself. You suffered <strong>2 Stress</strong>.",
+    "PushYourselfQuirkEffect": "You pushed yourself. You must expend <strong>1 Quirk</strong>.",
     "Assist": "Assist",
     "AssistEffect": "{pilot} assisted you. They took <strong>{num} Stress</strong>. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
     "DowntimeAssistEffect": "{pilot} assisted you, granting you <strong>+1d</strong>.",
@@ -826,6 +827,7 @@
 
     "User": "User",
     "Crewmate": "Crewmate",
+    "Cost": "Cost",
 
     "HunterRobotName": "{characterName}'s Hunter Robot",
 
@@ -877,6 +879,7 @@
     "EndMissionVendetta": "Vendetta with one of their squads at the beginning of the mission",
     "EndMissionDireNeedsNote": "NOTE: The Squad has Dire Needs Earth, meaning they can choose not to lose Trust from breaking ROE<br/>related to the treatment of civilians and enemy soldiers on a mission.",
     "EndMissionHighSociety": "High Society: +1 Trust (Only enable one of these options)",
+    "EndMissionNoTraces": "No Traces: +1 Rep if no Trust loss from the Employer Faction",
     "EndMissionRoEBroken": "Rules of Engagement (RoE) were broken",
     "EndMissionBadImportantInfrastructure": "Important infrastructure that was not the mission's target damaged",
     "EndMissionEmployerSquadHarmed": "A squad that was not the mission's target and belongs to the employer was harmed",
@@ -888,6 +891,7 @@
     "EndMissionFromFactionBonus": " from their Faction's bonus",
     "EndMissionFromFinishingMission": " from finishing the mission",
     "EndMissionFromTrophiesRoom": " from your Trophies Room",
+    "EndMissionFromNoTraces": " from your No Traces Squad Ability",
     "EndMissionLost": "lost",
     "EndMissionGained": "gained",
     "EndMissionTrustRecap": "You <strong>{lostGained} {num} Trust</strong> with your {titleText} Faction, {faction}.",
@@ -916,6 +920,7 @@
       "Forgettable": "Since you are forgettable, this interaction may be forgotten by the involved party until you interact with them again.",
       "WorkHardPlayHard": "The Pilot you Cut Loose with is allowed to make a free Cut Loose roll of their own, but if one of the Pilots overindulge, they both do.",
       "Broadcast": "Since you pushed yourself, you can do one of the following in addition to the normal benefits:<ul><li>Use your mind to instill a powerful, undirected emotion in others,</li><li>Paralyze a person with your mind or voice.</li></ul>",
+      "EmojiTitle": "Emoji: Communicating with Digital Entities?",
       "DaredevilTitle": "Daredevil: From Desperate Action?",
       "TelepathyTitle": "Telepathy: Use the Leader's Action Rating instead of yours?",
       "Telepathy": "Thanks to {owner}'s Telepathy, your skill for this action equals that of {leader}, the group action's leader.<br/>{owner} also suffers <strong>1 Stress</strong>.",

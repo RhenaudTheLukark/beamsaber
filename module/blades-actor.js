@@ -194,8 +194,8 @@ export class BladesActor extends Actor {
 
     // Fetch roll modifiers
     let [_, allPermanentModifiers, allConditionalModifiers] = this.getModifiers();
-    allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, this);
-    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this);
+    allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, this, attributeName);
+    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this, attributeName);
     allConditionalModifiers = pruneInvalidConditionalRollModifiers(this, allConditionalModifiers);
 
     let isAction = BladesHelpers.isAttributeAction(attributeName);

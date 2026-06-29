@@ -15,11 +15,20 @@ export const bladesRollModifierList = {
     name: 'BITD.PushYourself',
     rollTypes: ['actionRoll', 'groupAction', 'fortune'],
     fields: {
+      'BITD.Cost': [],
       'BITD.Effect': ['BITD.ExtraDie', 'BITD.ImprovedEffect', 'BITD.IgnoreHarmDamage']
     },
     resolveFunc: (fields, extraData) => {
-      return { stress: extraData.isVehicle ? 0 : 2, dice: fields['BITD.Effect'] == 'BITD.ExtraDie' ? 1 : 0, effect: fields['BITD.Effect'] == 'BITD.ImprovedEffect' ? 1 : 0, rollText: 'BITD.PushYourselfEffect', pushYourself: true };
-    }
+      let isStress = fields['BITD.Cost'] ? fields['BITD.Cost'] == 'BITD.Stress' : !extraData.isVehicle;
+      return {
+        stress: isStress ? 2 : 0,
+        dice: fields['BITD.Effect'] == 'BITD.ExtraDie' ? 1 : 0,
+        effect: fields['BITD.Effect'] == 'BITD.ImprovedEffect' ? 1 : 0,
+        rollText: `BITD.PushYourself${isStress ? 'Stress' : 'Quirk'}Effect`,
+        pushYourself: true
+      };
+    },
+    push_yourself: true
   },
   assist: {
     name: 'BITD.Assist',
@@ -85,6 +94,11 @@ export const bladesRollModifierList = {
     hidden: true,
     needPushYourself: true,
     rollText: 'BITD.AbilityUpgrade.Broadcast'
+  },
+  emoji: {
+    name: 'BITD.AbilityUpgrade.EmojiTitle',
+    rollTypes: ['actionRoll', 'groupAction'],
+    effect: 1
   },
   farsight: {
     rollType: 'gatherInfo',
@@ -2277,7 +2291,7 @@ function computeModifierMessages(modifiers) {
   return output;
 }
 
-export async function resolveRollModifierArray(modifiers, actor) {
+export async function resolveRollModifierArray(modifiers, actor, attributeName) {
   let output = [];
   if (modifiers)
     for (let [key, value] of Object.entries(modifiers)) {
@@ -2285,7 +2299,15 @@ export async function resolveRollModifierArray(modifiers, actor) {
         if (Object.keys(bladesRollModifierList).includes(key)) {
           let result = foundry.utils.deepClone(bladesRollModifierList[key]);
           result.key = key;
-          if (result.assist) {
+          if (result.push_yourself) {
+            // Push Yourself: Choose the right cost
+            if (actor.type != 'character') continue;
+            let attribute = BladesHelpers.getAttributeFromAction(attributeName);
+            if (actor.system.travelling_companion && (['expertise', 'acuity'].includes(attribute) || ['expertise', 'acuity'].includes(attributeName)))
+              result.fields['BITD.Cost'] = ['BITD.Quirks', 'BITD.Stress'];
+            else
+              result.fields['BITD.Cost'] = undefined;
+          } else if (result.assist) {
             // Assist: List all Connections from other Pilots with at least 1 tick
             if (actor.type != 'character') continue;
             result.fields['BITD.Connection'] = {};
@@ -2400,6 +2422,8 @@ export function buildConditionalModifiersHTML(modifiers, actorFull) {
     output += `<div class="modifier" data-modifier="${modifier.key}" data-modifier-id=${id}><label><input type="checkbox"> ${title}</label>`;
     if (modifier.fields) {
       for (let [fieldName, fieldDataArray] of Object.entries(modifier.fields)) {
+        if (fieldDataArray == undefined)
+          continue;
         let multiple = fieldName == 'BITD.Effects';
         output += `<span><label>${game.i18n.localize(fieldName)}</label><select field="${fieldName}"${multiple ? ' data-tooltip="BITD.MultipleSelectUsage" multiple': ''}>`
         let first = true;

@@ -175,6 +175,12 @@
       <label>{{{localize 'BITD.EndMissionHighSociety'}}}</label>
     </div>
     {{/if}}
+    {{#if extraData.noTraces}}
+    <div class="form-group-inline">
+      <input type="checkbox" class="automated" name="employerNoTraces">
+      <label>{{{localize 'BITD.EndMissionNoTraces'}}}</label>
+    </div>
+    {{/if}}
   </fieldset>
   <div class="category-collapse">{{localize 'BITD.EndMissionPatronFaction'}} ({{localize 'BITD.EndMissionClickHereToExpand'}})</div>
   <fieldset class="collapse-category collapsed-category">

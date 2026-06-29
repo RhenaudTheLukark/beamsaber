@@ -1,7 +1,52 @@
 {
   "name": "(L) Leverage",
   "type": "crew_ability",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Leverage Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_ability.Item.78pcXUWldtBQxGQA",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "rHh2H6fSUW7QoRqE",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.leverage",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1782675727851,
+        "modifiedTime": 1782675744203,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!78pcXUWldtBQxGQA.rHh2H6fSUW7QoRqE"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -27,6 +72,11 @@
     "description": "<p>Your squad supplies contraband for all Factions. Your success is good for them. Whenever you gain Rep, gain an extra +1 Rep.</p>",
     "class": "Logistics",
     "price": "1",
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
     "purchased": false,
     "class_default": false,
     "activation": {
@@ -49,16 +99,19 @@
       "long": null,
       "units": ""
     },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
     "consume": {
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item"
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!78pcXUWldtBQxGQA"

@@ -1,7 +1,52 @@
 {
   "name": "(Em) Emoji",
   "type": "ability",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Emoji Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.h6Vhgf56jEpfXP8w",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "NBaEiDrvkeW3V3M7",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.conditional_roll_modifiers.emoji",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1782682232350,
+        "modifiedTime": 1782682254125,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!h6Vhgf56jEpfXP8w.NBaEiDrvkeW3V3M7"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -13,7 +58,7 @@
     "systemId": "beamsaber",
     "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": 1768054065346,
+    "modifiedTime": 1782682266198,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.WDKuTgAeNUprMl8y",
     "duplicateSource": null,
@@ -26,9 +71,11 @@
   "system": {
     "description": "<p>You know the secret method for interacting with apps or AIs as if they were normal humans, regardless of how corrupted or rampant it appears. You have increased Effect when communicating with digital entities.</p>",
     "class": "Empath",
-    "price": "1",
+    "price": 1,
     "uses": {
-      "max": "0"
+      "max": 0,
+      "value": 1,
+      "per": null
     },
     "purchased": false,
     "class_default": false,
@@ -57,7 +104,16 @@
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": ""
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!h6Vhgf56jEpfXP8w"

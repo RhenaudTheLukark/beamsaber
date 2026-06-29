@@ -131,9 +131,9 @@ export class BladesHelpers {
     return [resultString.trimStart(), statusDelta];
   }
 
-  static async handleReputation(squadFull, repChange, set = false, reason = '') {
+  static async handleReputation(squadFull, repChange, reason = '') {
     let maxRep = Number(squadFull.system.reputation.max) - Number(squadFull.system.heart);
-    let resultRep = Math.max(set ? Number(repChange) : (Number(squadFull.system.reputation.value) + Number(repChange)), 0);
+    let resultRep = Math.max(Number(squadFull.system.reputation.value) + repChange + ((repChange > 0 && squadFull.system.leverage) ? 1 : 0), 0);
     let repDelta = resultRep - Number(squadFull.system.reputation.value);
     let squadHold = squadFull.system.hold;
     let oldSquadHold = squadHold;

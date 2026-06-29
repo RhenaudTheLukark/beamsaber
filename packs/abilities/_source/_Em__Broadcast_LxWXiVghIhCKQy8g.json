@@ -58,7 +58,7 @@
     "systemId": "beamsaber",
     "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": 1768054058920,
+    "modifiedTime": 1782682264807,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.nSS4ghb0TMuNWMN2",
     "duplicateSource": null,
@@ -71,9 +71,11 @@
   "system": {
     "description": "<p>When you push yourself, you can do one of the following in addition to the normal benefits:<br>- Use your mind to instill a powerful, undirected emotion in others.<br>- Paralyze a person with your mind or voice.</p>",
     "class": "Empath",
-    "price": "1",
+    "price": 1,
     "uses": {
-      "max": "0"
+      "max": 0,
+      "value": 1,
+      "per": null
     },
     "purchased": false,
     "class_default": false,
@@ -102,7 +104,16 @@
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": ""
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!LxWXiVghIhCKQy8g"
