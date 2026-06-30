@@ -58,7 +58,7 @@
     "systemId": "beamsaber",
     "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": 1768054033764,
+    "modifiedTime": 1782856919979,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.YSexn4QEH6EmMxpe",
     "duplicateSource": null,
@@ -71,9 +71,11 @@
   "system": {
     "description": "<p>When you successfully Sway someone, you may cause them to forget that it's happened until they next interact with you.</p>",
     "class": "Bureaucrat",
-    "price": "1",
+    "price": 1,
     "uses": {
-      "max": "0"
+      "max": 0,
+      "value": 1,
+      "per": null
     },
     "purchased": false,
     "class_default": false,
@@ -102,7 +104,16 @@
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": ""
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!elq5RDNwt0dUTZNx"

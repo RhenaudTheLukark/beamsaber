@@ -138,15 +138,18 @@ $supply_margin: 3px;
         flex-direction: row;
       }
     }
+
     &:not(.trauma) {
       .small-teeth-wrap {
         @include toothradio(17px, 30px, "assets/teeth/shorttooth-grey.png", "assets/teeth/shorttooth-red.png");
       }
     }
-  }
 
-  .trauma-list {
-    @include check_underscore();
+    &.trauma {
+      .small-teeth-wrap {
+        @include toothradio(17px, 30px, "assets/teeth/shorttooth-grey.png", "assets/teeth/shorttooth-red.png", false);
+      }
+    }
   }
 }
 

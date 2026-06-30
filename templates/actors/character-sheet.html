@@ -148,55 +148,34 @@
       {{/times_from}}
       {{/multiboxes}}
     </div>
+
     <div id="character-{{_id}}-trauma-container" class="small-teeth-container trauma">
-      {{#traumacounter system.trauma.list}}
       <div id="character-{{_id}}-trauma" class="small-teeth-wrap">
-        <!--<label class="black-label" for="character-{{_id}}-trauma-counter-0">{{localize system.trauma.name}}</label>-->
-        <div class="black-label">{{localize system.trauma.name}}</div>
+        <div class="black-label">{{localize 'BITD.Trauma'}}</div>
         <div id="character-{{_id}}-trauma-teeth" class="small-teeth">
-          <input type="radio" id="character-{{_id}}-trauma-counter-0" name="system.trauma.value" value="0">
+          {{#multiboxes system.trauma.value}}
+          <input type="radio" id="character-{{_id}}-trauma-counter-0" name="system.trauma.value" data-dType="Number" value="0" disabled>
           {{#times_from 1 system.trauma.max}}
-          <input type="radio" id="character-{{../_id}}-trauma-counter-{{this}}" name="system.trauma.value" value="{{this}}" disabled>
+          <input type="radio" id="character-{{../_id}}-trauma-counter-{{this}}" name="system.trauma.value" data-dType="Number" value="{{this}}" disabled>
           <label for="character-{{../_id}}-trauma-counter-{{this}}"></label>
           {{/times_from}}
+          {{/multiboxes}}
         </div>
       </div>
-      {{/traumacounter}}
     </div>
 
-    <div id="character-{{_id}}-trauma-list" class="trauma-list">
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.cold" value="cold" {{checked system.trauma.list.cold}}>
-        <span class="checkmark">{{localize system.trauma.options.[0]}}</span>
-      </label>
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.haunted" value="haunted" {{checked system.trauma.list.haunted}}>
-        <span class="checkmark">{{localize system.trauma.options.[1]}}</span>
-      </label>
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.obsessed" value="obsessed" {{checked system.trauma.list.obsessed}}>
-        <span class="checkmark">{{localize system.trauma.options.[2]}}</span>
-      </label>
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.paranoid" value="paranoid" {{checked system.trauma.list.paranoid}}>
-        <span class="checkmark">{{localize system.trauma.options.[3]}}</span>
-      </label>
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.reckless" value="reckless" {{checked system.trauma.list.reckless}}>
-        <span class="checkmark">{{localize system.trauma.options.[4]}}</span>
-      </label>
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.soft" value="soft" {{checked system.trauma.list.soft}}>
-        <span class="checkmark">{{localize system.trauma.options.[5]}}</span>
-      </label>
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.unstable" value="unstable" {{checked system.trauma.list.unstable}}>
-        <span class="checkmark">{{localize system.trauma.options.[6]}}</span>
-      </label>
-      <label>
-        <input type="checkbox" data-dType="Boolean" name="system.trauma.list.vicious" value="vicious" {{checked system.trauma.list.vicious}}>
-        <span class="checkmark">{{localize system.trauma.options.[7]}}</span>
-      </label>
+    <div id="character-{{_id}}-trauma-list" class="trauma-list grow-two">
+      {{#each traumaList as |traumaInfo id|}}
+      {{#if (or @first (leq traumaInfo.id (add 1 (div ../system.trauma.max 2))))}}
+      <div class="two-line flex-horizontal">
+      {{/if}}
+        <div class="item-block grow-one">
+          <input type="text" name="system.trauma.values.{{traumaInfo.traumaId}}" value="{{traumaInfo.value}}" placeholder=" ">
+        </div>
+      {{#if (or (leq traumaInfo.id (div ../system.trauma.max 2)) @last)}}
+      </div>
+      {{/if}}
+      {{/each}}
     </div>
   </div>
 

@@ -24,22 +24,9 @@ To Re-Implement:
 	Pilot Abilities:
 		- (Em) Carouse => Do not make the other roll a Cut Loose roll, but a special Stress Loss roll
 
-Changelog since 26/06/22:
-+ Made it so the Group Action Roll Result button is GM-only
-+ BUG: Fix Cohort rolls
-+ BUG: Fix Conviction usage not taking away Conviction uses
-+ Only show Cohort Downtime roll amount when on a Cohort Downtime roll type
-+ Remove Assist from Group Action rolls
-+ Added new Beamsaber clock styles (courtesy of Scironex)
-+ Compendium Items
-	+ Pilot Abilities:
-		+ (A) Travelling Companion => Choose between 1 Quirk or 2 Stress for Vehicle Action Push Yourself
-		+ (Em) Emoji => Second part: Make it a modifier for Action rolls
-		+ (O) Tactical Genius => Display two checkboxes for uses, make it a roll modifier, refresh on mission start
-	+ Squad Abilities:
-		+ (█) Dire Needs => Add a note to it in the End Mission pipeline
-		+ (█) No Traces => First effect: Half rep gain from Hidden mission, Second effect: +1 Rep if no trust loss with the Employer Faction
-		+ (L) Leverage => Add +1 Rep when gaining Rep
+Changelog since 26/06/29:
++ Fix Successful Mission Trust Gain
++ Updated Character Scars to be empty boxes
 
 + => Means it's done
 - => Means it has to be done

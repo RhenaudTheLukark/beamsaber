@@ -50,9 +50,17 @@
 }
 
 .big-teeth-section {
-  .small-teeth-container.trauma {
-    .small-teeth-wrap {
-      @include toothradio(17px, 30px, "assets/teeth/shorttooth-grey.png", "assets/teeth/shorttooth-red.png", false);
+  .trauma-list {
+    input[type=text]:not(:placeholder-shown) {
+      background: rgba(255, 0, 0, 0.1);
+    }
+  }
+
+  .character-stress {
+    label {
+      &[for$="-0"] {
+        margin-right: 0px;
+      }
     }
   }
 }
@@ -121,14 +129,6 @@ table.drive-table {
     padding: 0.25em;
     font-weight: bold;
     text-align: center;
-  }
-}
-
-.character-stress {
-  label {
-    &[for$="-0"] {
-      margin-right: 0px;
-    }
   }
 }
 

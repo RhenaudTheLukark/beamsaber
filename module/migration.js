@@ -114,6 +114,23 @@ export const _migrateSceneData = function(scene) {
 async function _migrateActor(actor, version) {
   let updateData = null;
 
+  if (version < 4.1) {
+    if (actor.type == 'character') {
+      updateData = {
+        'system.==trauma': {
+          'value': 0,
+          'max': 4,
+          'values': {
+            'one': '',
+            'two': '',
+            'three': '',
+            'four': ''
+          }
+        }
+      };
+    }
+  }
+
   return updateData ?? {};
 }
 

@@ -32,8 +32,13 @@ export class BladesHelpers {
       for (let [k, v] of Object.entries(obj)) {
         if (ignoredFields.includes(k))
           { /* Nothing */ }
-        else if (output[k] !== undefined)
-          output[k] += v;
+        else if (output[k] !== undefined) {
+          let key = k;
+          if (typeof v === 'object')
+            output[k] = this.mergeAddObjects(output[k], [], v);
+          else
+            output[k] += v;
+        }
         else
           output[k] = v;
       }

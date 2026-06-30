@@ -5628,39 +5628,43 @@
 .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap input:checked + label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap input.checked + label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap label.input:checked + label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap label.input.checked + label {
   background-image: url("assets/teeth/shorttooth-red.png");
 }
-.beamsaber.app.sheet.actor .big-teeth-section .trauma-list {
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
 }
-.beamsaber.app.sheet.actor .big-teeth-section .trauma-list label {
-  cursor: pointer;
-  font-size: 19px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  margin-right: 10px;
-  transition: filter 0.1s;
-  cursor: pointer;
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
+  height: 30px;
+  width: 17px;
+  background-image: url("assets/teeth/shorttooth-red.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-right: 5px;
 }
-.beamsaber.app.sheet.actor .big-teeth-section .trauma-list label:hover {
-  filter: brightness(0.8);
-  opacity: 0.9;
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input):last-of-type {
+  margin-right: 0px;
 }
-.beamsaber.app.sheet.actor .big-teeth-section .trauma-list label {
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] {
+  width: auto;
+  height: auto;
+  background-image: none !important;
+  color: #EEEFFF;
+}
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] i {
+  margin-top: 4px;
+}
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
+  cursor: not-allowed;
+}
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
   /* Hide the browser's default checkbox */
 }
-.beamsaber.app.sheet.actor .big-teeth-section .trauma-list label input {
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input {
   display: none;
 }
-.beamsaber.app.sheet.actor .big-teeth-section .trauma-list label input:checked ~ .checkmark {
-  color: red;
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked ~ label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked ~ label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked ~ label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked ~ label {
+  background-image: url("assets/teeth/shorttooth-grey.png");
 }
-.beamsaber.app.sheet.actor .big-teeth-section .trauma-list label .checkmark {
-  text-decoration: none;
-  font-weight: bold;
+.beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked + label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked + label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked + label, .beamsaber.app.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked + label {
+  background-image: url("assets/teeth/shorttooth-red.png");
 }
 .beamsaber.app.sheet.actor .trust-block, .beamsaber.app.sheet.actor .beliefs-block, .beamsaber.app.sheet.actor .status-block {
   text-align: center;
@@ -5979,39 +5983,43 @@
 .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap input:checked + label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap input.checked + label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap label.input:checked + label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container:not(.trauma) .small-teeth-wrap label.input.checked + label {
   background-image: url("assets/teeth/shorttooth-red.png");
 }
-.beamsaber.application.sheet.actor .big-teeth-section .trauma-list {
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
 }
-.beamsaber.application.sheet.actor .big-teeth-section .trauma-list label {
-  cursor: pointer;
-  font-size: 19px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  margin-right: 10px;
-  transition: filter 0.1s;
-  cursor: pointer;
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
+  height: 30px;
+  width: 17px;
+  background-image: url("assets/teeth/shorttooth-red.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-right: 5px;
 }
-.beamsaber.application.sheet.actor .big-teeth-section .trauma-list label:hover {
-  filter: brightness(0.8);
-  opacity: 0.9;
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input):last-of-type {
+  margin-right: 0px;
 }
-.beamsaber.application.sheet.actor .big-teeth-section .trauma-list label {
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] {
+  width: auto;
+  height: auto;
+  background-image: none !important;
+  color: #EEEFFF;
+}
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] i {
+  margin-top: 4px;
+}
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
+  cursor: not-allowed;
+}
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
   /* Hide the browser's default checkbox */
 }
-.beamsaber.application.sheet.actor .big-teeth-section .trauma-list label input {
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input {
   display: none;
 }
-.beamsaber.application.sheet.actor .big-teeth-section .trauma-list label input:checked ~ .checkmark {
-  color: red;
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked ~ label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked ~ label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked ~ label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked ~ label {
+  background-image: url("assets/teeth/shorttooth-grey.png");
 }
-.beamsaber.application.sheet.actor .big-teeth-section .trauma-list label .checkmark {
-  text-decoration: none;
-  font-weight: bold;
+.beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked + label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked + label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked + label, .beamsaber.application.sheet.actor .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked + label {
+  background-image: url("assets/teeth/shorttooth-red.png");
 }
 .beamsaber.application.sheet.actor .trust-block, .beamsaber.application.sheet.actor .beliefs-block, .beamsaber.application.sheet.actor .status-block {
   text-align: center;
@@ -6599,43 +6607,11 @@
   width: 50%;
   gap: 2em;
 }
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
-  display: flex;
+.beamsaber.app.sheet.actor.character .big-teeth-section .trauma-list input[type=text]:not(:placeholder-shown) {
+  background: rgba(255, 0, 0, 0.1);
 }
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
-  height: 30px;
-  width: 17px;
-  background-image: url("assets/teeth/shorttooth-red.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin-right: 5px;
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input):last-of-type {
+.beamsaber.app.sheet.actor.character .big-teeth-section .character-stress label[for$="-0"] {
   margin-right: 0px;
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] {
-  width: auto;
-  height: auto;
-  background-image: none !important;
-  color: #EEEFFF;
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] i {
-  margin-top: 4px;
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
-  cursor: not-allowed;
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
-  /* Hide the browser's default checkbox */
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input, .beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input {
-  display: none;
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked ~ label, .beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked ~ label, .beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked ~ label, .beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked ~ label {
-  background-image: url("assets/teeth/shorttooth-grey.png");
-}
-.beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked + label, .beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked + label, .beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked + label, .beamsaber.app.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked + label {
-  background-image: url("assets/teeth/shorttooth-red.png");
 }
 .beamsaber.app.sheet.actor.character table.drive-table th:nth-child(2), .beamsaber.app.sheet.actor.character table.drive-table th:nth-child(3), .beamsaber.app.sheet.actor.character table.drive-table td:nth-child(2), .beamsaber.app.sheet.actor.character table.drive-table td:nth-child(3) {
   width: 98px;
@@ -6682,9 +6658,6 @@
   padding: 0.25em;
   font-weight: bold;
   text-align: center;
-}
-.beamsaber.app.sheet.actor.character .character-stress label[for$="-0"] {
-  margin-right: 0px;
 }
 .beamsaber.app.sheet.actor.character .abilities .item-name, .beamsaber.app.sheet.actor.character .loadout .item-name, .beamsaber.app.sheet.actor.character .mech-load .item-name {
   width: 100px;
@@ -6952,43 +6925,11 @@
   width: 50%;
   gap: 2em;
 }
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
-  display: flex;
+.beamsaber.application.sheet.actor.character .big-teeth-section .trauma-list input[type=text]:not(:placeholder-shown) {
+  background: rgba(255, 0, 0, 0.1);
 }
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
-  height: 30px;
-  width: 17px;
-  background-image: url("assets/teeth/shorttooth-red.png");
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin-right: 5px;
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input):last-of-type {
+.beamsaber.application.sheet.actor.character .big-teeth-section .character-stress label[for$="-0"] {
   margin-right: 0px;
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] {
-  width: auto;
-  height: auto;
-  background-image: none !important;
-  color: #EEEFFF;
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input)[for$="-0"] i {
-  margin-top: 4px;
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label:not(.input) {
-  cursor: not-allowed;
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap {
-  /* Hide the browser's default checkbox */
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input, .beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input {
-  display: none;
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked ~ label, .beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked ~ label, .beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked ~ label, .beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked ~ label {
-  background-image: url("assets/teeth/shorttooth-grey.png");
-}
-.beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input:checked + label, .beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap input.checked + label, .beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input:checked + label, .beamsaber.application.sheet.actor.character .big-teeth-section .small-teeth-container.trauma .small-teeth-wrap label.input.checked + label {
-  background-image: url("assets/teeth/shorttooth-red.png");
 }
 .beamsaber.application.sheet.actor.character table.drive-table th:nth-child(2), .beamsaber.application.sheet.actor.character table.drive-table th:nth-child(3), .beamsaber.application.sheet.actor.character table.drive-table td:nth-child(2), .beamsaber.application.sheet.actor.character table.drive-table td:nth-child(3) {
   width: 98px;
@@ -7035,9 +6976,6 @@
   padding: 0.25em;
   font-weight: bold;
   text-align: center;
-}
-.beamsaber.application.sheet.actor.character .character-stress label[for$="-0"] {
-  margin-right: 0px;
 }
 .beamsaber.application.sheet.actor.character .abilities .item-name, .beamsaber.application.sheet.actor.character .loadout .item-name, .beamsaber.application.sheet.actor.character .mech-load .item-name {
   width: 100px;

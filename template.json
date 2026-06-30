@@ -97,22 +97,15 @@
         "name": "BITD.Stress"
       },
       "trauma": {
-        "max": 4,
-        "max_default": 4,
         "value": 0,
-        "name": "BITD.Trauma",
-        "name_default": "BITD.Trauma",
-        "options": [
-          "BITD.TraumaCold",
-          "BITD.TraumaHaunted",
-          "BITD.TraumaObsessed",
-          "BITD.TraumaParanoid",
-          "BITD.TraumaReckless",
-          "BITD.TraumaSoft",
-          "BITD.TraumaUnstable",
-          "BITD.TraumaVicious"
-        ],
-        "list": []
+        "max": 4,
+        "values": {
+          "one": "",
+          "two": "",
+          "three": "",
+          "four": "",
+          "five": ""
+        }
       },
       "healing_clock": {
         "value": 0,

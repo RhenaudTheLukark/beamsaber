@@ -21,7 +21,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.character_modifier.trauma.max",
+          "key": "system.modifiers.character.trauma.max",
           "mode": 2,
           "value": "1",
           "priority": 30
@@ -41,7 +41,7 @@
         "systemId": "beamsaber",
         "systemVersion": "0.5.3",
         "createdTime": 1764301778482,
-        "modifiedTime": 1766208689590,
+        "modifiedTime": 1782859109704,
         "lastModifiedBy": "YR7rqLkjCwcJpOjY"
       },
       "_key": "!items.effects!hDlsjbOIamYF9hib.9C0NqwZYeLu83Z9Q"
@@ -54,12 +54,12 @@
   },
   "_id": "hDlsjbOIamYF9hib",
   "_stats": {
-    "coreVersion": "13.350",
-    "systemId": null,
-    "systemVersion": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1782859110446,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.ZDLjBwbovQma9n1g",
     "duplicateSource": null,
     "exportSource": null
@@ -71,7 +71,12 @@
   "system": {
     "description": "<p>Each pilot gets +1 Scar box. This costs three squad upgrades to unlock.</p>",
     "class": "Frontline",
-    "price": "3",
+    "price": 3,
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
     "purchased": false,
     "class_default": false,
     "logic": "",
@@ -95,17 +100,28 @@
       "long": null,
       "units": ""
     },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
     "consume": {
       "type": "",
       "target": null,
       "amount": null
     },
-    "crew_type": ""
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "crew_type": "",
+    "training_center_type": "Adepts",
+    "gang_types": [
+      "Adepts",
+      "Rooks",
+      "Rovers",
+      "Skulks",
+      "Toughs"
+    ]
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!hDlsjbOIamYF9hib"

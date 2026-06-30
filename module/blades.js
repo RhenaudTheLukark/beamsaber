@@ -137,52 +137,19 @@ Hooks.once("init", async function () {
     return html;
   });
 
-  // Trauma Counter
-  Handlebars.registerHelper('traumacounter', function (selected, options) {
-    let html = options.fn(this);
-    var count = 0;
-    for (const trauma in selected)
-      if (selected[trauma] === true)
-        count++;
+  Handlebars.registerHelper('leq', (a, b) => a == b);
+  Handlebars.registerHelper('lteq', (a, b) => Number(a) <= Number(b));
+  Handlebars.registerHelper('gteq', (a, b) => Number(a) >= Number(b));
+  Handlebars.registerHelper('not', (a) => !a);
 
-    const rgx = new RegExp('value=[\"\']' + count + '[\"\']');
-    return html.replace(rgx, "$& checked");
-  });
+  Handlebars.registerHelper('and', (a, b) => a && b);
+  Handlebars.registerHelper('xor', (a, b) => a ^ b);
+  Handlebars.registerHelper('or', (a, b) => a || b);
 
-  Handlebars.registerHelper('and', (a, b) => {
-    return a && b;
-  });
-
-  Handlebars.registerHelper('xor', (a, b) => {
-    return a ^ b;
-  });
-
-  Handlebars.registerHelper('or', (a, b) => {
-    return a || b;
-  });
-
-  Handlebars.registerHelper('not', (a) => {
-    return !a;
-  });
-
-  //Less than comparison
-  Handlebars.registerHelper('lteq', (a, b) => {
-    return (Number(a) <= Number(b));
-  });
-
-  //Greater than comparison
-  Handlebars.registerHelper('gteq', (a, b) => {
-    return (Number(a) >= Number(b));
-  });
-
-  Handlebars.registerHelper('oneless', (a) => {
-    return (a - 1);
-  });
+  Handlebars.registerHelper('oneless', (a) => a - 1);
 
   // Checks if an array is empty
-  Handlebars.registerHelper('isempty', (a) => {
-    return a.length == 0;
-  });
+  Handlebars.registerHelper('isempty', (a) => a.length == 0);
 
   //Reputation and Turf Bar on Squad Sheet
   Handlebars.registerHelper('rep_heart', (_id, heart, max_rep, options) => {
@@ -248,11 +215,9 @@ Hooks.once("init", async function () {
   // Usage: (concat 'first' 'second')
   Handlebars.registerHelper('concat', function () {
     var outStr = '';
-    for (var arg in arguments) {
-      if (typeof arguments[arg] != 'object') {
+    for (var arg in arguments)
+      if (typeof arguments[arg] != 'object')
         outStr += arguments[arg];
-      }
-    }
     return outStr;
   });
 
@@ -381,8 +346,16 @@ Hooks.once("init", async function () {
 
   Handlebars.registerHelper('modulo', (target, divisor) => target % divisor);
 
-  Handlebars.registerHelper('add', (a, b) => { return Number(a) + Number(b); });
-  Handlebars.registerHelper('minus', (a, b) => { return Number(a) - Number(b); });
+  Handlebars.registerHelper('add', (a, b) => Number(a) + Number(b));
+  Handlebars.registerHelper('minus', (a, b) => Number(a) - Number(b));
+
+  Handlebars.registerHelper('mult', (a, b) => Number(a) * Number(b));
+  Handlebars.registerHelper('div', (a, b, roundUp = true) => {
+    let res = Number(a) / Number(b);
+    if (roundUp) res = Math.ceil(res);
+    else res = Math.floor(res);
+    return res;
+  });
 
   Handlebars.registerHelper('number-to-roman', function (num) {
     let result = "?";
@@ -414,7 +387,7 @@ Hooks.once("ready", async function () {
 
   // Determine whether a system migration is required
   const currentVersion = game.settings.get("beamsaber", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = 4.0;
+  const NEEDS_MIGRATION_VERSION = 4.1;
   const needsMigration = currentVersion != null && currentVersion < NEEDS_MIGRATION_VERSION;
 
   // Perform the migration

@@ -94,6 +94,23 @@ export class BladesCharacterSheet extends BladesSheet {
       };
     }
 
+    let idToNumber = {
+      1: 'one',
+      2: 'two',
+      3: 'three',
+      4: 'four',
+      5: 'five',
+      6: 'six',
+      7: 'seven',
+      8: 'eight',
+    }
+    sheetData.traumaList = {};
+    for (let [id, traumaId] of Object.entries(idToNumber)) {
+      if (id > sheetData.system.trauma.max)
+        break;
+      sheetData.traumaList[id] = {id: id, traumaId: traumaId, value: sheetData.system.trauma.values[traumaId]};
+    }
+
     /*sheetData.system.description = await foundry.applications.ux.TextEditor.enrichHTML(sheetData.system.description, {
       secrets: sheetData.owner,
       async: true
@@ -319,6 +336,16 @@ export class BladesCharacterSheet extends BladesSheet {
     // Remove Region from character sheet
     html.find('.delete-region').click(async ev => {
       await BladesHelpers.removeCharacterRegion(this.actor);
+    });
+
+    // Update Scar Count
+    html.find('.trauma-list input').change(async ev => {
+      let count = Object.values(this.actor.system.trauma.values).filter(s => s != '').length;
+      let currentInput = ev.currentTarget.attributes.name.value.split('.').reverse()[0];
+      let oldValue = this.actor.system.trauma.values[currentInput];
+      if (oldValue != '' && ev.currentTarget.value == '') count--;
+      if (oldValue == '' && ev.currentTarget.value != '') count++;
+      await BladesHelpers.tryUpdate(this.actor, {'system.trauma.value': count});
     });
 
     // Delete Connection

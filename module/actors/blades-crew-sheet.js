@@ -250,8 +250,8 @@ export class BladesSquadSheet extends BladesSheet {
     for (let member of Object.values(this.actor.system.members)) {
       let memberFull = BladesHelpers.resolveActor(member.uuid);
       if (!memberFull || memberFull.type != 'character') continue;
-      let scars = Number(memberFull.system.trauma.value);
-      if (scars > 0 && !memberFull.system.downtime_activities.cutLoose)
+      let trauma = Number(memberFull.system.trauma.value);
+      if (trauma > 0 && !memberFull.system.downtime_activities.cutLoose)
         scarredPilotsWithNoCutLoose.push(memberFull);
     }
     extraData.scarredPilots = scarredPilotsWithNoCutLoose.map(p => `<option value="${p.uuid}" selected>${p.name}</option>`);
@@ -285,10 +285,10 @@ export class BladesSquadSheet extends BladesSheet {
           let cutLooseScarMessage = '';
           for (let selectedOption of selectedOptions) {
             let memberFull = BladesHelpers.resolveActor(selectedOption.value);
-            let scars = Number(memberFull.system.trauma.value);
-            let resultStress = Math.max(Math.min(Number(memberFull.system.stress.value) + scars, memberFull.system.stress.max), 0);
+            let trauma = Number(memberFull.system.trauma.value);
+            let resultStress = Math.max(Math.min(Number(memberFull.system.stress.value) + trauma, memberFull.system.stress.max), 0);
             await BladesHelpers.tryUpdate(memberFull, {system: {stress: {'==value': resultStress}}});
-            cutLooseScarMessage += ` ${game.i18n.format('BITD.StartMissionNoCutLooseScarPilotEffect', {pilot: memberFull.name, num: scars})}`;
+            cutLooseScarMessage += ` ${game.i18n.format('BITD.StartMissionNoCutLooseScarPilotEffect', {pilot: memberFull.name, num: trauma})}`;
           }
           if (cutLooseScarMessage)
             messageContents += `<div class="description"><p>${game.i18n.localize('BITD.StartMissionNoCutLooseScarEffect')}${cutLooseScarMessage}</p></div>`;

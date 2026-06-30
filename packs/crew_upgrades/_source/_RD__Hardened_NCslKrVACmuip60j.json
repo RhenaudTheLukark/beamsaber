@@ -54,12 +54,12 @@
   },
   "_id": "NCslKrVACmuip60j",
   "_stats": {
-    "coreVersion": "13.350",
-    "systemId": null,
-    "systemVersion": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1782859113820,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.Y8HGHjQ2UdTpmnPZ",
     "duplicateSource": null,
     "exportSource": null
@@ -71,7 +71,12 @@
   "system": {
     "description": "<p>Each pilot gets +1 Scar box. This costs three squad upgrades to unlock.</p>",
     "class": "R&D",
-    "price": "3",
+    "price": 3,
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
     "purchased": false,
     "class_default": false,
     "logic": "",
@@ -95,17 +100,28 @@
       "long": null,
       "units": ""
     },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
     "consume": {
       "type": "",
       "target": null,
       "amount": null
     },
-    "crew_type": ""
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "crew_type": "",
+    "training_center_type": "Adepts",
+    "gang_types": [
+      "Adepts",
+      "Rooks",
+      "Rovers",
+      "Skulks",
+      "Toughs"
+    ]
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!NCslKrVACmuip60j"
