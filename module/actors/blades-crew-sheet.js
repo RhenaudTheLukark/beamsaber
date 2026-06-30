@@ -475,7 +475,7 @@ export class BladesSquadSheet extends BladesSheet {
           if (dialog.element.querySelector('[name="employerRoEBroken"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-2, employerTrust, employerTrustLossPrevention);
           if (dialog.element.querySelector('[name="employerBadImportantInfrastructure"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-2, employerTrust, employerTrustLossPrevention);
           if (dialog.element.querySelector('[name="employerSquadHarmed"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-2, employerTrust, employerTrustLossPrevention);
-          if (dialog.element.querySelector('[name="employerSuccessfulMission"]').checked) employerTrust += Math.min(Number(dialog.element.querySelector('[name="employerSuccessfulMissionSquadTier"]').value) * 2, 1);
+          if (dialog.element.querySelector('[name="employerSuccessfulMission"]').checked) employerTrust += Math.max(Number(dialog.element.querySelector('[name="employerSuccessfulMissionSquadTier"]').value) * 2, 1);
           if (dialog.element.querySelector('[name="employerSecondaryObjective"]').checked) employerTrust += 2;
           if (dialog.element.querySelector('[name="employerVendetta"]').checked) [employerTrust, employerTrustLossPrevention] = handleTrust(-1, employerTrust, employerTrustLossPrevention);
           if (dialog.element.querySelector('[name="employerHighSociety"]')?.checked) employerTrust += 1;
