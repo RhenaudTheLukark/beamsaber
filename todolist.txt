@@ -15,8 +15,6 @@ TODO list:
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
 
 To Implement:
-	Pilot Abilities:
-		- (Em) Carry That Weight => First effect: time travel on an action roll, roll +1d and add it to the roll result (or roll 1d if 0d roll) from assist or push yourself, Second effect: Stress transfer UI?
 	Squad Abilities:
 		- (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (AAAAAAAAA)
 
@@ -27,6 +25,10 @@ To Re-Implement:
 Changelog since 26/06/29:
 + Fix Successful Mission Trust Gain
 + Updated Character Scars to be empty boxes
++ Compendium Items
+	Pilot Abilities:
+		+ (Em) Carry That Weight => First effect: time travel on an action roll, roll +1d and add it to the roll result (or roll 1d if 0d roll) from assist or push yourself
+		+ (Em) Carry That Weight => Second effect: Stress transfer UI
 
 + => Means it's done
 - => Means it has to be done
