@@ -1,7 +1,52 @@
 {
   "name": "(Em) Carry That Weight",
   "type": "ability",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Carry That Weight Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.6jzO095Nzgu3edL4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "pr1CqgqY91OuBTxl",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.carry_that_weight",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1782892726447,
+        "modifiedTime": 1782892741047,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!6jzO095Nzgu3edL4.pr1CqgqY91OuBTxl"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -13,7 +58,7 @@
     "systemId": "beamsaber",
     "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": 1768054063444,
+    "modifiedTime": 1782892742252,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.mHgU5NNF4z09tQY2",
     "duplicateSource": null,
@@ -26,9 +71,11 @@
   "system": {
     "description": "<p>After you see the results of an action roll, you can push yourself or assist (if no one else assisted on the roll). If 0d were rolled, roll again with 1d. When you have a personal moment with someone, you can take any amount of Stress (up to your max Stress) to heal that person the same amount of Stress.</p>",
     "class": "Empath",
-    "price": "1",
+    "price": 1,
     "uses": {
-      "max": "0"
+      "max": 0,
+      "value": 1,
+      "per": null
     },
     "purchased": false,
     "class_default": false,
@@ -57,7 +104,17 @@
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": "",
+    "carry_that_weight": true
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!6jzO095Nzgu3edL4"
