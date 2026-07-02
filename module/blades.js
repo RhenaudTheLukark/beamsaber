@@ -393,6 +393,8 @@ Hooks.once("ready", async function () {
   // Perform the migration
   if (needsMigration && game.user.isGM)
     migrateWorld(currentVersion, NEEDS_MIGRATION_VERSION);
+
+  await controlTokenEvent(undefined, false);
 });
 
 /*
@@ -412,8 +414,47 @@ Hooks.on('getSceneControlButtons', controls => {
   };
 });
 
+let controlledTokens = 0;
+async function controlTokenEvent(token, control) {
+  if (token)
+    controlledTokens += control ? 1 : -1;
+
+  let valid = controlledTokens <= 1;
+  if (valid) {
+    let speakerFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
+    if (!speakerFull?.system.carry_that_weight || speakerFull?.type != 'character')
+      valid = false;
+  }
+
+  let actorFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
+  for (let element of document.activeElement.querySelectorAll('#chat .carry-that-weight-assist-block'))
+    await handleCarryThatWeightAssistDisplay(element, actorFull, valid);
+}
+
+async function handleCarryThatWeightAssistDisplay(element, actorFull, valid) {
+  if (valid) {
+    let message = game.messages.contents.find(m => m._id == element.closest('.chat-message').dataset.messageId);
+    let speakerFull = ChatMessage.getSpeakerActor(message.speaker);
+    let connectionValue = BladesHelpers.fetchConnectionsToActor(speakerFull.uuid).find(c => c.uuid == actorFull.uuid)?.clock.value;
+    let tacticalGeniusAvailable = actorFull.system.tactical_genius && actorFull.system.tactical_genius_uses.value > 0;
+    let tacticalGeniusElement = element.querySelector('.tactical-genius input');
+    tacticalGeniusElement.parentElement.style.display = tacticalGeniusAvailable ? null : 'none';
+    if (!tacticalGeniusAvailable)
+      tacticalGeniusElement.checked = false;
+    if (!connectionValue || speakerFull.uuid == actorFull.uuid)
+      valid = false;
+    else
+      element.querySelector('.bonuses label').innerHTML = `${game.i18n.localize('BITD.Effects')}<br/>(${game.i18n.format('BITD.ChooseX', {num: connectionValue})})`;
+  }
+  element.style.display = valid ? null : 'none';
+}
+Hooks.on('controlToken', controlTokenEvent);
+
 Hooks.on("renderChatMessageHTML", async (message, html, context) => {
   if (!message.isContentVisible) return;
+
+  let actorFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
+
   // Group Action Begin Message
   if (message.content.includes("roll-group-action")) {
     for (const button of html.querySelectorAll('.roll-group-action')) {
@@ -478,8 +519,102 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       await bladesRoll(0, 'BITD.CutLooseRoll', message.system.rollData.note, extraFields);
       await BladesHelpers.tryDelete(message);
     });
+  for (const button of html.querySelectorAll('.carry-that-weight-push-yourself'))
+    button.addEventListener('click', async (ev) => {
+      const speakerFull = ChatMessage.getSpeakerActor(message.speaker);
+      await cancelRollResult(message.system.rollData, speakerFull);
+      message.system.rollData.modifiers.unshift({
+        stress: 2,
+        dice: 1,
+        rollText: `BITD.PushYourselfStressEffect`,
+        pushYourself: true,
+        key: 'push_yourself'
+      });
+
+      let extraFields = { roll_type: 'actionRoll', modifiers: message.system.rollData.modifiers, actor: speakerFull, rollData: message.system.rollData };
+      extraFields.dire = message.system.rollData.dire;
+      extraFields.vehicleDire = message.system.rollData.vehicleDire;
+      extraFields.lastStand = speakerFull.system.modifiers.last_stand;
+
+      let attributeName = message.system.rollData.attributeName;
+      let extraDice = message.system.rollData.additionalDiceFromActionRoll;
+      let position = message.system.rollData.position;
+      let forcedPosition = message.system.rollData.forcedPosition;
+      let effect = message.system.rollData.effect;
+      let forcedEffect = message.system.rollData.forcedEffect;
+      await speakerFull.rollAttribute(attributeName, extraDice, position, forcedPosition, effect, forcedEffect, message.system.rollData.note, extraFields);
+      await BladesHelpers.tryDelete(message);
+    });
+  for (const button of html.querySelectorAll('.carry-that-weight-assist')) {
+    button.addEventListener('click', async (ev) => {
+      const speakerFull = ChatMessage.getSpeakerActor(message.speaker);
+      const actorFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
+      const assistBlockElement = ev.currentTarget.parentElement;
+      const tacticalGenius = assistBlockElement.querySelector('.tactical-genius input').checked;
+      const bonuses = $(assistBlockElement.querySelector('.bonuses select')).val();
+      const bonusesLabel = assistBlockElement.querySelector('.bonuses label');
+
+      await cancelRollResult(message.system.rollData, speakerFull);
+
+      let effectText = '';
+      let dice = 0, assistEffect = 0, assistPosition = 0;
+      let connectionValue = BladesHelpers.fetchConnectionsToActor(speakerFull.uuid).find(c => c.uuid == actorFull.uuid).clock.value;
+      for (let choiceId in bonuses) {
+        let choice = bonuses[choiceId];
+        if (choiceId >= connectionValue) break;
+        if (choice == 'BITD.ExtraDie') dice = 1;
+        if (choice == 'BITD.ImprovedPosition') assistPosition = 1;
+        if (choice == 'BITD.ImprovedEffect') assistEffect = 1;
+        effectText += `<li>${game.i18n.localize(choice + 'Effect')}</li>`;
+      }
+      let otherStress = {};
+      let otherValue = {};
+      if (!tacticalGenius)
+        otherStress[actorFull.uuid] = connectionValue;
+      else
+        otherValue[actorFull.uuid] = {'system.tactical_genius_uses.value': -1};
+      message.system.rollData.modifiers.unshift({
+        dice: dice,
+        effect: assistEffect,
+        position: assistPosition,
+        otherStress: otherStress,
+        otherValue: otherValue,
+        rollText: `BITD.Assist${tacticalGenius ? 'TacticalGenius' : ''}Effect`,
+        rollTextArgs: { pilot: actorFull.name, num: connectionValue, effects: effectText },
+        key: 'assist'
+      });
+
+      let extraFields = { roll_type: 'actionRoll', modifiers: message.system.rollData.modifiers, actor: speakerFull, rollData: message.system.rollData };
+      extraFields.dire = message.system.rollData.dire;
+      extraFields.vehicleDire = message.system.rollData.vehicleDire;
+      extraFields.lastStand = speakerFull.system.modifiers.last_stand;
+
+      let attributeName = message.system.rollData.attributeName;
+      let extraDice = message.system.rollData.additionalDiceFromActionRoll;
+      let position = message.system.rollData.position;
+      let forcedPosition = message.system.rollData.forcedPosition;
+      let effect = message.system.rollData.effect;
+      let forcedEffect = message.system.rollData.forcedEffect;
+      await speakerFull.rollAttribute(attributeName, extraDice, position, forcedPosition, effect, forcedEffect, message.system.rollData.note, extraFields);
+      await BladesHelpers.tryDelete(message);
+    });
+
+    let valid = controlledTokens <= 1;
+    if (valid) {
+      let speakerFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
+      if (!speakerFull?.system.carry_that_weight || speakerFull?.type != 'character')
+        valid = false;
+    }
+
+    await handleCarryThatWeightAssistDisplay(button.parentElement, actorFull, valid);
+  }
   for (const element of html.querySelectorAll('.gm-only')) {
     if (!game.user.isGM)
-      element.style.display = "none";
+      element.style.display = 'none';
+  }
+  for (const element of html.querySelectorAll('.speaker-only')) {
+    let speakerFull = ChatMessage.getSpeakerActor(message.speaker);
+    if (!speakerFull.isOwner)
+      element.style.display = 'none';
   }
 });

@@ -238,8 +238,8 @@ export class BladesActor extends Actor {
               let attribute = BladesHelpers.getAttributeFromAction(attributeName);
               extraFields.dire = this.system.stress.value == this.system.stress.max;
               if (['expertise', 'acuity'].includes(attribute) && this.hasValidVehicle())
-                extraFields.vehicle_dire = !Object.values(this.getVehicleData('system.quirks')).find(q => q.usable);
-              extraFields.last_stand = this.system.modifiers.last_stand;
+                extraFields.vehicleDire = !Object.values(this.getVehicleData('system.quirks')).find(q => q.usable);
+              extraFields.lastStand = this.system.modifiers.last_stand;
               extraFields.group_action = groupActionData;
 
               let position, forcedPosition, effect, forcedEffect;
@@ -375,11 +375,11 @@ export class BladesActor extends Actor {
       diceAmount = 1;
 
     // Dire Action + Last Stand
-    if (extraFields.dire && extraFields.last_stand)
+    if (extraFields.dire && extraFields.lastStand)
       diceAmount += parseInt(this.getVehicleData('system.breakdown'));
     diceAmount += additionalDiceAmount;
 
-    await bladesRoll(diceAmount, attributeName, note, { position: position, forcedPosition: forcedPosition, effect: effect, forcedEffect: forcedEffect, ...extraFields });
+    await bladesRoll(diceAmount, attributeName, note, { additionalDiceFromActionRoll: additionalDiceAmount, position: position, forcedPosition: forcedPosition, effect: effect, forcedEffect: forcedEffect, ...extraFields });
   }
 
   /* -------------------------------------------- */

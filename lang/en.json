@@ -495,6 +495,10 @@
     "DowntimeCohortRoll": "1 per Downtime",
     "DowntimeCohortRollDone": "Already done",
 
+    "CarryThatWeightPushYourself": "Carry That Weight: Push Yourself for +1d",
+    "CarryThatWeightAssistTitle": "Carry That Weight: Assist",
+    "CarryThatWeightAssist": "Carry That Weight: Assist for Bonuses",
+
     "Group": "Group",
     "Action": "Action",
     "Leader": "Leader",
@@ -723,6 +727,9 @@
     "StayLate": "Stay Late",
     "StayLateInfo": "You may provide a squadmate an extra Downtime Activity at the cost of taking the Level 1 Harm: Tired.<br/>Choose the squadmate who will benefit from an extra Downtime Activity below.",
     "StayLateDescription": "{target} can take an extra <strong>Downtime Activity</strong>. {actor} takes the <strong>Level 1 Harm: Tired</strong>, which may be resisted as normal.",
+    "CarryThatWeight": "Carry That Weight",
+    "CarryThatWeightInfo": "When you have a personal moment with someone, you can take any amount of Stress<br/>(up to your max Stress) to heal that person the same amount of Stress.<br/>Choose the squadmate you will transfer Stress from.",
+    "CarryThatWeightDescription": "{actor} took on <strong>{stress}</strong> of {target}'s <strong>Stress</strong>.",
 
     "ToggleableModifiers": "Toggleable Modifiers",
     "CollateralDie": "Collateral Die",
@@ -731,8 +738,8 @@
     "PushYourselfStressEffect": "You pushed yourself. You suffered <strong>2 Stress</strong>.",
     "PushYourselfQuirkEffect": "You pushed yourself. You must expend <strong>1 Quirk</strong>.",
     "Assist": "Assist",
-    "AssistEffect": "{pilot} assisted you. They took <strong>{num} Stress</strong>. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
-    "AssistTacticalGeniusEffect": "{pilot} assisted you. They took no Stress due to their tactical genius. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
+    "AssistEffect": "{pilot} assisted you. They suffered <strong>{num} Stress</strong>. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
+    "AssistTacticalGeniusEffect": "{pilot} assisted you. They suffered no Stress due to their tactical genius. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
     "DowntimeAssistEffect": "{pilot} assisted you, granting you <strong>+1d</strong>.",
     "DowntimeAssistOtherEffect": "An ally or your direct superior assisted you. It is likely to provide access to resources otherwise unavailable.",
     "Setup": "Setup",
@@ -1152,6 +1159,7 @@
         "SameSquadRelationship": "The dropped actor already has a relationship with this squad."
       },
       "warn": {
+        "CarryThatWeightNoSquad": "Carry That Weight can only be used if you are in a Squad!",
         "StayLateNoSquad": "Stay Late can only be used if you are in a Squad!",
         "SalvageVehicleAlreadySalvaged": "The vehicle {vehicle} has already been salvaged!",
         "NoSparkOptions": "You currently have no way to utilize your Spark!",

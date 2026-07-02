@@ -27,7 +27,7 @@ export class BladesHelpers {
   }
 
   static mergeAddObjects(obj1, ignoredFields, ...objs) {
-    let output = Object.assign({}, obj1);
+    let output = Object.assign({}, obj1 ?? {});
     for (let obj of objs) {
       for (let [k, v] of Object.entries(obj)) {
         if (ignoredFields.includes(k))

@@ -115,6 +115,20 @@ fieldset.form-group {
   justify-content: space-between;
 }
 
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.grow-one {
+  flex-grow: 1;
+}
+
+.flex-equal {
+  flex: 1 1 0;
+  width: 0;
+}
+
 .toggleable-modifiers {
   overflow: hidden auto;
   max-height: 200px;
@@ -133,7 +147,7 @@ fieldset.form-group {
   }
 }
 
-&.stay-late {
+&.stay-late, &.carry-that-weight {
   table.form-group {
     width: auto;
 
@@ -150,6 +164,21 @@ fieldset.form-group {
         &.selected {
           background-color: rgba(255, 255, 255, 0.2);
         }
+      }
+    }
+  }
+}
+
+&.carry-that-weight {
+  .stress-transfer {
+    justify-content: space-around;
+    text-align: center;
+
+    .actor-stress, .other-stress {
+      font-size: 20px;
+
+      .stress.maxxed {
+        color: $red;
       }
     }
   }

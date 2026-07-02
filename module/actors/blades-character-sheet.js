@@ -396,7 +396,7 @@ export class BladesCharacterSheet extends BladesSheet {
       await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
-    // Update Expertise Action
+    // Stay Late Popup
     html.find('.stay-late > button').click(async ev => {
       let squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
       if (!squadFull) {
@@ -410,7 +410,7 @@ export class BladesCharacterSheet extends BladesSheet {
         <h2>${game.i18n.localize('BITD.StayLate')}</h2>
         <p>${game.i18n.localize('BITD.StayLateInfo')}</p>
         <table class="form-group" data-actor-id="${this.actor.uuid}">
-          ${otherMembers.map((member, i) => `${i % 2 == 0 ? '<tr>' : ''}<td class="actor-cell" data-actor-id="${member.uuid}">
+          ${otherMembers.map((member, i) => `${i % 2 == 0 ? '<tr>' : ''}<td class="actor-cell flex-equal" data-actor-id="${member.uuid}">
             <div class="actor-contents flex-horizontal">
               <img src="${member.img}" data-tooltip="${member.name}" width="48" height="48"/>
               <a class="item-name">${member.name}</a>
@@ -470,8 +470,154 @@ export class BladesCharacterSheet extends BladesSheet {
             previousSelected.classList.remove('selected');
           ev.currentTarget.classList.add('selected');
           ev.currentTarget.closest('.stay-late').querySelector('[data-action="use"]').disabled = false;
-        })
+        });
       }
+    });
+
+    // Carry That Weight Popup
+    html.find('.carry-that-weight > button').click(async ev => {
+      let squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
+      if (!squadFull) {
+        ui.notifications.warn(game.i18n.localize('BITD.log.warn.CarryThatWeightNoSquad'));
+        return;
+      }
+
+      let otherMembers = Object.values(squadFull.system.members).filter(m => m.uuid != this.actor.uuid).map(m => BladesHelpers.resolveActor(m.uuid)).filter(m => m != null && m.type == 'character');
+      let stressToMax = Number(this.actor.system.stress.max) - (this.actor.system.stress.value);
+
+      let contents = `
+        <h2>${game.i18n.localize('BITD.CarryThatWeight')}</h2>
+        <p>${game.i18n.localize('BITD.CarryThatWeightInfo')}</p>
+        <table class="form-group" data-actor-id="${this.actor.uuid}">
+          ${otherMembers.map((member, i) => `${i % 2 == 0 ? '<tr>' : ''}<td class="actor-cell flex-equal" data-actor-id="${member.uuid}">
+            <div class="actor-contents flex-horizontal">
+              <img src="${member.img}" data-tooltip="${member.name}" width="48" height="48"/>
+              <a class="item-name">${member.name}</a>
+            </div>
+          </td>${(i % 2 == 1 || i == otherMembers.length - 1) ? '</tr>' : ''}`).join('')}
+        </table>
+        <div class="stress-transfer flex-horizontal" style="display: none;">
+          <div class="actor-stress flex-vertical flex-equal">
+            <label>${this.actor.name}</label>
+            <label class="stress">${this.actor.system.stress.value}/${this.actor.system.stress.max}</label>
+          </div>
+          <div class="selector flex-vertical">
+            <label>Stress Transfer</label>
+            <select id="stress-transfer" data-actor-stress-to-max="${stressToMax}" data-actor-max-stress="${this.actor.system.stress.max}">${Array(stressToMax + 1).fill().map((_, i) => `<option value="${i}"${i == 0 ? ' selected' : ''}>${i}</option>`)}</select>
+          </div>
+          <div class="other-stress flex-vertical flex-equal">
+            <label class="name">Other</label>
+            <label class="stress">Value/Max</label>
+          </div>
+        </div>`;
+
+      let dialog = new foundry.applications.api.DialogV2({
+        window: { title: `${game.i18n.localize('BITD.CarryThatWeight')}` },
+        content: contents,
+        classes: ['carry-that-weight'],
+        buttons: [
+          {
+            icon: 'fas fa-people-arrows',
+            label: game.i18n.localize('BITD.Use'),
+            action: 'use',
+            disabled: true
+          },
+          {
+            icon: 'fas fa-times',
+            label: game.i18n.localize('Cancel'),
+            action: 'cancel'
+          }
+        ],
+        submit: async (result, dialog) => {
+          if (result != 'use') return;
+
+          let targetFull = BladesHelpers.resolveActor(dialog.element.querySelector('.selected').dataset.actorId);
+          let actorFull = BladesHelpers.resolveActor(dialog.element.querySelector('.form-group').dataset.actorId);
+          if (!targetFull || !actorFull) return;
+
+          let stressTransferred = Number(dialog.element.querySelector('#stress-transfer').value);
+          await BladesHelpers.tryUpdate(actorFull, {'system.stress.value': Number(actorFull.system.stress.value) + stressTransferred});
+          await BladesHelpers.tryUpdate(targetFull, {'system.stress.value': Number(targetFull.system.stress.value) - stressTransferred});
+
+          let speaker = {
+            actor: this.actor._id,
+            alias: this.actor.name,
+            scene: null,
+            token: this.actor.prototypeToken._id
+          };
+          let messageHTML = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/carry-that-weight.html', { actor: actorFull.name, target: targetFull.name, stress: stressTransferred });
+          let messageData = {
+            speaker: speaker,
+            content: messageHTML
+          }
+          ChatMessage.create(messageData);
+        }
+      });
+      dialog._value = null;
+      dialog.actor = this.actor;
+      dialog.updateStressValues = function(element) {
+        let currentValue = Number(element.value);
+        element.closest('.carry-that-weight').querySelector('[data-action="use"]').disabled = currentValue == 0;
+
+        let actorMaxStress = Number(element.dataset.actorMaxStress);
+        let actorStress = actorMaxStress - Number(element.dataset.actorStressToMax);
+        let actorNewStress = actorStress + currentValue;
+        let actorStressText = `${actorStress}/${actorMaxStress}${currentValue > 0 ? ` => ${actorNewStress}/${actorMaxStress}` : ''}`;
+        let otherMaxStress = Number(element.dataset.otherMaxStress);
+        let otherStress = otherMaxStress - Number(element.dataset.otherStressToMax);
+        let otherNewStress = otherStress - currentValue;
+        let otherStressText = `${otherStress}/${otherMaxStress}${currentValue > 0 ? ` => ${otherNewStress}/${otherMaxStress}` : ''}`;
+
+        let actorStressTextElement = element.closest('.stress-transfer').querySelector('.actor-stress .stress');
+        actorStressTextElement.innerHTML = actorStressText;
+        let actorNewStressMaxxed = actorNewStress == actorMaxStress;
+        if (actorNewStressMaxxed && !actorStressTextElement.classList.contains('maxxed'))
+          actorStressTextElement.classList.add('maxxed');
+        else if (!actorNewStressMaxxed && actorStressTextElement.classList.contains('maxxed'))
+          actorStressTextElement.classList.remove('maxxed');
+
+        let otherStressTextElement = element.closest('.stress-transfer').querySelector('.other-stress .stress');
+        otherStressTextElement.innerHTML = otherStressText;
+        let otherNewStressMaxxed = otherNewStress == otherMaxStress;
+        if (otherNewStressMaxxed && !otherStressTextElement.classList.contains('maxxed'))
+          otherStressTextElement.classList.add('maxxed');
+        else if (!otherNewStressMaxxed && otherStressTextElement.classList.contains('maxxed'))
+          otherStressTextElement.classList.remove('maxxed');
+      }
+      await dialog.render(true);
+
+      for (let element of dialog.element.querySelectorAll('.actor-cell')) {
+        element.addEventListener('click', async function(ev) {
+          let previousSelected = ev.currentTarget.closest('.form-group').querySelector('.selected');
+          if (previousSelected)
+            previousSelected.classList.remove('selected');
+          ev.currentTarget.classList.add('selected');
+
+          let otherFull = BladesHelpers.resolveActor(ev.currentTarget.dataset.actorId);
+          let otherMaxStress = 0, otherStress = 0;
+          if (otherFull) {
+            otherMaxStress = Number(otherFull.system.stress.max);
+            otherStress = Number(otherFull.system.stress.value);
+          }
+          let otherStressNameElement = ev.currentTarget.closest('.carry-that-weight').querySelector('.other-stress .name');
+          otherStressNameElement.innerText = otherFull.name;
+
+          let stressTransferElement = element.closest('.carry-that-weight').querySelector('#stress-transfer');
+          let actorStressToMax = Number(stressTransferElement.dataset.actorStressToMax);
+          stressTransferElement.dataset.otherMaxStress = otherMaxStress;
+          stressTransferElement.dataset.otherStressToMax = otherMaxStress - otherStress;
+          stressTransferElement.innerHTML = Array(Math.min(actorStressToMax, otherStress) + 1).fill().map((_, i) => `<option value="${i}"${i == 0 ? ' selected' : ''}>${i}</option>`);
+          stressTransferElement.value = '0';
+
+          let stressTransferBlockElement = ev.currentTarget.closest('.carry-that-weight').querySelector('.stress-transfer');
+          stressTransferBlockElement.style.display = '';
+
+          dialog.updateStressValues(stressTransferElement);
+        });
+      }
+      dialog.element.querySelector('#stress-transfer').addEventListener('change', async function(ev) {
+        dialog.updateStressValues(ev.currentTarget);
+      });
     });
 
     // Update Vehicle Gear Experimental Toggle

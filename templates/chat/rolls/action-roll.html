@@ -2,18 +2,18 @@
   {{#if attribute_label}}<div class="chat-label label-stripe-chat">{{localize attribute_label}}</div>{{/if}}
   {{#if extraFields.position}}
     <div class="chat-label-small label-stripe-chat-small">
-      {{{localize position_localize}}} | {{{localize effect_localize}}} {{#if zeromode}}| 0d {{/if}}{{#if (or extraFields.dire extraFields.vehicle_dire)}}| {{localize 'BITD.DireAction'}} {{/if}}
+      {{{localize position_localize}}} | {{{localize effect_localize}}} {{#if zeromode}}| 0d {{/if}}{{#if (or extraFields.dire extraFields.vehicleDire)}}| {{localize 'BITD.DireAction'}} {{/if}}
     </div>
   {{/if}}
 
   {{#if (eq roll_status "critical-success")}}
   <div class="die {{roll_status}}">{{localize 'BITD.RollCriticalSuccess'}}</div>
   <div class="description">
-    {{#if (or extraFields.dire extraFields.vehicle_dire)}}
+    {{#if (or extraFields.dire extraFields.vehicleDire)}}
     {{#if extraFields.dire}}
     <p>{{{localize 'BITD.RollDoDireCritical'}}}</p>
     {{/if}}
-    {{#if extraFields.vehicle_dire}}
+    {{#if extraFields.vehicleDire}}
     <p>{{{localize 'BITD.RollDoDireVehicleCritical'}}}</p>
     {{/if}}
     {{else}}
@@ -30,7 +30,7 @@
       {{#if extraFields.dire}}
       {{{localize 'BITD.RollDireSuccess'}}}
       {{/if}}
-      {{#if extraFields.vehicle_dire}}
+      {{#if extraFields.vehicleDire}}
       {{{localize 'BITD.RollDireVehicleSuccess'}}}
       {{/if}}
     </p>
@@ -50,14 +50,14 @@
       {{/if}}
     </p>
     {{#if extraFields.dire}}
-    {{#if extraFields.last_stand}}
+    {{#if extraFields.lastStand}}
     <p>{{{localize 'BITD.RollDireSuccess'}}}</p>
     {{else}}
     <p>{{{localize 'BITD.RollDireFailure'}}}</p>
     {{/if}}
     {{/if}}
-    {{#if extraFields.vehicle_dire}}
-    {{#if extraFields.last_stand}}
+    {{#if extraFields.vehicleDire}}
+    {{#if extraFields.lastStand}}
     <p>{{{localize 'BITD.RollDireVehicleSuccess'}}}</p>
     {{else}}
     <p>{{{localize 'BITD.RollDireVehicleFailure'}}}</p>
@@ -81,7 +81,7 @@
     {{#if extraFields.dire}}
     <p>{{{localize 'BITD.RollDireFailure'}}}</p>
     {{/if}}
-    {{#if extraFields.vehicle_dire}}
+    {{#if extraFields.vehicleDire}}
     <p>{{{localize 'BITD.RollDireVehicleFailure'}}}</p>
     {{/if}}
   </div>
@@ -120,4 +120,29 @@
     {{/unless}}
     {{/if}}
   </ol>
+
+  {{#if (and (not extraFields.hasPushYourself) extraFields.actor.system.carry_that_weight)}}
+  <div class="button speaker-only">
+    <button class="carry-that-weight-push-yourself">{{localize 'BITD.CarryThatWeightPushYourself'}}</button>
+  </div>
+  {{/if}}
+  {{#if (and (not extraFields.hasAssist) extraFields.anyoneElseHasCarryThatWeight)}}
+  <div class="button carry-that-weight-assist-block">
+    <label><b>{{localize 'BITD.CarryThatWeightAssistTitle'}}</b></label>
+    <span class="tactical-genius flex-horizontal">
+      <label>{{localize 'BITD.TacticalGenius'}}</label>
+      <input type="checkbox" name="BITD.TacticalGenius">
+    </span>
+    <span class="bonuses flex-horizontal">
+      <label>{{localize 'BITD.None'}}</label>
+      <select field="BITD.Effects" data-tooltip="BITD.MultipleSelectUsage" multiple>
+        <option value="BITD.ExtraDie" selected>{{localize 'BITD.ExtraDie'}}</option>
+        <option value="BITD.ImprovedPosition">{{localize 'BITD.ImprovedPosition'}}</option>
+        <option value="BITD.ImprovedEffect">{{localize 'BITD.ImprovedEffect'}}</option>
+        <option value="BITD.IgnoreHarmDamage">{{localize 'BITD.IgnoreHarmDamage'}}</option>
+      </select>
+    </span>
+    <button class="carry-that-weight-assist">{{localize 'BITD.CarryThatWeightAssist'}}</button>
+  </div>
+  {{/if}}
 </div>

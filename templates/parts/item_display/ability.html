@@ -16,6 +16,11 @@
     <button>{{localize 'BITD.Use'}}</button>
   </div>
   {{/if}}
+  {{#if item.system.carry_that_weight}}
+  <div class="carry-that-weight flex-vertical">
+    <button>{{localize 'BITD.Use'}}</button>
+  </div>
+  {{/if}}
   {{#if (gteq item.system.uses.max 1)}}
   <div class="supply-container flex-vertical">
     <label id="{{actor.type}}-{{actor._id}}-ability-uses-{{id}}"><b>{{localize 'BITD.UsesShort'}}</b></label>

@@ -54,7 +54,7 @@ export const bladesRollModifierList = {
       let otherStress = {};
       let otherValue = {};
       if (!fields['BITD.TacticalGenius'])
-        otherStress[connectionFull.uuid] = Math.min(connectionValue, fields['BITD.Effects'].length);
+        otherStress[connectionFull.uuid] = connectionValue;
       else
         otherValue[connectionFull.uuid] = {'system.tactical_genius_uses.value': -1};
       return {
@@ -64,7 +64,7 @@ export const bladesRollModifierList = {
         otherStress: otherStress,
         otherValue: otherValue,
         rollText: `BITD.Assist${fields['BITD.TacticalGenius'] ? 'TacticalGenius' : ''}Effect`,
-        rollTextArgs: { pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', num: Math.min(connectionValue, fields['BITD.Effects'].length), effects: effectText } };
+        rollTextArgs: { pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', num: connectionValue, effects: effectText } };
     },
     assist: true
   },
@@ -881,7 +881,18 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
   let numberedPosition = positionIndex.indexOf(extraFields.position);
   let numberedEffect = effectIndex.indexOf(extraFields.effect);
 
-  let rollData = extraFields.rollData ?? {modifiers: foundry.utils.deepClone(extraFields.modifiers), note: note};
+  let rollData = extraFields.rollData ?? {
+    attributeName: attributeOrRollName,
+    additionalDiceFromActionRoll: extraFields.additionalDiceFromActionRoll,
+    modifiers: foundry.utils.deepClone(extraFields.modifiers),
+    position: extraFields.position,
+    forcedPosition: extraFields.forcedPosition,
+    effect: extraFields.effect,
+    forcedEffect: extraFields.forcedEffect,
+    dire: extraFields.dire,
+    vehicleDire: extraFields.vehicleDire,
+    note: note
+  };
 
   let stressChanges = {};
   stressChanges[extraFields.actor?.uuid] = 0;
@@ -918,7 +929,7 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
     }
     if (modifier.otherValue)
       for (let [uuid, value] of Object.entries(modifier.otherValue))
-        otherChanges[uuid] = otherChanges[uuid] ? {...otherChanges[uuid], ...value} : value;
+        otherChanges[uuid] = otherChanges[uuid] ? BladesHelpers.mergeAddObjects(otherChanges[uuid], [], value) : value;
     if (modifier.downtime) downtimeCountChanges += modifier.downtime;
     if (modifier.convictionCutLoose) extraFields.conviction = true;
     if (modifier.workHardPlayHard) extraFields.workHardPlayHard = true;
@@ -1043,6 +1054,9 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
   if (extraFields.position && !extraFields.forcedPosition) extraFields.position = positionIndex[Math.min(Math.max(numberedPosition, 0), 2)];
   if (extraFields.effect && !extraFields.forcedEffect) extraFields.effect = effectIndex[Math.min(Math.max(numberedEffect, 0), 2)];
 
+  if (rollData.dice)
+    rollData.oldDice = rollData.dice;
+  rollData.dice = diceAmount;
   extraFields.rollData = rollData;
 
   if (!extraFields.noRoll) {
@@ -1053,16 +1067,21 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
       diceAmount = 2;
     }
 
-    let r;
-    if (extraFields.rollData.rolls)
-      r = extraFields.rollData.rolls;
-    else {
-      r = new Roll(`${diceAmount}d6`, {});
+    let rolls;
+    let diceToRoll = diceAmount - (extraFields.rollData.oldDice ?? 0);
+    if (diceToRoll > 0) {
+      rolls = new Roll(`${diceToRoll}d6`, {});
       // show 3d Dice so Nice if enabled
-      await r.evaluate();
+      await rolls.evaluate();
+    }
+    if (!rolls)
+      rolls = extraFields.rollData.rolls;
+    else if (extraFields.rollData.rolls && extraFields.rollData.oldDice !== 0) {
+      extraFields.rollData.rolls.terms[0].results = extraFields.rollData.rolls.terms[0].results.concat(rolls.terms[0].results);
+      rolls = extraFields.rollData.rolls;
     }
 
-    await showChatRollMessage(r, zeromode, attributeOrRollName, note, extraFields);
+    await showChatRollMessage(rolls, zeromode, attributeOrRollName, note, extraFields);
   } else
     await showChatMessage(diceAmount, attributeOrRollName, note, extraFields);
 }
@@ -1125,7 +1144,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
     // Dire Action
     if (extraFields.dire && rollStatus == 'critical-success')
       await BladesHelpers.tryUpdate(extraFields.actor, {system: {stress: {'==value': Math.max(Number(extraFields.actor.system.stress.value) - 1, 0)}}});
-    if (extraFields.vehicle_dire && (rollStatus == 'failure' || (rollStatus == 'partial-success' && !extraFields.last_stand))) {
+    if (extraFields.vehicleDire && (rollStatus == 'failure' || (rollStatus == 'partial-success' && !extraFields.lastStand))) {
       let vehicleFull = BladesHelpers.resolveActor(extraFields.actor.system.vehicle);
       await BladesHelpers.tryUpdate(vehicleFull, {system: {'==breakdown': Math.min(Number(vehicleFull.system.breakdown) + 1, Number(vehicleFull.system.breakdown_max))}});
     }
@@ -1134,6 +1153,16 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
   }
   // Check for Action roll
   else if (BladesHelpers.isAttributeAction(attributeOrRollName)) {
+    extraFields.hasPushYourself = extraFields.rollData.modifiers.find(m => m.key == 'push_yourself') != undefined;
+    extraFields.hasAssist = extraFields.rollData.modifiers.find(m => m.key == 'assist') != undefined;
+    extraFields.anyoneElseHasCarryThatWeight = false;
+
+    let squadFull = extraFields.actor.type == 'crew' ? extraFields.actor : BladesHelpers.resolveActor(extraFields.actor.system.crew);
+    if (squadFull) {
+      let otherMembersWithCarryThatWeight = Object.values(squadFull.system.members).filter(m => m.uuid != extraFields.actor.uuid).map(m => BladesHelpers.resolveActor(m.uuid)).filter(m => m != null && m.type == 'character' && m.system.carry_that_weight);
+      extraFields.anyoneElseHasCarryThatWeight = otherMembersWithCarryThatWeight.length > 0;
+    }
+
     let positionLocalize = '';
     switch (extraFields.position) {
       case 'controlled':
@@ -1160,11 +1189,23 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
         effectLocalize = 'BITD.EffectStandard'
     }
     // Dire Action
-    if (extraFields.dire && rollStatus == 'critical-success')
+    if (extraFields.dire && rollStatus == 'critical-success') {
+      if (extraFields.rollData.stressChanges[extraFields.actor._id]) {
+        extraFields.rollData.stressChanges[extraFields.actor._id].value -= 1;
+        extraFields.rollData.stressChanges[extraFields.actor._id].realValue -= 1;
+      } else
+        extraFields.rollData.stressChanges[extraFields.actor._id] = {value: -1, realValue: -1};
       await BladesHelpers.tryUpdate(extraFields.actor, {system: {stress: {'==value': Math.max(Number(extraFields.actor.system.stress.value) - 1, 0)}}});
-    if (extraFields.vehicle_dire && (rollStatus == 'failure' || (rollStatus == 'partial-success' && !extraFields.last_stand))) {
+    }
+    if (extraFields.vehicleDire && (rollStatus == 'failure' || (rollStatus == 'partial-success' && !extraFields.lastStand))) {
       let vehicleFull = BladesHelpers.resolveActor(extraFields.actor.system.vehicle);
+      let oldBreakdown = Number(vehicleFull.system.breakdown);
       await BladesHelpers.tryUpdate(vehicleFull, {system: {'==breakdown': Math.min(Number(vehicleFull.system.breakdown) + 1, Number(vehicleFull.system.breakdown_max))}});
+      let newBreakdown = Number(vehicleFull.system.breakdown);
+      extraFields.rollData.otherChanges[extraFields.actor._id] = {
+        value: BladesHelpers.mergeAddObjects(extraFields.rollData.otherChanges?.[extraFields.actor._id]?.value, {'system.breakdown': 1}),
+        realValue: BladesHelpers.mergeAddObjects(extraFields.rollData.otherChanges?.[extraFields.actor._id]?.realValue, {'system.breakdown': newBreakdown - oldBreakdown})
+      };
       await BladesHelpers.tryUpdate(extraFields.actor, {'==name': extraFields.actor.name});
     }
 
@@ -1670,16 +1711,17 @@ export async function cancelRollResult(rollData, actorFull) {
   if (Object.keys(actorUpdateObject).length > 0)
     await BladesHelpers.tryUpdate(actorFull, actorUpdateObject);
 
-  for (let [connectionPair, connectionShift] of Object.entries(rollData.connections)) {
-    let [ownerId, connectionId] = connectionPair.split('/');
-    let ownerFull = BladesHelpers.resolveActor(`Actor.${ownerId}`);
-    let connectionFull = BladesHelpers.resolveActor(`Actor.${connectionId}`);
-    let connectionIndex = Object.entries(actorFull.system.connections).find(c => c[1].uuid == connectionFull.uuid)[0];
-    let connection = actorFull.system.connections[connectionIndex];
-    let connectionUpdateObject = {};
-    connectionUpdateObject[`system.connections.${connectionIndex}.clock.value`] = Math.min(Math.max(connection.clock.value - connectionShift, 0), 4);
-    await BladesHelpers.tryUpdate(ownerFull, connectionUpdateObject);
-  }
+  if (rollData.connections)
+    for (let [connectionPair, connectionShift] of Object.entries(rollData.connections)) {
+      let [ownerId, connectionId] = connectionPair.split('/');
+      let ownerFull = BladesHelpers.resolveActor(`Actor.${ownerId}`);
+      let connectionFull = BladesHelpers.resolveActor(`Actor.${connectionId}`);
+      let connectionIndex = Object.entries(actorFull.system.connections).find(c => c[1].uuid == connectionFull.uuid)[0];
+      let connection = actorFull.system.connections[connectionIndex];
+      let connectionUpdateObject = {};
+      connectionUpdateObject[`system.connections.${connectionIndex}.clock.value`] = Math.min(Math.max(connection.clock.value - connectionShift, 0), 4);
+      await BladesHelpers.tryUpdate(ownerFull, connectionUpdateObject);
+    }
 
   for (let modifier of rollData.modifiers) {
     if (modifier.itemNeeded) {
@@ -2567,9 +2609,11 @@ export function resolveConditionalModifiers(dialog, actorFull, attributeName) {
       }
       let attribute = BladesHelpers.getAttributeFromAction(attributeName);
       extraData.isVehicle = ['expertise', 'acuity'].includes(attribute) || ['expertise', 'acuity'].includes(attributeName);
+      let key = conditionalModifier.key;
       conditionalModifier = conditionalModifier.resolveFunc(fields, extraData);
       if (!conditionalModifier)
         continue;
+      conditionalModifier.key = key;
     }
 
     // Telepathy: Use the leader's action rating instead of the current player's
