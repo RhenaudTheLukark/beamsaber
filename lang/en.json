@@ -396,6 +396,7 @@
     "Add": "Add",
     "Effects": "Effects",
     "ChooseX": "Choose {num}",
+    "ChosenEffects": "Chosen Effects",
     "EffectCreate": "Create Effect",
     "EffectToggle": "Toggle Effect",
     "EffectEdit": "Edit Effect",
@@ -738,8 +739,8 @@
     "PushYourselfStressEffect": "You pushed yourself. You suffered <strong>2 Stress</strong>.",
     "PushYourselfQuirkEffect": "You pushed yourself. You must expend <strong>1 Quirk</strong>.",
     "Assist": "Assist",
-    "AssistEffect": "{pilot} assisted you. They suffered <strong>{num} Stress</strong>. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
-    "AssistTacticalGeniusEffect": "{pilot} assisted you. They suffered no Stress due to their tactical genius. You have chosen the following <strong>{num}</strong> benefit(s):<ul>{effects}</ul>",
+    "AssistEffect": "{pilot} assisted you. They suffered <strong>{num} Stress</strong>. You have chosen the following <strong>{benefits}</strong> benefit(s):<ul>{effects}</ul>",
+    "AssistTacticalGeniusEffect": "{pilot} assisted you. They suffered no Stress due to their tactical genius. You have chosen the following <strong>{benefits}</strong> benefit(s):<ul>{effects}</ul>",
     "DowntimeAssistEffect": "{pilot} assisted you, granting you <strong>+1d</strong>.",
     "DowntimeAssistOtherEffect": "An ally or your direct superior assisted you. It is likely to provide access to resources otherwise unavailable.",
     "Setup": "Setup",
@@ -799,6 +800,10 @@
     "ImprovedPosition": "Improved Position",
     "ImprovedEffect": "Improved Effect",
     "IgnoreHarmDamage": "Ignore Harm/Damage",
+    "ExtraDieShort": "Extra Die",
+    "ImprovedPositionShort": "Position +",
+    "ImprovedEffectShort": "Effect +",
+    "IgnoreHarmDamageShort": "Harm/Damage",
     "DireAction": "Dire Action",
     "Connection": "Connection",
 
@@ -837,6 +842,7 @@
     "Crewmate": "Crewmate",
     "Cost": "Cost",
     "TacticalGenius": "Tactical Genius",
+    "CombinedArms": "Combined Arms",
 
     "HunterRobotName": "{characterName}'s Hunter Robot",
 

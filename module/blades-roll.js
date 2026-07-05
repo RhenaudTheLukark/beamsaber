@@ -36,6 +36,7 @@ export const bladesRollModifierList = {
     fields: {
       'BITD.Connection': [],
       'BITD.TacticalGenius': false,
+      'BITD.CombinedArms': false,
       'BITD.Effects': ['BITD.ExtraDie', 'BITD.ImprovedPosition', 'BITD.ImprovedEffect', 'BITD.IgnoreHarmDamage'],
     },
     resolveFunc: (fields, extraData) => {
@@ -46,9 +47,9 @@ export const bladesRollModifierList = {
       for (let choiceId in fields['BITD.Effects']) {
         let choice = fields['BITD.Effects'][choiceId];
         if (choiceId >= connectionValue) break;
-        if (choice == 'BITD.ExtraDie') dice = 1;
-        if (choice == 'BITD.ImprovedPosition') position = 1;
-        if (choice == 'BITD.ImprovedEffect') effect = 1;
+        if (choice == 'BITD.ExtraDie') dice += 1;
+        if (choice == 'BITD.ImprovedPosition') position += 1;
+        if (choice == 'BITD.ImprovedEffect') effect += 1;
         effectText += `<li>${game.i18n.localize(choice + 'Effect')}</li>`;
       }
       let otherStress = {};
@@ -64,7 +65,7 @@ export const bladesRollModifierList = {
         otherStress: otherStress,
         otherValue: otherValue,
         rollText: `BITD.Assist${fields['BITD.TacticalGenius'] ? 'TacticalGenius' : ''}Effect`,
-        rollTextArgs: { pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', num: connectionValue, effects: effectText } };
+        rollTextArgs: { pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', num: connectionValue, benefits: Math.min(connectionValue, fields['BITD.Effects'].length), effects: effectText } };
     },
     assist: true
   },
@@ -2597,6 +2598,9 @@ export function resolveConditionalModifiers(dialog, actorFull, attributeName) {
       let checkboxElements = checkedModifier.querySelectorAll('span > input[type=checkbox]');
       for (let checkbox of checkboxElements)
         fields[checkbox.attributes.name.value] = checkbox.checked;
+      let divElements = checkedModifier.querySelectorAll('& > div');
+      for (let div of divElements)
+        fields[div.dataset.field] = Array.from(div.querySelectorAll('div')).map(d => d.dataset.value);
 
       let extraData = {actorFull: actorFull};
       if (actorFull.system.crew) {

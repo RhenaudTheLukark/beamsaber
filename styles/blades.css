@@ -8064,6 +8064,22 @@
   gap: 0.5em;
   white-space: nowrap;
 }
+.application.dialog fieldset.form-group .radio-group[data-modifier=assist] .effect-list, .application.dialog fieldset.form-group .modifier[data-modifier=assist] .effect-list, .application.dialog fieldset.form-group:not(:has(.radio-group, .modifier))[data-modifier=assist] .effect-list {
+  height: auto;
+  padding: 0 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  outline: 1px solid transparent;
+  transition: outline-color 0.5s;
+  cursor: var(--cursor-pointer);
+}
+.application.dialog fieldset.form-group .radio-group[data-modifier=assist] > div, .application.dialog fieldset.form-group .modifier[data-modifier=assist] > div, .application.dialog fieldset.form-group:not(:has(.radio-group, .modifier))[data-modifier=assist] > div {
+  text-align: center;
+  gap: 0.25em;
+}
+.application.dialog fieldset.form-group .radio-group[data-modifier=assist] > div > div, .application.dialog fieldset.form-group .modifier[data-modifier=assist] > div > div, .application.dialog fieldset.form-group:not(:has(.radio-group, .modifier))[data-modifier=assist] > div > div {
+  gap: 0.5em;
+}
 .application.dialog .standard-form .form-group > label,
 .application.dialog .standard-form .form-group > span.label {
   flex: 0.5;
@@ -8250,6 +8266,10 @@ ol.chat-log li.chat-message.message .flex-horizontal {
   flex-direction: row;
   justify-content: space-between;
 }
+ol.chat-log li.chat-message.message .flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
 ol.chat-log li.chat-message.message .blades-die-tooltip .die {
   font-weight: bold;
   text-transform: capitalize;
@@ -8297,20 +8317,45 @@ ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-b
 ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > label {
   text-align: center;
 }
-ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span {
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span, ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span > span {
   text-align: center;
   justify-content: center;
   align-items: center;
   gap: 1em;
 }
-ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span label {
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span label, ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span > span label {
   height: fit-content;
 }
-ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span select {
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span select, ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block > span > span select {
   min-height: 32px;
   overflow-y: auto;
   height: auto;
   width: auto;
+}
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block .bonuses.flex-vertical {
+  gap: 0px;
+}
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block .effect-list {
+  justify-content: left;
+  text-align: left;
+  height: auto;
+  padding: 0 0.5rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  border: 1px solid #191813;
+  outline: 1px solid transparent;
+  transition: outline-color 0.5s;
+  cursor: var(--cursor-pointer);
+}
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block .bonuses + div {
+  text-align: left;
+  gap: 0.25em;
+}
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block .bonuses + div > div {
+  gap: 0.5em;
+}
+ol.chat-log li.chat-message.message .message-content .carry-that-weight-assist-block .bonuses + div > div:first-child {
+  text-align: center;
 }
 ol.chat-log li.chat-message.message.special-message {
   display: none;

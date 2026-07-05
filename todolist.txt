@@ -5,6 +5,7 @@ Bug list:
 	- Can be fixed easily after switching to SheetV2
 -1 Vehicle fields not updating the Pilot sheet properly once they're changed on the Vehicle sheet
 	- Upgrade to SheetV2 to work with apps instead of updating everything manually :pray:
+- + Symbol on opened Clock Styles setting category
 
 TODO list:
 -1 Upgrade sheets from V1 to V2 (low priority)
@@ -13,10 +14,6 @@ TODO list:
 	- Only allow Token creation if the Create Tokens permission is OK
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
-
-To Implement:
-	Squad Abilities:
-		- (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (AAAAAAAAA)
 
 To Re-Implement:
 	Pilot Abilities:
@@ -29,6 +26,8 @@ Changelog since 26/06/29:
 	Pilot Abilities:
 		+ (Em) Carry That Weight => First effect: time travel on an action roll, roll +1d and add it to the roll result (or roll 1d if 0d roll) from assist or push yourself
 		+ (Em) Carry That Weight => Second effect: Stress transfer UI
+		+ (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (on the roll screen)
+		+ (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (with Carry That Weight, on a message)
 
 + => Means it's done
 - => Means it has to be done

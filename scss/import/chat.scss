@@ -47,6 +47,11 @@
   justify-content: space-between;
 }
 
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
 .blades-die-tooltip {
   .die {
     font-weight: bold;
@@ -108,7 +113,7 @@
       text-align: center;
     }
 
-    & > span {
+    & > span, & > span > span {
       text-align: center;
       justify-content: center;
       align-items: center;
@@ -123,6 +128,36 @@
         overflow-y: auto;
         height: auto;
         width: auto;
+      }
+    }
+
+    .bonuses.flex-vertical {
+      gap: 0px;
+    }
+
+    .effect-list {
+      justify-content: left;
+      text-align: left;
+      height: auto;
+      padding: 0 0.5rem;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+      border: 1px solid $almost_black;
+      outline: 1px solid transparent;
+      transition: outline-color 0.5s;
+      cursor: var(--cursor-pointer);
+    }
+
+    .bonuses + div {
+      text-align: left;
+      gap: 0.25em;
+
+      & > div {
+        gap: 0.5em;
+      }
+
+      & > div:first-child {
+        text-align: center;
       }
     }
   }

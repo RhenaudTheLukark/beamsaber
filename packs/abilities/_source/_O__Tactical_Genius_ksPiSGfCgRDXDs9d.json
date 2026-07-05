@@ -58,7 +58,7 @@
     "systemId": "beamsaber",
     "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": 1782722444093,
+    "modifiedTime": 1783189840916,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.7Gys1B00XkuIUxe7",
     "duplicateSource": null,
@@ -73,7 +73,7 @@
     "class": "Officer",
     "price": 1,
     "uses": {
-      "max": 2,
+      "max": 0,
       "value": 1,
       "per": null
     },

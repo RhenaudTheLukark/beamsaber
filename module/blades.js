@@ -419,19 +419,16 @@ async function controlTokenEvent(token, control) {
   if (token)
     controlledTokens += control ? 1 : -1;
 
-  let valid = controlledTokens <= 1;
-  if (valid) {
-    let speakerFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
-    if (!speakerFull?.system.carry_that_weight || speakerFull?.type != 'character')
-      valid = false;
-  }
-
   let actorFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
   for (let element of document.activeElement.querySelectorAll('#chat .carry-that-weight-assist-block'))
-    await handleCarryThatWeightAssistDisplay(element, actorFull, valid);
+    await handleCarryThatWeightAssistDisplay(element, actorFull);
 }
 
-async function handleCarryThatWeightAssistDisplay(element, actorFull, valid) {
+async function handleCarryThatWeightAssistDisplay(element, actorFull) {
+  let valid = controlledTokens <= 1;
+  if (valid)
+    if (!actorFull?.system.carry_that_weight || actorFull?.type != 'character')
+      valid = false;
   if (valid) {
     let message = game.messages.contents.find(m => m._id == element.closest('.chat-message').dataset.messageId);
     let speakerFull = ChatMessage.getSpeakerActor(message.speaker);
@@ -441,10 +438,29 @@ async function handleCarryThatWeightAssistDisplay(element, actorFull, valid) {
     tacticalGeniusElement.parentElement.style.display = tacticalGeniusAvailable ? null : 'none';
     if (!tacticalGeniusAvailable)
       tacticalGeniusElement.checked = false;
+    let combinedArmsAvailable = BladesHelpers.resolveActor(actorFull.system.crew)?.system.combined_arms;
+    let combinedArmsElement = element.querySelector('.combined-arms input');
+    if (combinedArmsElement) {
+      combinedArmsElement.parentElement.style.display = combinedArmsAvailable ? null : 'none';
+      if (!combinedArmsAvailable)
+        combinedArmsElement.checked = false;
+    }
     if (!connectionValue || speakerFull.uuid == actorFull.uuid)
       valid = false;
-    else
-      element.querySelector('.bonuses label').innerHTML = `${game.i18n.localize('BITD.Effects')}<br/>(${game.i18n.format('BITD.ChooseX', {num: connectionValue})})`;
+    else {
+      let bonusesElement = element.querySelector('.bonuses');
+      if (combinedArmsElement) {
+        let horizontal = bonusesElement.classList.contains('flex-horizontal');
+        if (horizontal && combinedArmsElement.checked) {
+          bonusesElement.classList.add('flex-vertical');
+          bonusesElement.classList.remove('flex-horizontal');
+        } else if (!horizontal && !combinedArmsElement.checked) {
+          bonusesElement.classList.add('flex-horizontal');
+          bonusesElement.classList.remove('flex-vertical');
+        }
+      }
+      bonusesElement.querySelector('label').innerHTML = `${game.i18n.localize('BITD.Effects')}${combinedArmsElement?.checked ? ' ' : '<br/>'}(${game.i18n.format('BITD.ChooseX', {num: connectionValue})})`;
+    }
   }
   element.style.display = valid ? null : 'none';
 }
@@ -551,8 +567,12 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       const actorFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
       const assistBlockElement = ev.currentTarget.parentElement;
       const tacticalGenius = assistBlockElement.querySelector('.tactical-genius input').checked;
-      const bonuses = $(assistBlockElement.querySelector('.bonuses select')).val();
-      const bonusesLabel = assistBlockElement.querySelector('.bonuses label');
+      const combinedArms = assistBlockElement.querySelector('.combined-arms input').checked;
+      let bonuses;
+      if (combinedArms)
+        bonuses = Array.from(assistBlockElement.querySelector('[data-field="BITD.Effects"]').querySelectorAll('div[data-value]')).map(d => d.dataset.value);
+      else
+        bonuses = $(assistBlockElement.querySelector('.bonuses select')).val();
 
       await cancelRollResult(message.system.rollData, speakerFull);
 
@@ -562,9 +582,9 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       for (let choiceId in bonuses) {
         let choice = bonuses[choiceId];
         if (choiceId >= connectionValue) break;
-        if (choice == 'BITD.ExtraDie') dice = 1;
-        if (choice == 'BITD.ImprovedPosition') assistPosition = 1;
-        if (choice == 'BITD.ImprovedEffect') assistEffect = 1;
+        if (choice == 'BITD.ExtraDie') dice += 1;
+        if (choice == 'BITD.ImprovedPosition') assistPosition += 1;
+        if (choice == 'BITD.ImprovedEffect') assistEffect += 1;
         effectText += `<li>${game.i18n.localize(choice + 'Effect')}</li>`;
       }
       let otherStress = {};
@@ -580,7 +600,7 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
         otherStress: otherStress,
         otherValue: otherValue,
         rollText: `BITD.Assist${tacticalGenius ? 'TacticalGenius' : ''}Effect`,
-        rollTextArgs: { pilot: actorFull.name, num: connectionValue, effects: effectText },
+        rollTextArgs: { pilot: actorFull.name, num: connectionValue, benefits: Math.min(connectionValue, bonuses.length), effects: effectText },
         key: 'assist'
       });
 
@@ -599,15 +619,15 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       await BladesHelpers.tryDelete(message);
     });
 
-    let valid = controlledTokens <= 1;
-    if (valid) {
-      let speakerFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
-      if (!speakerFull?.system.carry_that_weight || speakerFull?.type != 'character')
-        valid = false;
-    }
-
-    await handleCarryThatWeightAssistDisplay(button.parentElement, actorFull, valid);
+    await handleCarryThatWeightAssistDisplay(button.parentElement, actorFull);
   }
+  for (const element of html.querySelectorAll('.carry-that-weight-assist-block .combined-arms input'))
+    element.addEventListener('change', async (event) => {
+      let combinedArmsActive = event.currentTarget.checked;
+      const actorFull = ChatMessage.getSpeakerActor(ChatMessage.getSpeaker());
+      actorFull.handleCombinedArms(combinedArmsActive, event.currentTarget.closest('.carry-that-weight-assist-block').querySelector('.bonuses').parentElement, true);
+      await handleCarryThatWeightAssistDisplay(event.currentTarget.closest('.carry-that-weight-assist-block'), actorFull);
+    });
   for (const element of html.querySelectorAll('.gm-only')) {
     if (!game.user.isGM)
       element.style.display = 'none';

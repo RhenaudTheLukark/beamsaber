@@ -1,6 +1,6 @@
 import { bladesRoll, buildRollPopup, resolveRollModifierArray, resolveConditionalModifiers,
   dialogOnFirstRender, dialogOnRender, refreshModifiers, postRollProcessing, pruneInvalidConditionalRollModifiers,
-  keepValidModifiersFromOther, computeGroupActionResultAndSendMessage, effectIndex
+  keepValidModifiersFromOther, computeGroupActionResultAndSendMessage, effectIndex, bladesRollModifierList
 } from "./blades-roll.js";
 import { BladesHelpers } from "./blades-helpers.js";
 
@@ -184,6 +184,69 @@ export class BladesActor extends Actor {
 
   /* -------------------------------------------- */
 
+  async handleCombinedArms(isActive, element, fromMessage = false) {
+    let containerElement = element.parentElement;
+    let effectsElement = containerElement.querySelector('[data-field="BITD.Effects"], [field="BITD.Effects"]');
+    let effectListElement = containerElement.querySelector('.effect-list');
+    let effectsElementParent = (isActive ? effectsElement : effectListElement).parentElement;
+    if (!isActive) {
+      effectsElement.remove();
+      effectListElement.remove();
+      effectsElement = document.createElement('select');
+      effectsElementParent.appendChild(effectsElement);
+      effectsElement.setAttribute('field', 'BITD.Effects');
+      effectsElement.setAttribute('multiple', '');
+      effectsElement.dataset.tooltip = game.i18n.localize('BITD.MultipleSelectUsage');
+      let first = true;
+      for (let effect of bladesRollModifierList.assist.fields['BITD.Effects']) {
+        let effectOptionElement = document.createElement('option');
+        effectsElement.appendChild(effectOptionElement);
+        effectOptionElement.value = effect;
+        if (first)
+          effectOptionElement.selected = true;
+        effectOptionElement.innerText = game.i18n.localize(effect);
+        first = false;
+      }
+    } else {
+      effectsElement.remove();
+      effectListElement = document.createElement('div');
+      effectListElement.classList.add('effect-list', 'flex-vertical');
+      effectsElementParent.appendChild(effectListElement);
+      for (let effect of bladesRollModifierList.assist.fields['BITD.Effects']) {
+        let effectOptionElement = document.createElement('div');
+        effectListElement.appendChild(effectOptionElement);
+        effectOptionElement.dataset.name = effect;
+        effectOptionElement.innerText = game.i18n.localize(effect);
+      }
+      for (let element of effectListElement.querySelectorAll('div')) {
+        element.addEventListener('click', (event) => {
+          let element = event.currentTarget;
+          let effectsElement = containerElement.querySelector('[data-field="BITD.Effects"]');
+          let newEffectElement = document.createElement('div');
+          effectsElement.appendChild(newEffectElement);
+          newEffectElement.classList.add('flex-horizontal');
+          newEffectElement.dataset.value = element.dataset.name;
+          let labelElement = document.createElement('label');
+          newEffectElement.appendChild(labelElement);
+          labelElement.innerText = game.i18n.localize(`${element.dataset.name}${fromMessage ? 'Short' : ''}`);
+          let aElement = document.createElement('a');
+          newEffectElement.appendChild(aElement);
+          aElement.innerHTML = '<i class="fas fa-trash"></i>';
+          aElement.addEventListener('click', (event) => {
+            let element = event.currentTarget;
+            element.parentElement.remove();
+          });
+        });
+      }
+      effectsElement = document.createElement('div');
+      (fromMessage ? element : containerElement).appendChild(effectsElement);
+      effectsElement.outerHTML = `
+        <div class="flex-vertical" data-field="BITD.Effects">
+          <label>${game.i18n.localize('BITD.ChosenEffects')}</label>
+        </div>`;
+    }
+  }
+
   async rollAttributePopup(attributeName, groupActionData) {
     if (this.type == 'vehicle') {
       ui.notifications.warn(game.i18n.localize('BITD.log.warn.NoRollFromVehicle'));
@@ -280,25 +343,43 @@ export class BladesActor extends Actor {
       let connectionSelector = this.element.querySelector('.modifier[data-modifier="assist"] select[field="BITD.Connection"]');
       if (connectionSelector) {
         connectionSelector.addEventListener('change', (event) => {
-          let modifierElement = $(connectionSelector).closest(".modifier");
+          let modifierElement = connectionSelector.closest('.modifier');
           let connectionSelectElementVal = $(modifierElement).find('span:first-of-type select').val();
           if (!connectionSelectElementVal)
             return;
           let connectionValue = BladesHelpers.fetchConnectionsToActor(this.actor.uuid).find(c => c.uuid == connectionSelectElementVal).clock.value;
-          let effectsLabelElement = $(modifierElement).find('span:last-of-type label')[0];
+          let effectsLabelElement = modifierElement.querySelector('span:last-of-type label');
           if (effectsLabelElement)
             effectsLabelElement.innerText = `${game.i18n.localize('BITD.Effects')} (${game.i18n.format('BITD.ChooseX', {num: connectionValue})})`;
+
           let connectionFull = BladesHelpers.resolveActor(connectionSelectElementVal);
           let tacticalGeniusElement = connectionSelector.closest('.modifier[data-modifier="assist"]').querySelector('input[name="BITD.TacticalGenius"]');
           let tacticalGeniusFieldGroup = tacticalGeniusElement.parentElement;
           let activeTacticalGenius = connectionFull.system.tactical_genius && connectionFull.system.tactical_genius_uses.value > 0;
           if (!activeTacticalGenius)
             tacticalGeniusElement.checked = false;
-          tacticalGeniusFieldGroup.style.display = activeTacticalGenius ? 'flex' : 'none';
+          tacticalGeniusFieldGroup.style.display = activeTacticalGenius ? null : 'none';
+
+          let combinedArmsElement = connectionSelector.closest('.modifier[data-modifier="assist"]').querySelector('input[name="BITD.CombinedArms"]');
+          let combinedArmsFieldGroup = combinedArmsElement.parentElement;
+          let squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
+          let activeCombinedArms = squadFull?.system.combined_arms;
+          if (!activeCombinedArms)
+            combinedArmsElement.checked = false;
+          combinedArmsFieldGroup.style.display = activeCombinedArms ? null : 'none';
         });
 
         var event = new Event('change');
         connectionSelector.dispatchEvent(event);
+      }
+
+      // Update the HTML in case of Combined Arms
+      let combinedArmsSelector = this.element.querySelector('.modifier[data-modifier="assist"] input[name="BITD.CombinedArms"]');
+      if (combinedArmsSelector) {
+        combinedArmsSelector.addEventListener('change', async (event) => {
+          let combinedArmsActive = event.currentTarget.checked;
+          await this.actor.handleCombinedArms(combinedArmsActive, combinedArmsSelector.parentElement);
+        });
       }
     };
     dialog.refreshModifiers = refreshModifiers;

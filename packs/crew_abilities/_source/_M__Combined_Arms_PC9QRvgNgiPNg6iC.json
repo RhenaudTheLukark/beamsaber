@@ -1,7 +1,52 @@
 {
   "name": "(M) Combined Arms",
   "type": "crew_ability",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Combined Arms Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.crew_ability.Item.PC9QRvgNgiPNg6iC",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "gnNfx43VvemUXDZI",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.combined_arms",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "0.6.0",
+        "createdTime": 1783182431729,
+        "modifiedTime": 1783182452758,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!PC9QRvgNgiPNg6iC.gnNfx43VvemUXDZI"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -9,12 +54,12 @@
   },
   "_id": "PC9QRvgNgiPNg6iC",
   "_stats": {
-    "coreVersion": "13.350",
-    "systemId": null,
-    "systemVersion": null,
+    "coreVersion": "13.351",
+    "systemId": "beamsaber",
+    "systemVersion": "0.6.0",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1783046882583,
+    "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.t7N7CgQjdoeVAEpB",
     "duplicateSource": null,
     "exportSource": null
@@ -26,7 +71,12 @@
   "system": {
     "description": "<p>When you assist a pilot using a drastically different type of vehicle than your own (or you are infantry assisting a vehicle or a vehicle assisting infantry), you may select the same benefit multiple times.</p>",
     "class": "Mechanized Cavalry",
-    "price": "1",
+    "price": 1,
+    "uses": {
+      "max": 0,
+      "value": 0,
+      "per": null
+    },
     "purchased": false,
     "class_default": false,
     "activation": {
@@ -49,16 +99,19 @@
       "long": null,
       "units": ""
     },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
     "consume": {
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item"
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!PC9QRvgNgiPNg6iC"

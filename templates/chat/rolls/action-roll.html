@@ -133,14 +133,20 @@
       <label>{{localize 'BITD.TacticalGenius'}}</label>
       <input type="checkbox" name="BITD.TacticalGenius">
     </span>
-    <span class="bonuses flex-horizontal">
-      <label>{{localize 'BITD.None'}}</label>
-      <select field="BITD.Effects" data-tooltip="BITD.MultipleSelectUsage" multiple>
-        <option value="BITD.ExtraDie" selected>{{localize 'BITD.ExtraDie'}}</option>
-        <option value="BITD.ImprovedPosition">{{localize 'BITD.ImprovedPosition'}}</option>
-        <option value="BITD.ImprovedEffect">{{localize 'BITD.ImprovedEffect'}}</option>
-        <option value="BITD.IgnoreHarmDamage">{{localize 'BITD.IgnoreHarmDamage'}}</option>
-      </select>
+    <span class="combined-arms flex-horizontal">
+      <label>{{localize 'BITD.CombinedArms'}}</label>
+      <input type="checkbox" name="BITD.CombinedArms">
+    </span>
+    <span class="flex-horizontal">
+      <span class="bonuses flex-horizontal">
+        <label>{{localize 'BITD.None'}}</label>
+        <select data-field="BITD.Effects" data-tooltip="BITD.MultipleSelectUsage" multiple>
+          <option value="BITD.ExtraDie" selected>{{localize 'BITD.ExtraDie'}}</option>
+          <option value="BITD.ImprovedPosition">{{localize 'BITD.ImprovedPosition'}}</option>
+          <option value="BITD.ImprovedEffect">{{localize 'BITD.ImprovedEffect'}}</option>
+          <option value="BITD.IgnoreHarmDamage">{{localize 'BITD.IgnoreHarmDamage'}}</option>
+        </select>
+      </span>
     </span>
     <button class="carry-that-weight-assist">{{localize 'BITD.CarryThatWeightAssist'}}</button>
   </div>
