@@ -387,17 +387,17 @@ Hooks.once("init", async function () {
  * Once the entire VTT framework is initialized, check to see if we should perform a data migration
  */
 Hooks.once("ready", async function () {
-  // Fetch all clock styles
-  await BladesHelpers.loadAllClockStyles();
-
   // Determine whether a system migration is required
-  const currentVersion = game.settings.get("beamsaber", "systemMigrationVersion");
-  const NEEDS_MIGRATION_VERSION = 4.1;
+  const currentVersion = game.settings.get('beamsaber', 'systemMigrationVersion');
+  const NEEDS_MIGRATION_VERSION = 4.2;
   const needsMigration = currentVersion != null && currentVersion < NEEDS_MIGRATION_VERSION;
 
   // Perform the migration
   if (needsMigration && game.user.isGM)
-    migrateWorld(currentVersion, NEEDS_MIGRATION_VERSION);
+    await migrateWorld(currentVersion, NEEDS_MIGRATION_VERSION);
+
+  // Fetch all clock styles
+  await BladesHelpers.loadAllClockStyles();
 
   await controlTokenEvent(undefined, false);
 });

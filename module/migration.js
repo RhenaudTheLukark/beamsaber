@@ -1,4 +1,5 @@
 import { BladesHelpers } from "./blades-helpers.js";
+import { ClockStylesData } from "./models/clock-styles.js";
 
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
@@ -48,19 +49,6 @@ export const migrateWorld = async function(oldVersion, newVersion) {
     }*/
   }
 
-  // Migrate Actor Link
-  for (let s of game.scenes.contents) {
-    try {
-      const updateData = _migrateSceneData(s);
-      if (Object.keys(updateData).length > 0) {
-        console.log(`Migrating Scene entity ${s.name}`);
-        await BladesHelpers.tryUpdate(s, updateData);
-      }
-    } catch(err) {
-      console.error(err);
-    }
-  }
-
   // Migrate Items
   let items = foundry.utils.deepClone(game.items.contents);
   for (let i of items) {
@@ -75,29 +63,11 @@ export const migrateWorld = async function(oldVersion, newVersion) {
     }
   }
 
+  _migrateSettings(oldVersion);
+
   // Set the migration as complete
   game.settings.set("beamsaber", "systemMigrationVersion", newVersion);
   ui.notifications.info(`Beamsaber System Migration to version ${game.system.version} completed!`, {permanent: true});
-};
-
-
-/* -------------------------------------------- */
-
-/**
- * Migrate a single Scene entity to incorporate changes to the data model of it's actor data overrides
- * Return an Object of updateData to be applied
- * @param {Object} scene  The Scene data to Update
- * @return {Object}       The updateData to apply
- */
-export const _migrateSceneData = function(scene) {
-  const tokens = foundry.utils.deepClone(scene.tokens);
-  return {
-    tokens: tokens.map(t => {
-      t.actorLink = true;
-      t.actorData = {};
-      return t;
-    })
-  };
 };
 
 /* -------------------------------------------- */
@@ -157,6 +127,36 @@ function _migrateTokenLink(actor) {
   updateData['prototypeToken.actorLink'] = true;
 
   return updateData;
+}
+
+/* -------------------------------------------- */
+
+/**
+ * Make Token be an Actor link.
+ * @param {Actor} actor   The actor to Update
+ * @return {Object}       The updateData to apply
+ */
+function _migrateSettings(oldVersion) {
+  if (oldVersion < 4.2) {
+    // Update Clock Styles
+    let clockStyles = game.settings.get('beamsaber', 'ClockStyles').contents;
+    let defaultClockStyles = {
+      flower: {
+        pink: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        }
+      }
+    };
+    clockStyles = foundry.utils.mergeObject(clockStyles, defaultClockStyles);
+    game.settings.set('beamsaber', 'ClockStyles', new ClockStylesData(clockStyles));
+  }
 }
 
 /* -------------------------------------------- */
