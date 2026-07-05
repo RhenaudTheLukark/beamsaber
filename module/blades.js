@@ -29,6 +29,11 @@ import { migrateWorld } from "./migration.js";
 
 window.BladesHelpers = BladesHelpers;
 
+foundry.applications.sidebar.tabs.ActorDirectory.prototype._canDragStart = function(selector) {
+  let keyToNumber = ['', 'all', 'trusted', 'gms', 'gm-only'];
+  return game.user.role >= keyToNumber.indexOf(game.settings.get('beamsaber', 'ActorDragAndDrop'));
+}
+
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
 /* -------------------------------------------- */

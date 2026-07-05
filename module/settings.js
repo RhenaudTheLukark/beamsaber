@@ -41,6 +41,22 @@ export const registerSystemSettings = function() {
     default: 'beamsaber/cyan'
   });
 
+  game.settings.register('beamsaber', 'ActorDragAndDrop', {
+    name: game.i18n.localize('BITD.Settings.ActorDragAndDrop.Name'),
+    hint: game.i18n.localize('BITD.Settings.ActorDragAndDrop.Hint'),
+    config: true,
+    scope: 'world',
+    type: String,
+    default: 'all',
+    choices: {
+      all: game.i18n.localize('BITD.Settings.ActorDragAndDrop.Everyone'),
+      trusted: game.i18n.localize('BITD.Settings.ActorDragAndDrop.TrustedAndGMs'),
+      gms: game.i18n.localize('BITD.Settings.ActorDragAndDrop.GMs'),
+      gm_only: game.i18n.localize('BITD.Settings.ActorDragAndDrop.GMOnly')
+    },
+    requiresReload: true
+  });
+
   game.settings.register('beamsaber', 'DeepCutLoad', {
     name: game.i18n.localize('BITD.Settings.Load.Name'),
     hint: game.i18n.localize('BITD.Settings.Load.Hint'),

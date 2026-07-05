@@ -1096,14 +1096,6 @@
     },
 
     "Settings": {
-      "Action": {
-        "Name": "Action Rolls",
-        "Hint": "Enables the Action Roll from the Actor Dice Roller; only uncheck if you have enabled Threat Rolls."
-      },
-      "Threat": {
-        "Name": "Threat Rolls",
-        "Hint": "Enables the Threat Roll from the Deep Cuts supplement."
-      },
       "Load": {
         "Name": "Alternate Load",
         "Hint": "Replaces the base Load Rules (Light/Normal/Heavy) with the Load Rules (Discreet/Conspicuous) from the Deep Cuts supplement."
@@ -1118,7 +1110,7 @@
       },
       "ClockStyles": {
         "Name": "Clock Styles",
-        "Label": "Set Clock Styles...",
+        "Label": "Configure Clock Styles...",
         "Hint": "List of all detected clock styles that can be used.\nSystem clock styles are stored in your Foundry folder's systems/beamsaber/themes folder.\nWorld clock styles are stored in your Foundry folder's worlds/<YourWorld>/themes folder.",
         "Fine1": "All of the clocks sprites in this ",
         "Fine2": " are valid and fine to use",
@@ -1142,6 +1134,14 @@
         "Hint": "Whether not having any more Downtime Activities available prevents rolls which use them or not.\nStrict: Rolls are prevented.\nLax: They are not.",
         "Strict": "Strict",
         "Lax": "Lax"
+      },
+      "ActorDragAndDrop": {
+        "Name": "Actor Drag & Drop",
+        "Hint": "Indicates who is allowed to drag & drop actors. Note that this behavior is used for some rolls and features.\nEveryone: Every user is allowed to drag and drop actors.\nTrusted Players & GMs: Normal players are forbidden.\nAll Gamemasters: All players are forbidden.\nGamemaster: Only the main Gamemaster is allowed.",
+        "Everyone": "Everyone",
+        "TrustedAndGMs": "Trusted Players & GMs",
+        "GMs": "All Gamemasters",
+        "GMOnly": "Gamemaster"
       },
       "Reset": "Reset",
       "SaveChanges": "Save Changes"
