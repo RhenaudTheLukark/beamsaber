@@ -2,10 +2,10 @@
   "id": "beamsaber",
   "title": "Beam Saber",
   "description": "Beam Saber game system based on the game from Avalyn Ramsay - https://austin-ramsay.itch.io/beamsaber",
-  "version": "0.6.1",
+  "version": "0.6.1.1",
   "license": "./LICENSE",
   "manifest": "https://raw.githubusercontent.com/RhenaudTheLukark/beamsaber/refs/heads/main/system.json",
-  "download": "https://github.com/RhenaudTheLukark/beamsaber/archive/refs/tags/0.6.1.zip",
+  "download": "https://github.com/RhenaudTheLukark/beamsaber/archive/refs/tags/0.6.1.1.zip",
   "url": "https://github.com/RhenaudTheLukark/beamsaber/",
   "compatibility": {
     "minimum": "13",
