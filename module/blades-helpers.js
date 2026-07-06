@@ -1413,6 +1413,15 @@ export class BladesHelpers {
     return relationship;
   }
 
+  static async fetchRelationshipAndAddItIfNotfound(ownerFull, entityFull) {
+    let relationship = BladesHelpers.fetchRelationship(ownerFull, entityFull);
+    if (!relationship) {
+      await BladesHelpers.addRelationship(ownerFull, entityFull);
+      return BladesHelpers.fetchRelationship(ownerFull, entityFull);
+    }
+    return relationship;
+  }
+
   static fetchAllRelationships(entityFull, forceFactionSearch, raw) {
     let output = [];
     if (entityFull.type == 'crew' && !forceFactionSearch)

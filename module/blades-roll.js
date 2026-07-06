@@ -1282,7 +1282,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
       }
 
       if (ownerFull) {
-        let relationshipFull = await BladesHelpers.fetchRelationship(ownerFull, squadFull);
+        let relationshipFull = await BladesHelpers.fetchRelationshipAndAddItIfNotfound(ownerFull, squadFull);
         entanglement = BladesHelpers.getEntanglementTable(Number(relationshipFull.status));
       } else
         entanglement = false;

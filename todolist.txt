@@ -11,6 +11,7 @@ TODO list:
 	- Note: prepareData() may not always have all actors known, use prepareContext() instead to replace getData()
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
+- Important: Make the system v14-compatible
 
 To Re-Implement:
 	Pilot Abilities:
@@ -22,6 +23,8 @@ Changelog since 26/06/29:
 + Added a Beam Saber setting to allow dragging actors without the Create Tokens permission
 + Update the + symbol to a i symbol when opening a theme/color in the Configure Clock Styles setting popup
 + Made it so Flower clocks are shifted by default
++ Added new Flower clock styles
++ BUG: Collect roll: Error if no relationship between the region's owner and the squad and an Entanglement must be rolled
 + Compendium Items
 	Pilot Abilities:
 		+ (Em) Carry That Weight => First effect: time travel on an action roll, roll +1d and add it to the roll result (or roll 1d if 0d roll) from assist or push yourself
