@@ -91,7 +91,87 @@ export const registerSystemSettings = function() {
     default: new ClockStylesData({
       contents: {
         flower: {
+          black: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
+          blue: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
+          green: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
+          grey: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
+          orange: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
           pink: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
+          red: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
+          white: {
+            2: {shifted: true},
+            3: {shifted: true},
+            4: {shifted: true},
+            5: {shifted: true},
+            6: {shifted: true},
+            8: {shifted: true},
+            10: {shifted: true},
+            12: {shifted: true}
+          },
+          yellow: {
             2: {shifted: true},
             3: {shifted: true},
             4: {shifted: true},

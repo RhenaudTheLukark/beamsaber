@@ -33,9 +33,8 @@ export class ClockStylesSettings extends HandlebarsApplicationMixin(ApplicationV
   settings = undefined;
 
   async _prepareContext(options) {
-    if (this.settings === undefined) {
+    if (this.settings === undefined)
       this.settings = new ClockStylesData({ contents: foundry.utils.deepClone(game.settings.get('beamsaber', 'ClockStyles').contents) });
-    }
 
     const clockStyles = foundry.utils.deepClone(BladesHelpers.clockStyles);
     for (const [themeName, theme] of Object.entries(clockStyles))

@@ -132,17 +132,96 @@ function _migrateTokenLink(actor) {
 /* -------------------------------------------- */
 
 /**
- * Make Token be an Actor link.
- * @param {Actor} actor   The actor to Update
- * @return {Object}       The updateData to apply
+ * Migrate the system's settings
+ * @param {Number} version  Old version of the migration
  */
-function _migrateSettings(oldVersion) {
-  if (oldVersion < 4.2) {
+function _migrateSettings(version) {
+  if (version < 4.3) {
     // Update Clock Styles
     let clockStyles = game.settings.get('beamsaber', 'ClockStyles').contents;
     let defaultClockStyles = {
       flower: {
+        black: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
+        blue: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
+        green: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
+        grey: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
+        orange: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
         pink: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
+        red: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
+        white: {
+          2: {shifted: true},
+          3: {shifted: true},
+          4: {shifted: true},
+          5: {shifted: true},
+          6: {shifted: true},
+          8: {shifted: true},
+          10: {shifted: true},
+          12: {shifted: true}
+        },
+        yellow: {
           2: {shifted: true},
           3: {shifted: true},
           4: {shifted: true},
@@ -155,7 +234,7 @@ function _migrateSettings(oldVersion) {
       }
     };
     clockStyles = foundry.utils.mergeObject(clockStyles, defaultClockStyles);
-    game.settings.set('beamsaber', 'ClockStyles', new ClockStylesData(clockStyles));
+    game.settings.set('beamsaber', 'ClockStyles', new ClockStylesData({ contents: clockStyles }));
   }
 }
 

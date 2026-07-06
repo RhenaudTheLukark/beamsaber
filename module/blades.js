@@ -389,7 +389,7 @@ Hooks.once("init", async function () {
 Hooks.once("ready", async function () {
   // Determine whether a system migration is required
   const currentVersion = game.settings.get('beamsaber', 'systemMigrationVersion');
-  const NEEDS_MIGRATION_VERSION = 4.2;
+  const NEEDS_MIGRATION_VERSION = 4.3;
   const needsMigration = currentVersion != null && currentVersion < NEEDS_MIGRATION_VERSION;
 
   // Perform the migration
