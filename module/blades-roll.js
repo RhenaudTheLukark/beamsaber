@@ -1571,6 +1571,41 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
       else
         updateObject['system.personnel.value'] = Math.min(Math.max(Number(extraFields.actor.system.personnel.value) + value, 0), Number(extraFields.actor.system.personnel.max));
       await BladesHelpers.tryUpdate(extraFields.actor, updateObject);
+    } else if (attributeOrRollName == 'BITD.StressLoss') {
+      let connectionFull = BladesHelpers.resolveActor(extraFields.connection);
+      let clearStress = getBladesRollCutLooseUpkeep(rolls, extraResult, zeromode);
+      let realClearStress = clearStress;
+      let remainingStress = extraFields.stress - clearStress;
+      if (!extraFields.forcedResult)
+        rollStatus = remainingStress >= 0 ? 'success' : 'failure';
+      if (remainingStress < 0) {
+        remainingStress = 0;
+        clearStress = extraFields.stress;
+      }
+
+      let updateObject = {'system.stress.value': remainingStress};
+      await BladesHelpers.tryUpdate(extraFields.actor, updateObject);
+
+      if (rollStatus == 'failure') {
+        extraFields.contents = `
+          <div class="die failure">${game.i18n.localize('BITD.RollFailure')}</div>
+          <div class="description">
+            <p>${game.i18n.format('BITD.StressLossFailure', {pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', clear_stress: clearStress})}
+              <ul>
+                <li>${game.i18n.localize('BITD.RollCutLooseFailureAttactTrouble')}</li>
+                <li>${game.i18n.localize('BITD.RollCutLooseFailureBrag')}</li>
+                <li>${game.i18n.localize('BITD.RollCutLooseFailureLost')}</li>
+                <li>${game.i18n.localize('BITD.RollCutLooseFailureTapped')}</li>
+              </ul>
+            </p>
+          </div>`;
+      } else {
+        extraFields.contents = `
+          <div class="die success">${game.i18n.localize('BITD.RollSuccess')}</div>
+          <div class="description">
+            <p>${game.i18n.format('BITD.StressLossSuccess', {pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', clear_stress: clearStress})}</p>
+          </div>`
+      }
     }
     result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/generic-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, note: note, edge: edge, extraFields: extraFields });
   }
@@ -1892,6 +1927,7 @@ const rollTypeLabels = {
 
   collectionAgency: 'BITD.CollectionAgency',
   sideBusiness: 'BITD.SideBusiness',
+  stressLoss: 'BITD.StressLoss',
 
   cohort: 'BITD.CohortRoll'
 }

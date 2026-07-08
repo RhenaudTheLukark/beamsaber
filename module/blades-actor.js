@@ -397,10 +397,10 @@ export class BladesActor extends Actor {
     allConditionalModifiers = pruneInvalidConditionalRollModifiers(this, allConditionalModifiers);
 
     let otherPilotFull = BladesHelpers.resolveActor(otherPilotUuid);
-    let title = game.i18n.format(`BITD.ActionRollTitle`, { attribute: game.i18n.localize(`BITD.CutLooseRoll`) });
+    let title = game.i18n.format(`BITD.ActionRollTitle`, { attribute: game.i18n.localize(`BITD.StressLoss`) });
     let dialog = new foundry.applications.api.DialogV2({
       window: { title: title },
-      content: buildRollPopup(title, this, ['cutLoose'], {}, true, {connection: otherPilotFull}),
+      content: buildRollPopup(title, this, ['stressLoss'], {}, true),
       buttons: [
         {
           icon: "fas fa-check",
@@ -423,21 +423,20 @@ export class BladesActor extends Actor {
         let enabledConditionalModifiers = resolveConditionalModifiers(dialog, this);
         enabledConditionalModifiers = keepValidModifiersFromOther(enabledConditionalModifiers);
 
-        let extraFields = { roll_type: 'cutLoose', modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: this, connection: otherPilotFull, workHardPlayHardRoll: true, bonusRoll: true };
+        let extraFields = { title: game.i18n.localize('BITD.StressLoss'), roll_type: 'stressLoss', modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: this, connection: otherPilotFull, workHardPlayHardRoll: true, bonusRoll: true };
         let stress = Number(this.system.stress.value);
         extraFields.stress = parseInt(stress);
         if (firstRollResult == 'failure')
           extraFields.forcedResult = firstRollResult;
         let connection = BladesHelpers.fetchConnectionsToActor(this.uuid).find(c => c.uuid == otherPilotUuid);
-        let cutLooseDiceAmount = Number(connection.clock.value) + extraDice;
-        await bladesRoll(cutLooseDiceAmount, 'BITD.CutLooseRoll', note, extraFields);
-        BladesHelpers.tryUpdate(this, {'system.downtime_activity.cutLoose': true});
+        let stressLossDiceAmount = Number(connection.clock.value) + extraDice;
+        await bladesRoll(stressLossDiceAmount, 'BITD.StressLoss', note, extraFields);
         await postRollProcessing(this, extraFields);
       }
     })
     dialog.allPermanentModifiers = allPermanentModifiers;
     dialog.allConditionalModifiers = allConditionalModifiers;
-    dialog.rollTypes = ['cutLoose'];
+    dialog.rollTypes = ['stressLoss'];
     dialog._onFirstRender = dialogOnFirstRender;
     dialog._onRender = dialogOnRender;
     dialog.refreshModifiers = refreshModifiers;

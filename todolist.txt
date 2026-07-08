@@ -11,26 +11,13 @@ TODO list:
 	- Note: prepareData() may not always have all actors known, use prepareContext() instead to replace getData()
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
-- Important: Make the system v14-compatible
 
-To Re-Implement:
-	Pilot Abilities:
-		- (Em) Carouse => Do not make the other roll a Cut Loose roll, but a special Stress Loss roll
-
-Changelog since 26/06/29:
-+ Fix Successful Mission Trust Gain
-+ Updated Character Scars to be empty boxes
-+ Added a Beam Saber setting to allow dragging actors without the Create Tokens permission
-+ Update the + symbol to a i symbol when opening a theme/color in the Configure Clock Styles setting popup
-+ Made it so Flower clocks are shifted by default
-+ Added new Flower clock styles
-+ BUG: Collect roll: Error if no relationship between the region's owner and the squad and an Entanglement must be rolled
-+ Compendium Items
-	Pilot Abilities:
-		+ (Em) Carry That Weight => First effect: time travel on an action roll, roll +1d and add it to the roll result (or roll 1d if 0d roll) from assist or push yourself
-		+ (Em) Carry That Weight => Second effect: Stress transfer UI
-		+ (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (on the Action/Resistance roll popup)
-		+ (M) Combined Arms => Make the same assist bonus pickable several times if a togglable modifier's on (with Carry That Weight, on a message)
+Changelog since 26/07/06:
++ BUG: Collect: Error if no relationship between the region's owner and the squad and an Entanglement must be rolled
++ (Partial) Foundry v14 Compatibility
++ Compendium Items:
+	+ Pilot Abilities:
+		+ (Em) Work Hard, Play Hard => Do not make the other roll a Cut Loose roll, but a special Stress Loss roll
 
 + => Means it's done
 - => Means it has to be done
