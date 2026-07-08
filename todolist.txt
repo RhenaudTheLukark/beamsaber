@@ -15,6 +15,7 @@ TODO list:
 Changelog since 26/07/06:
 + BUG: Collect: Error if no relationship between the region's owner and the squad and an Entanglement must be rolled
 + (Partial) Foundry v14 Compatibility
++ BUG: Hidden conditional modifiers applying on all rolls
 + Compendium Items:
 	+ Pilot Abilities:
 		+ (Em) Work Hard, Play Hard => Do not make the other roll a Cut Loose roll, but a special Stress Loss roll

@@ -3,7 +3,8 @@ import { BladesActiveEffect } from '../blades-active-effect.js';
 import { BladesHelpers } from '../blades-helpers.js';
 import { bladesRoll, simpleRollPopup, buildRollPopup, resolveRollModifierArray, resolveConditionalModifiers,
   dialogOnFirstRender, dialogOnRender, refreshModifiers, postRollProcessing, pruneInvalidConditionalRollModifiers,
-  keepValidModifiersFromOther } from '../blades-roll.js';
+  keepValidModifiersFromOther, keepValidModifiersFromRollType
+} from '../blades-roll.js';
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -668,6 +669,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
         let input = dialog.element.querySelector('input[type=radio]:checked');
         if (input) {
           let rollType = input.id.split('-')[0];
+          enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, rollType, null, dialog.attributeName);
           let extraFields = { roll_type: rollType, modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: this.actor };
           let squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
           switch (rollType) {
@@ -691,7 +693,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
               let stress = Number(this.actor.system.stress.value);
               extraFields.connection = BladesHelpers.resolveActor(connectionUuid);
               extraFields.stress = parseInt(stress);
-              let connection = BladesHelpers.fetchConnectionsToActor(this.actor.uuid).find(c => c.uuid == connectionUuid);
+              let connection = Object.values(this.actor.system.connections).find(c => c.uuid == connectionUuid);
               let cutLooseDiceAmount = Number(connection.clock.value) + extraDice;
               await bladesRoll(cutLooseDiceAmount, 'BITD.CutLooseRoll', note, extraFields);
               break;

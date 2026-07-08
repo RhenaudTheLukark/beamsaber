@@ -3,7 +3,8 @@ import { BladesActiveEffect } from '../blades-active-effect.js';
 import { BladesHelpers } from '../blades-helpers.js';
 import { bladesRoll, buildRollPopup, resolveRollModifierArray, resolveConditionalModifiers,
   checkDowntimeRules, dialogOnFirstRender, dialogOnRender, refreshModifiers, postRollProcessing,
-  pruneInvalidConditionalRollModifiers, keepValidModifiersFromOther } from '../blades-roll.js';
+  pruneInvalidConditionalRollModifiers, keepValidModifiersFromOther, keepValidModifiersFromRollType
+} from '../blades-roll.js';
 import { BeamChatMessage } from '../messages/beam-chat-message.js';
 
 /**
@@ -665,6 +666,7 @@ export class BladesSquadSheet extends BladesSheet {
         if (input.length > 0) {
           let rollType = input[0].id.split('-')[0];
           let diceAmount = cohortFull.system.quality + extraDice;
+          enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, rollType, null, dialog.attributeName);
           let extraFields = { roll_type: rollType, within_expertise: withinExpertise, modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: cohortFull };
           switch (rollType) {
             case 'cohort':

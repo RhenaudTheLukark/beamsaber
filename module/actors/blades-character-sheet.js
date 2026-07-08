@@ -3,7 +3,8 @@ import { BladesActiveEffect } from '../blades-active-effect.js';
 import { BladesHelpers } from '../blades-helpers.js';
 import { bladesRoll, simpleRollPopup, buildRollPopup, resolveRollModifierArray, resolveConditionalModifiers,
   checkDowntimeRules, dialogOnFirstRender, dialogOnRender, refreshModifiers, postRollProcessing,
-  pruneInvalidConditionalRollModifiers, keepValidModifiersFromOther } from '../blades-roll.js';
+  pruneInvalidConditionalRollModifiers, keepValidModifiersFromOther, keepValidModifiersFromRollType
+} from '../blades-roll.js';
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -798,6 +799,7 @@ export class BladesCharacterSheet extends BladesSheet {
           let input = html.find('input[type=radio]:checked');
           if (input.length > 0) {
             let rollType = input[0].id.split('-')[0];
+            enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, rollType, null, dialog.attributeName);
             let extraFields = { roll_type: rollType, modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: this.actor };
             let squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
             switch (rollType) {

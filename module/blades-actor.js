@@ -1,6 +1,7 @@
 import { bladesRoll, buildRollPopup, resolveRollModifierArray, resolveConditionalModifiers,
   dialogOnFirstRender, dialogOnRender, refreshModifiers, postRollProcessing, pruneInvalidConditionalRollModifiers,
-  keepValidModifiersFromOther, computeGroupActionResultAndSendMessage, effectIndex, bladesRollModifierList
+  keepValidModifiersFromRollType, keepValidModifiersFromOther, computeGroupActionResultAndSendMessage, effectIndex,
+  bladesRollModifierList
 } from "./blades-roll.js";
 import { BladesHelpers } from "./blades-helpers.js";
 
@@ -294,6 +295,7 @@ export class BladesActor extends Actor {
         let input = html.find("input[type=radio]:checked");
         if (input.length > 0) {
           let rollType = input[0].id.split('-')[0];
+          enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, rollType, groupActionData ? extraFields.group_action.position : html.find('[name="pos"]')[0].value, dialog.attributeName);
           let extraFields = { roll_type: rollType, modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: this };
           switch (rollType) {
             case 'actionRoll':
@@ -422,13 +424,14 @@ export class BladesActor extends Actor {
         // Fetch enabled conditional roll modifiers by HTML inspection
         let enabledConditionalModifiers = resolveConditionalModifiers(dialog, this);
         enabledConditionalModifiers = keepValidModifiersFromOther(enabledConditionalModifiers);
+        enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, 'stressLoss', null, dialog.attributeName);
 
         let extraFields = { title: game.i18n.localize('BITD.StressLoss'), roll_type: 'stressLoss', modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: this, connection: otherPilotFull, workHardPlayHardRoll: true, bonusRoll: true };
         let stress = Number(this.system.stress.value);
         extraFields.stress = parseInt(stress);
         if (firstRollResult == 'failure')
           extraFields.forcedResult = firstRollResult;
-        let connection = BladesHelpers.fetchConnectionsToActor(this.uuid).find(c => c.uuid == otherPilotUuid);
+        let connection = Object.values(this.system.connections).find(c => c.uuid == otherPilotUuid);
         let stressLossDiceAmount = Number(connection.clock.value) + extraDice;
         await bladesRoll(stressLossDiceAmount, 'BITD.StressLoss', note, extraFields);
         await postRollProcessing(this, extraFields);
@@ -436,6 +439,7 @@ export class BladesActor extends Actor {
     })
     dialog.allPermanentModifiers = allPermanentModifiers;
     dialog.allConditionalModifiers = allConditionalModifiers;
+    dialog.attributeName = '';
     dialog.rollTypes = ['stressLoss'];
     dialog._onFirstRender = dialogOnFirstRender;
     dialog._onRender = dialogOnRender;

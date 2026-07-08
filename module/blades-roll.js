@@ -2234,6 +2234,7 @@ export async function simpleRollPopup(title1 = 'BITD.SimpleRoll', title2 = 'BITD
       let input = dialog.element.querySelector('input[type=radio]:checked');
       if (input) {
         let rollType = input.id.split('-')[0];
+        enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, rollType, null, dialog.attributeName);
         let extraFields = { roll_type: rollType, modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: targetActor };
         switch (rollType) {
           case 'engagement':
@@ -2330,7 +2331,7 @@ export function dialogOnFirstRender(context, options, thisPass) {
 
 export function dialogOnRender(context, options, thisPass) {
   let dialog = this ?? thisPass;
-  let position = dialog.element.querySelector('[name="effect"]');
+  let position = dialog.element.querySelector('[name="pos"]');
   dialog.refreshModifiers(dialog, dialog.rollTypes[0], position?.value, dialog.attributeName);
 }
 
