@@ -8222,6 +8222,9 @@
   color: light-dark(rgb(16, 16, 16), rgb(255, 255, 255));
 }
 
+ol.chat-log li.chat-message.message p:empty {
+  min-height: 0em;
+}
 ol.chat-log li.chat-message.message .chat-label {
   background-color: #191813;
   font-family: Kirsty, serif;
