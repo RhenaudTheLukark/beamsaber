@@ -33,7 +33,7 @@ export class BladesItem extends Item {
 
   async updateCohortQualityScale() {
     let [quality, scale] = this.computeCohortQualityScale();
-    await BladesHelpers.tryUpdate(this, {system: {'==quality': quality, '==scale': scale}});
+    await BladesHelpers.tryUpdate(this, {'system.quality': quality, 'system.scale': scale});
   }
 
   computeCohortQualityScale() {

@@ -111,7 +111,7 @@ export class BladesNPCSheet extends BladesSheet {
         element = element.parent();
       element.slideUp(200, async () => {
         await this.actor.removeItem(item);
-        await BladesHelpers.tryUpdate(this.actor, {system: {'==class': null}});
+        await BladesHelpers.tryUpdate(this.actor, {'system.class': null});
       });
     });
 

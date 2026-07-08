@@ -121,7 +121,7 @@ export class BladesRegionSheet extends BladesSheet {
       let currentSquadId = element.data('itemId');
       let squadFull = BladesHelpers.resolveActor(currentSquadId);
       let childrenElement = $(element[0].parentElement).children('.item-container');
-      childrenElement.slideToggle(200, async () => await BladesHelpers.tryUpdate(squadFull, {system: {'==region_collapsed': !squadFull.system.region_collapsed}}));
+      childrenElement.slideToggle(200, async () => await BladesHelpers.tryUpdate(squadFull, {'system.region_collapsed': !squadFull.system.region_collapsed}));
     });
 
     // Delete Notable Person

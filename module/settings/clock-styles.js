@@ -1,9 +1,9 @@
 import { ClockStylesData } from '../models/clock-styles.js';
 import { BladesHelpers } from '../blades-helpers.js';
 
-const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
+const { HandlebarsApplicationMixin, DocumentSheetV2 } = foundry.applications.api;
 
-export class ClockStylesSettings extends HandlebarsApplicationMixin(ApplicationV2) {
+export class ClockStylesSettings extends HandlebarsApplicationMixin(DocumentSheetV2) {
   static DEFAULT_OPTIONS = {
     actions: {
       collapse: ClockStylesSettings.#onCollapse,

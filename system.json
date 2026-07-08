@@ -10,7 +10,7 @@
   "compatibility": {
     "minimum": "13",
     "verified": 13.351,
-    "maximum": "13"
+    "maximum": "14"
   },
   "background": "systems/beamsaber/images/BS_title.png",
   "authors": [

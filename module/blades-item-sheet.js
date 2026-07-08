@@ -57,19 +57,19 @@ export class BladesItemSheet extends foundry.appv1.sheets.ItemSheet {
     });
 
     html.find('.add-quality').click(async (e) => {
-      await this.object.update({system: {'==quality_modifier': this.object.system.quality_modifier + 1}});
+      await this.object.update({'system.quality_modifier': this.object.system.quality_modifier + 1});
       await this.object.updateCohortQualityScale();
     });
     html.find('.remove-quality').click(async (e) => {
-      await this.object.update({system: {'==quality_modifier': this.object.system.quality_modifier - 1}});
+      await this.object.update({'system.quality_modifier': this.object.system.quality_modifier - 1});
       await this.object.updateCohortQualityScale();
     });
     html.find('.add-scale').click(async (e) => {
-      await this.object.update({system: {'==scale_modifier': this.object.system.scale_modifier + 1}});
+      await this.object.update({'system.scale_modifier': this.object.system.scale_modifier + 1});
       await this.object.updateCohortQualityScale();
     });
     html.find('.remove-scale').click(async (e) => {
-      await this.object.update({system: {'==scale_modifier': this.object.system.scale_modifier - 1}});
+      await this.object.update({'system.scale_modifier': this.object.system.scale_modifier - 1});
       await this.object.updateCohortQualityScale();
     });
   }

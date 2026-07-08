@@ -33,7 +33,7 @@ export class BladesActor extends Actor {
   /** @override */
   async _onUpdate(changed, options, userId) {
     super._onUpdate(changed, options, userId);
-    if (changed.system && (changed.system.is_second_form != undefined || changed.system['==is_second_form'] != undefined))
+    if (changed.system?.is_second_form != undefined)
       this.updateVehicleForm();
   }
 
@@ -109,7 +109,7 @@ export class BladesActor extends Actor {
             connectionsEntries.splice(connectionId, 1);
             for (let id in connectionsEntries)
               connectionsEntries[id][0] = String(id);
-            await BladesHelpers.tryUpdate(characterFull, {system: {'==connections': Object.fromEntries(connectionsEntries)}});
+            await BladesHelpers.tryUpdate(characterFull, {'system.==connections': Object.fromEntries(connectionsEntries)});
           }
         }
     }
@@ -431,7 +431,7 @@ export class BladesActor extends Actor {
         let connection = BladesHelpers.fetchConnectionsToActor(this.uuid).find(c => c.uuid == otherPilotUuid);
         let cutLooseDiceAmount = Number(connection.clock.value) + extraDice;
         await bladesRoll(cutLooseDiceAmount, 'BITD.CutLooseRoll', note, extraFields);
-        BladesHelpers.tryUpdate(this, {system: {downtime_activity: {'==cutLoose': true}}});
+        BladesHelpers.tryUpdate(this, {'system.downtime_activity.cutLoose': true});
         await postRollProcessing(this, extraFields);
       }
     })
@@ -493,7 +493,7 @@ export class BladesActor extends Actor {
     if (!squadFull) {
       let updateObject = {system: {}};
       for (let modifier of this.crewWideModifiers)
-        updateObject.system[`==${modifier}_owners`] = null;
+        updateObject[`system.${modifier}_owners`] = null;
       await BladesHelpers.tryUpdate(actor, updateObject);
     }
     if (actor.type == 'character' && squadFull) {
@@ -520,8 +520,8 @@ export class BladesActor extends Actor {
       for (let [modifier, owners] of Object.entries(characterLists)) {
         if (owners.toString() == actor.system[`${modifier}_owners`]?.toString())
           continue;
-        let updateObject = {system: {}};
-        updateObject.system[`==${modifier}_owners`] = owners;
+        let updateObject = {};
+        updateObject[`system.==${modifier}_owners`] = owners;
         await BladesHelpers.tryUpdate(actor, updateObject);
       }
     }
@@ -578,12 +578,12 @@ export class BladesActor extends Actor {
     effect = effectIndex[Math.min(Math.max(numberedEffect, 0), 2)];
 
     this.system.group_action = { action: action, position: position, forcedPosition: forcedPosition, effect: effect, forcedEffect: forcedEffect, leader: leaderFull.uuid, leader_action: diceAmount, note: note, rolls: {} };
-    await BladesHelpers.tryUpdate(this, {system: {'==group_action': this.system.group_action}});
+    await BladesHelpers.tryUpdate(this, {'system.==group_action': this.system.group_action});
   }
 
   async updateGroupActionRoll(actorId, roll) {
     this.system.group_action.rolls[actorId] = roll;
-    await BladesHelpers.tryUpdate(this, {system: {group_action: {"==rolls": this.system.group_action.rolls}}});
+    await BladesHelpers.tryUpdate(this, {'system.group_action.==rolls': this.system.group_action.rolls});
   }
 
   async revealGroupActionResult() {
@@ -600,12 +600,12 @@ export class BladesActor extends Actor {
     let inVendetta = BladesHelpers.fetchAllRelationships(this).filter(r => r.status == -3).map(r => BladesHelpers.resolveActor(r.owner)).filter(r => r != null).length > 0;
     inVendetta &&= this.items.find(i => i.system.war_dogs) == null;
     if (inVendetta != this.system.vendetta) {
-      let updateObject = {system: {'==vendetta': inVendetta}};
+      let updateObject = {'system.vendetta': inVendetta};
       let squadStrength = 2 * Number(this.system.tier.value) + (this.system.hold == 'strong' ? 1 : 0);
       squadStrength = Math.max(Math.min(squadStrength + (inVendetta ? -1 : 1), 8), 0);
       squadStrength = squadStrength;
-      updateObject.system.tier = {'==value': Math.floor(squadStrength / 2)};
-      updateObject.system['==hold'] = squadStrength % 2 == 1 ? 'strong' : 'weak';
+      updateObject['system.tier.value'] = Math.floor(squadStrength / 2);
+      updateObject['system.hold'] = squadStrength % 2 == 1 ? 'strong' : 'weak';
       await BladesHelpers.tryUpdate(this, updateObject);
       for (let cohort of this.items.filter(i => i.type == 'cohort'))
         await cohort.updateCohortQualityScale();
@@ -688,7 +688,7 @@ export class BladesActor extends Actor {
       }
 
       if (gear.system.suppressed != suppressed) {
-        await BladesHelpers.tryUpdate(gear, {system: {'==suppressed': suppressed}});
+        await BladesHelpers.tryUpdate(gear, {'system.suppressed': suppressed});
         if (suppressed)
           await BladesHelpers.preDeleteItem(gear, gearOwner, false);
         else

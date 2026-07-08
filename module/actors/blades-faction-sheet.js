@@ -123,7 +123,7 @@ export class BladesFactionSheet extends BladesSheet {
         element = element.parent();
       element.slideUp(200, async () => {
         await this.actor.removeItem(item);
-        await BladesHelpers.tryUpdate(this.actor, {system: {'==type': null}});
+        await BladesHelpers.tryUpdate(this.actor, {'system.type': null});
       });
     });
 
@@ -164,7 +164,7 @@ export class BladesFactionSheet extends BladesSheet {
         },
         description: ''
       }
-      await BladesHelpers.tryUpdate(this.actor, {system: {'==goals': goals}});
+      await BladesHelpers.tryUpdate(this.actor, {'system.==goals': goals});
     });
 
     // Delete Goal
@@ -175,7 +175,7 @@ export class BladesFactionSheet extends BladesSheet {
       goalsEntries.splice(currentGoalId, 1);
       for (let id in goalsEntries)
         goalsEntries[id][0] = String(id);
-      await BladesHelpers.tryUpdate(this.actor, {system: {'==goals': Object.fromEntries(goalsEntries)}});
+      await BladesHelpers.tryUpdate(this.actor, {'system.==goals': Object.fromEntries(goalsEntries)});
     });
 
     // Collapse children relationship list
@@ -186,8 +186,8 @@ export class BladesFactionSheet extends BladesSheet {
       let [relationshipId, relationshipFull] = Object.entries(relationships).find(r => r[1].uuid == relationshipUuid) ?? [-1, null];
       if (relationshipId == -1) return;
 
-      let factionUpdate = {system: {relationships: {}}};
-      factionUpdate.system.relationships[relationshipId] = {'==collapsed': !relationshipFull.collapsed};
+      let factionUpdate = {};
+      factionUpdate[`system.relationships.${relationshipId}.collapsed`] = !relationshipFull.collapsed;
       let childrenElement = $(element[0].parentElement).children('.relationship-child-list');
       childrenElement.slideToggle(200, async () => await BladesHelpers.tryUpdate(this.actor, factionUpdate));
     });

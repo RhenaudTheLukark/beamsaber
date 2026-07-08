@@ -71,10 +71,8 @@ export class BladesHelpers {
 
     let resultDiff = result != relationship[path];
     if (resultDiff) {
-      let updateObject = {system: {}};
-      updateObject.system[relationshipPath] = {};
-      updateObject.system[relationshipPath][relationshipId] = {};
-      updateObject.system[relationshipPath][relationshipId][`==${path}`] = result;
+      let updateObject = {};
+      updateObject[`system.${relationshipPath}.${relationshipId}.${path}`] = result;
       await BladesHelpers.tryUpdate(ownerFull, updateObject);
       if (!recursive && path != 'beliefs')
         await BladesHelpers.handleRelationshipValue(entityFull, ownerFull, path, change, set, true);
@@ -126,9 +124,9 @@ export class BladesHelpers {
           relationship_level_string: game.i18n.localize(`BITD.FactionRelationship.${resultStatus}`),
           relationship_level: resultStatus
         })}`;
-      let updateObject = {system: {}};
-      updateObject.system[relationshipPath] = {};
-      updateObject.system[relationshipPath][relationshipId] = {'==trust': resultTrust, '==status': resultStatus};
+      let updateObject = {};
+      updateObject[`system.${relationshipPath}.${relationshipId}.trust`] = resultTrust;
+      updateObject[`system.${relationshipPath}.${relationshipId}.status`] = resultStatus;
       await BladesHelpers.tryUpdate(ownerFull, updateObject);
       if (!recursive)
         await BladesHelpers.handleTrust(entityFull, ownerFull, trustChange, set, true);
@@ -170,7 +168,7 @@ export class BladesHelpers {
         let costPerTier = Math.max(4 / squadFull.system.sponsor, 1);
         resultString += ` ${game.i18n.format('BITD.ReputationNotifyTierUp', {cost: costPerTier * (Number(squadFull.system.tier.value) + 1)})}`;
       }
-      await BladesHelpers.tryUpdate(squadFull, {system: {reputation: {'==value': resultRep}, '==hold': squadHold}});
+      await BladesHelpers.tryUpdate(squadFull, {'system.reputation.value': resultRep, 'system.hold': squadHold});
     }
     return resultString.trimStart();
   }
@@ -505,7 +503,7 @@ export class BladesHelpers {
 
   static async postCreateItem(item, actor) {
     if (item.type == 'cohort') {
-      await BladesHelpers.tryUpdate(item, {system: {'==crew': actor.uuid}});
+      await BladesHelpers.tryUpdate(item, {'system.crew': actor.uuid});
 
       let updatedGangType = false;
       // Blood Brothers: All newly created Fire Team Cohorts are Toughs
@@ -523,7 +521,7 @@ export class BladesHelpers {
       }
       if (updatedGangType) {
         item.system.gang_type.sort();
-        await BladesHelpers.tryUpdate(item, {system: {'==gang_type': item.system.gang_type}});
+        await BladesHelpers.tryUpdate(item, {'system.==gang_type': item.system.gang_type});
       }
     }
 
@@ -533,7 +531,7 @@ export class BladesHelpers {
         if (cohort.system.type == 'Gang' && !cohort.system.gang_type.includes('Toughs')) {
           cohort.system.gang_type.push('Toughs');
           cohort.system.gang_type.sort();
-          await BladesHelpers.tryUpdate(cohort, {system: {'==gang_type': cohort.system.gang_type}});
+          await BladesHelpers.tryUpdate(cohort, {'system.==gang_type': cohort.system.gang_type});
         }
       }
     }
@@ -543,7 +541,7 @@ export class BladesHelpers {
         if (cohort.system.type == 'Gang' && !cohort.system.gang_type.includes(item.system.training_center_type)) {
           cohort.system.gang_type.push(item.system.training_center_type);
           cohort.system.gang_type.sort();
-          await BladesHelpers.tryUpdate(cohort, {system: {'==gang_type': cohort.system.gang_type}});
+          await BladesHelpers.tryUpdate(cohort, {'system.==gang_type': cohort.system.gang_type});
         }
       }
     }
@@ -573,7 +571,7 @@ export class BladesHelpers {
       let armorData = actor.system.armor;
       armorData.max ++;
       armorData.value ++;
-      await BladesHelpers.tryUpdate(actor, {system: {armor: {'==max': armorData.max, '==value': armorData.value}}});
+      await BladesHelpers.tryUpdate(actor, {'system.armor.max': armorData.max, 'system.armor.value': armorData.value});
     }
   }
 
@@ -601,7 +599,7 @@ export class BladesHelpers {
         let armorData = shieldOwner.system.armor;
         armorData.max --;
         armorData.value = Math.min(armorData.max, armorData.value);
-        await BladesHelpers.tryUpdate(shieldOwner, {system: {'==armor': armorData}});
+        await BladesHelpers.tryUpdate(shieldOwner, {'system.==armor': armorData});
       }
     }
 
@@ -634,7 +632,7 @@ export class BladesHelpers {
         }
         if (somethingWasDone) {
           cohort.system.gang_type.sort();
-          await BladesHelpers.tryUpdate(cohort, {system: {'==gang_type': cohort.system.gang_type}})
+          await BladesHelpers.tryUpdate(cohort, {'system.==gang_type': cohort.system.gang_type});
         }
       }
     }
@@ -1058,8 +1056,8 @@ export class BladesHelpers {
     let squads = regionFull.system.squads;
     squads.push({uuid: squadFull.uuid});
     squads = BladesHelpers.sortObjects(squads, BladesHelpers.fetchSimpleData, BladesHelpers._simpleCompareFunc, BladesHelpers.rebuildSimplesFromData);
-    await BladesHelpers.tryUpdate(regionFull, {system: {'==squads': squads}});
-    await BladesHelpers.tryUpdate(squadFull, {system: {'==region': regionFull.uuid}});
+    await BladesHelpers.tryUpdate(regionFull, {'system.==squads': squads});
+    await BladesHelpers.tryUpdate(squadFull, {'system.region': regionFull.uuid});
   }
 
   // Removes a crew's region and removes the crew from the region's crew list
@@ -1068,7 +1066,7 @@ export class BladesHelpers {
     if (regionFull) {
       let regionSquads = regionFull.system.squads;
       regionSquads.splice(regionSquads.findIndex(s => s.uuid === squadFull.uuid), 1);
-      await BladesHelpers.tryUpdate(regionFull, {system: {'==squads': regionSquads}});
+      await BladesHelpers.tryUpdate(regionFull, {'system.==squads': regionSquads});
     }
 
     if (!dontUpdateMembers)
@@ -1081,7 +1079,7 @@ export class BladesHelpers {
           else
             await BladesHelpers.removeNPCRegion(memberFull);
       }
-    await BladesHelpers.tryUpdate(squadFull, {system: {'==region': null}});
+    await BladesHelpers.tryUpdate(squadFull, {'system.region': null});
   }
 
   /* -------------------------------------------- */
@@ -1099,8 +1097,8 @@ export class BladesHelpers {
     squadMembersArray.push({uuid: characterFull.uuid});
     squadMembersArray = BladesHelpers.sortObjects(squadMembersArray, BladesHelpers.fetchSimpleData, BladesHelpers._simpleCompareFunc, BladesHelpers.rebuildSimplesFromData);
     let newSquadMembers = Object.assign({}, squadMembersArray);
-    await BladesHelpers.tryUpdate(squadFull, {system: {'==members': newSquadMembers}});
-    await BladesHelpers.tryUpdate(characterFull, {system: {'==crew': squadFull.uuid}});
+    await BladesHelpers.tryUpdate(squadFull, {'system.==members': newSquadMembers});
+    await BladesHelpers.tryUpdate(characterFull, {'system.crew': squadFull.uuid});
     // Well-Trained Hunter Robot: Add the special cohort
     for (let hunter_robot of characterFull.items.filter(i => i.system.hunter_robot == true))
       await BladesHelpers.postCreateItem(hunter_robot, characterFull);
@@ -1116,9 +1114,9 @@ export class BladesHelpers {
       // Well-Trained Hunter Robot: Remove the special cohort
       for (let hunter_robot of characterFull.items.filter(i => i.system.hunter_robot == true))
         await BladesHelpers.preDeleteItem(hunter_robot, characterFull, false);
-      await BladesHelpers.tryUpdate(squadFull, {system: {'==members': newSquadMembers}});
+      await BladesHelpers.tryUpdate(squadFull, {'system.==members': newSquadMembers});
     }
-    await BladesHelpers.tryUpdate(characterFull, {system: {'==crew': null}});
+    await BladesHelpers.tryUpdate(characterFull, {'system.crew': null});
   }
 
   // Sets the squad of an NPC and add the NPC to the squad's member list
@@ -1142,8 +1140,8 @@ export class BladesHelpers {
       else
         await BladesHelpers.removeFactionNPC(npcFull);
     }
-    await BladesHelpers.tryUpdate(squadFull, {system: {'==members': newSquadMembers}});
-    await BladesHelpers.tryUpdate(npcFull, {system: {'==crew': squadFull.uuid}});
+    await BladesHelpers.tryUpdate(squadFull, {'system.==members': newSquadMembers});
+    await BladesHelpers.tryUpdate(npcFull, {'system.crew': squadFull.uuid});
   }
 
   // Removes an NPC's squad and remove the NPC from its squad's member list
@@ -1153,9 +1151,9 @@ export class BladesHelpers {
       let squadMembersArray = Object.values(squadFull.system.members);
       squadMembersArray.splice(squadMembersArray.map(e => e.uuid).indexOf(npcFull.uuid), 1);
       let newSquadMembers = Object.assign({}, squadMembersArray);
-      await BladesHelpers.tryUpdate(squadFull, {system: {'==members': newSquadMembers}});
+      await BladesHelpers.tryUpdate(squadFull, {'system.==members': newSquadMembers});
     }
-    await BladesHelpers.tryUpdate(npcFull, {system: {'==crew': null}});
+    await BladesHelpers.tryUpdate(npcFull, {'system.crew': null});
   }
 
   /* -------------------------------------------- */
@@ -1173,8 +1171,8 @@ export class BladesHelpers {
     let characters = regionFull.system.characters;
     characters.push({uuid: characterFull.uuid});
     characters = BladesHelpers.sortObjects(characters, BladesHelpers.fetchSimpleData, BladesHelpers._simpleCompareFunc, BladesHelpers.rebuildSimplesFromData);
-    await BladesHelpers.tryUpdate(regionFull, {system: {'==characters': characters}});
-    await BladesHelpers.tryUpdate(characterFull, {system: {'==region': regionFull.uuid}});
+    await BladesHelpers.tryUpdate(regionFull, {'system.==characters': characters});
+    await BladesHelpers.tryUpdate(characterFull, {'system.region': regionFull.uuid});
   }
 
   // Removes a character's region and removes the character from the region's character list
@@ -1183,9 +1181,9 @@ export class BladesHelpers {
     if (regionFull) {
       let regionCharacters = regionFull.system.characters;
       regionCharacters.splice(regionCharacters.findIndex(s => s.uuid === characterFull.uuid), 1);
-      await BladesHelpers.tryUpdate(regionFull, {system: {'==characters': regionCharacters}});
+      await BladesHelpers.tryUpdate(regionFull, {'system.==characters': regionCharacters});
     }
-    await BladesHelpers.tryUpdate(characterFull, {system: {'==region': null}});
+    await BladesHelpers.tryUpdate(characterFull, {'system.region': null});
   }
 
   /* -------------------------------------------- */
@@ -1211,8 +1209,8 @@ export class BladesHelpers {
 
     // Transfer all vehicle gear from the vehicle to the pilot
     await BladesHelpers.transferItems(vehicleFull, characterFull, 'vehicle_gear');
-    await BladesHelpers.tryUpdate(vehicleFull, {system: {'==pilot': characterFull.uuid}});
-    await BladesHelpers.tryUpdate(characterFull, {system: {'==vehicle': vehicleFull.uuid}});
+    await BladesHelpers.tryUpdate(vehicleFull, {'system.pilot': characterFull.uuid});
+    await BladesHelpers.tryUpdate(characterFull, {'system.vehicle': vehicleFull.uuid});
   }
 
   // Removes a character's vehicle and removes the vehicle's pilot
@@ -1229,9 +1227,9 @@ export class BladesHelpers {
       }
       // Transfer all vehicle gear from the pilot to the vehicle
       await BladesHelpers.transferItems(characterFull, vehicleFull, 'vehicle_gear');
-      await BladesHelpers.tryUpdate(vehicleFull, {system: {'==pilot': null}});
+      await BladesHelpers.tryUpdate(vehicleFull, {'system.pilot': null});
     }
-    await BladesHelpers.tryUpdate(characterFull, {system: {'==vehicle': null}});
+    await BladesHelpers.tryUpdate(characterFull, {'system.vehicle': null});
   }
 
   /* -------------------------------------------- */
@@ -1262,8 +1260,8 @@ export class BladesHelpers {
     } else
       connection = characterFull.system.connections[oldConnectionId];
 
-    let updateObject = {system: {connections: {}}};
-    updateObject.system.connections[`==${oldConnectionId}`] = connection;
+    let updateObject = {};
+    updateObject[`system.connections.==${oldConnectionId}`] = connection;
     await BladesHelpers.tryUpdate(characterFull, updateObject);
   }
 
@@ -1297,8 +1295,8 @@ export class BladesHelpers {
     let squads = factionFull.system.squads;
     squads[Object.entries(squads).length] = {uuid: squadFull.uuid, trust: crewAsRelationship?.trust ?? 5, status: 0, beliefs: ''};
     squads = Object.assign({}, BladesHelpers.sortObjects(squads, BladesHelpers.fetchSimpleData, BladesHelpers._factionSquadCompareFunc, BladesHelpers.rebuildSimplesFromData, ['trust', 'status']));
-    await BladesHelpers.tryUpdate(factionFull, {system: {'==squads': squads}});
-    await BladesHelpers.tryUpdate(squadFull, {system: {'==faction': factionFull.uuid}});
+    await BladesHelpers.tryUpdate(factionFull, {'system.==squads': squads});
+    await BladesHelpers.tryUpdate(squadFull, {'system.faction': factionFull.uuid});
     await BladesHelpers.addRelationship(squadFull, factionFull, true);
 
     // Add NPCs as belonging to the faction
@@ -1324,7 +1322,7 @@ export class BladesHelpers {
       let factionSquadsArray = Object.values(factionFull.system.squads);
       factionSquadsArray.splice(factionSquadsArray.map(e => e.uuid).indexOf(squadFull.uuid), 1);
       let newFactionSquads = Object.assign({}, factionSquadsArray);
-      await BladesHelpers.tryUpdate(factionFull, {system: {'==squads': newFactionSquads}});
+      await BladesHelpers.tryUpdate(factionFull, {'system.==squads': newFactionSquads});
 
       // Remove NPCs from the faction
       for (let member of Object.values(squadFull.system.members)) {
@@ -1333,7 +1331,7 @@ export class BladesHelpers {
           await BladesHelpers.removeFactionNPC(memberFull);
       }
     }
-    await BladesHelpers.tryUpdate(squadFull, {system: {'==faction': null}});
+    await BladesHelpers.tryUpdate(squadFull, {'system.faction': null});
   }
 
   /* -------------------------------------------- */
@@ -1354,9 +1352,9 @@ export class BladesHelpers {
       let regions = ownerFull.system.regions;
       regions.push({uuid: regionFull.uuid});
       regions = BladesHelpers.sortObjects(regions, BladesHelpers.fetchSimpleData, BladesHelpers._simpleCompareFunc, BladesHelpers.rebuildSimplesFromData);
-      await BladesHelpers.tryUpdate(ownerFull, {system: {'==regions': regions}});
+      await BladesHelpers.tryUpdate(ownerFull, {'system.==regions': regions});
     }
-    await BladesHelpers.tryUpdate(regionFull, {system: {'==owner': ownerFull.uuid}});
+    await BladesHelpers.tryUpdate(regionFull, {'system.owner': ownerFull.uuid});
   }
 
   static async removeRegionOwner(regionFull) {
@@ -1364,9 +1362,9 @@ export class BladesHelpers {
     if (ownerFull && ownerFull.type == 'faction') {
       let factionRegions = ownerFull.system.regions;
       factionRegions.splice(factionRegions.findIndex(s => s.uuid === regionFull.uuid), 1);
-      await BladesHelpers.tryUpdate(ownerFull, {system: {'==regions': factionRegions}});
+      await BladesHelpers.tryUpdate(ownerFull, {'system.==regions': factionRegions});
     }
-    await BladesHelpers.tryUpdate(regionFull, {system: {'==owner': null}});
+    await BladesHelpers.tryUpdate(regionFull, {'system.owner': null});
   }
 
   /* -------------------------------------------- */
@@ -1394,7 +1392,7 @@ export class BladesHelpers {
     relationships = Object.assign({}, BladesHelpers.sortObjects(relationships, BladesHelpers.fetchRelationshipData, BladesHelpers._relationshipCompareFunc, BladesHelpers.rebuildRelationshipListFromData));
 
     // Update the relationship data
-    await BladesHelpers.tryUpdate(ownerFull, {system: {'==relationships': relationships}});
+    await BladesHelpers.tryUpdate(ownerFull, {'system.==relationships': relationships});
     if (['faction', 'crew'].includes(entityFull.type) && !recursive)
       await BladesHelpers.addRelationship(entityFull, ownerFull, true);
   }
@@ -1552,7 +1550,7 @@ export class BladesHelpers {
     let newRelationships = Object.assign({}, relationshipsArray);
 
     // Update the data
-    await BladesHelpers.tryUpdate(ownerFull, {system: {'==relationships': newRelationships}});
+    await BladesHelpers.tryUpdate(ownerFull, {'system.==relationships': newRelationships});
     if (['faction', 'crew'].includes(entityFull.type) && !recursive)
       await BladesHelpers.removeRelationship(entityFull, ownerFull, true);
   }
@@ -1574,8 +1572,8 @@ export class BladesHelpers {
     let npcs = regionFull.system.npcs;
     npcs.push({uuid: npcFull.uuid});
     npcs = BladesHelpers.sortObjects(npcs, BladesHelpers.fetchSimpleData, BladesHelpers._simpleCompareFunc, BladesHelpers.rebuildSimplesFromData);
-    await BladesHelpers.tryUpdate(regionFull, {system: {'==npcs': npcs}});
-    await BladesHelpers.tryUpdate(npcFull, {system: {'==region': regionFull.uuid}});
+    await BladesHelpers.tryUpdate(regionFull, {'system.==npcs': npcs});
+    await BladesHelpers.tryUpdate(npcFull, {'system.region': regionFull.uuid});
   }
 
   static async removeNPCRegion(npcFull) {
@@ -1583,9 +1581,9 @@ export class BladesHelpers {
     if (regionFull) {
       let regionNPCs = regionFull.system.npcs;
       regionNPCs.splice(regionNPCs.findIndex(s => s.uuid === npcFull.uuid), 1);
-      await BladesHelpers.tryUpdate(regionFull, {system: {'==npcs': regionNPCs}});
+      await BladesHelpers.tryUpdate(regionFull, {'system.==npcs': regionNPCs});
     }
-    await BladesHelpers.tryUpdate(npcFull, {system: {'==region': null}});
+    await BladesHelpers.tryUpdate(npcFull, {'system.region': null});
   }
 
   /* -------------------------------------------- */
@@ -1606,8 +1604,8 @@ export class BladesHelpers {
     let npcs = factionFull.system.npcs;
     npcs.push({uuid: npcFull.uuid});
     npcs = BladesHelpers.sortObjects(npcs, BladesHelpers.fetchSimpleData, BladesHelpers._simpleCompareFunc, BladesHelpers.rebuildSimplesFromData);
-    await BladesHelpers.tryUpdate(factionFull, {system: {'==npcs': npcs}});
-    await BladesHelpers.tryUpdate(npcFull, {system: {'==faction': factionFull.uuid}});
+    await BladesHelpers.tryUpdate(factionFull, {'system.==npcs': npcs});
+    await BladesHelpers.tryUpdate(npcFull, {'system.faction': factionFull.uuid});
   }
 
   static async addFactionNPCs(factionFull, npcsFull, allowError) {
@@ -1620,9 +1618,9 @@ export class BladesHelpers {
     if (factionFull) {
       let factionNPCs = factionFull.system.npcs;
       factionNPCs.splice(factionNPCs.findIndex(s => s.uuid === npcFull.uuid), 1);
-      await BladesHelpers.tryUpdate(factionFull, {system: {'==npcs': factionNPCs}});
+      await BladesHelpers.tryUpdate(factionFull, {'system.==npcs': factionNPCs});
     }
-    await BladesHelpers.tryUpdate(npcFull, {system: {'==faction': null}});
+    await BladesHelpers.tryUpdate(npcFull, {'system.faction': null});
   }
 
   /* -------------------------------------------- */
@@ -1642,8 +1640,8 @@ export class BladesHelpers {
     let vehicles = factionFull.system.vehicles;
     vehicles.push({uuid: vehicleFull.uuid});
     vehicles = BladesHelpers.sortObjects(vehicles, BladesHelpers.fetchSimpleData, BladesHelpers._simpleCompareFunc, BladesHelpers.rebuildSimplesFromData);
-    await BladesHelpers.tryUpdate(factionFull, {system: {'==vehicles': vehicles}});
-    await BladesHelpers.tryUpdate(vehicleFull, {system: {'==faction': factionFull.uuid}});
+    await BladesHelpers.tryUpdate(factionFull, {'system.==vehicles': vehicles});
+    await BladesHelpers.tryUpdate(vehicleFull, {'system.faction': factionFull.uuid});
   }
 
   static async removeFactionVehicle(vehicleFull) {
@@ -1651,9 +1649,9 @@ export class BladesHelpers {
     if (factionFull) {
       let factionVehicles = factionFull.system.vehicles;
       factionVehicles.splice(factionVehicles.findIndex(s => s.uuid === vehicleFull.uuid), 1);
-      await BladesHelpers.tryUpdate(factionFull, {system: {'==vehicles': factionVehicles}});
+      await BladesHelpers.tryUpdate(factionFull, {'system.==vehicles': factionVehicles});
     }
-    await BladesHelpers.tryUpdate(vehicleFull, {system: {'==faction': null}});
+    await BladesHelpers.tryUpdate(vehicleFull, {'system.faction': null});
   }
 
   /* -------------------------------------------- */

@@ -154,7 +154,7 @@ export class BeamVehicleSheet extends BladesSheet {
     html.find('.add-quirk').click(async _ => {
       let quirks = this.actor.system.quirks;
       quirks[Object.keys(quirks).length] = { name: "", usable: true };
-      await BladesHelpers.tryUpdate(this.actor, {system: {'==quirks': quirks}});
+      await BladesHelpers.tryUpdate(this.actor, {'system.==quirks': quirks});
     });
 
     // Delete Quirk
@@ -165,7 +165,7 @@ export class BeamVehicleSheet extends BladesSheet {
       quirksEntries.splice(currentQuirkId, 1);
       for (let id in quirksEntries)
         quirksEntries[id][0] = String(id);
-      await BladesHelpers.tryUpdate(this.actor, {system: {'==quirks': Object.fromEntries(quirksEntries)}});
+      await BladesHelpers.tryUpdate(this.actor, {'system.==quirks': Object.fromEntries(quirksEntries)});
     });
 
     // Update Vehicle Gear Experimental Toggle
@@ -173,8 +173,8 @@ export class BeamVehicleSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest(".item");
       let currentItemId = element.data("itemId");
       let [_, item] = this.actor.getItemOwner(currentItemId);
-      await BladesHelpers.tryUpdate(item, {system: {'==experimental': ev.currentTarget.checked}});
-      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(item, {'system.experimental': ev.currentTarget.checked});
+      await this.actor.sheet.render(true);
     });
 
     // Update Items' Hidden Toggle
@@ -182,8 +182,8 @@ export class BeamVehicleSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest(".item");
       let currentItemId = element.data("itemId");
       let [_, item] = this.actor.getItemOwner(currentItemId);
-      await BladesHelpers.tryUpdate(item, {system: {'==hidden': ev.currentTarget.checked}});
-      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(item, {'system.hidden': ev.currentTarget.checked});
+      await this.actor.sheet.render(true);
     });
 
     // Update Item Uses
@@ -191,8 +191,8 @@ export class BeamVehicleSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest(".item");
       let currentItemId = element.data("itemId");
       let [_, item] = this.actor.getItemOwner(currentItemId);
-      await BladesHelpers.tryUpdate(item, {system: {uses: {'==value': ev.currentTarget.value}}});
-      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(item, {'system.uses.value': ev.currentTarget.value});
+      await this.actor.sheet.render(true);
     });
 
     // Update Item Description
@@ -200,8 +200,8 @@ export class BeamVehicleSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest(".item");
       let currentItemId = element.data("itemId");
       let [_, item] = this.actor.getItemOwner(currentItemId);
-      await BladesHelpers.tryUpdate(item, {system: {'==extra_description': ev.currentTarget.value}});
-      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(item, {'system.extra_description': ev.currentTarget.value});
+      await this.actor.sheet.render(true);
     });
 
     // Update Hackrig Type
@@ -211,8 +211,8 @@ export class BeamVehicleSheet extends BladesSheet {
       let [_, item] = this.actor.getItemOwner(currentItemId);
       let newHackrigType = ev.currentTarget.value;
       let hackrigLoad = newHackrigType == 'tablet' ? 3 : newHackrigType == 'laptop' ? 5 : newHackrigType == 'tower' ? 6 : item.system.container_load;
-      await BladesHelpers.tryUpdate(item, {system: {'==container_type': newHackrigType, '==container_load': hackrigLoad}});
-      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(item, {'system.container_type': newHackrigType, 'system.container_load': hackrigLoad});
+      await this.actor.sheet.render(true);
     });
 
     // Update Special Ammunition
@@ -221,8 +221,8 @@ export class BeamVehicleSheet extends BladesSheet {
       let currentItemId = element.data("itemId");
       let [_, item] = this.actor.getItemOwner(currentItemId);
       const selectedAmmo = ev.currentTarget.value;
-      await BladesHelpers.tryUpdate(item, {system: {'==special_ammunition_type': selectedAmmo}});
-      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(item, {'system.special_ammunition_type': selectedAmmo});
+      await this.actor.sheet.render(true);
     });
 
     // Update Drone Item Type
@@ -236,8 +236,8 @@ export class BeamVehicleSheet extends BladesSheet {
           await gearOwner.removeItem(containedItem);
       let newContainerItemType = newDroneItemType == 'pilot' ? 'item' : 'vehicle_gear';
       let newContainerLoad = newDroneItemType == 'pilot' ? 2 : 1;
-      await BladesHelpers.tryUpdate(item, {system: {'==container_type': newDroneItemType, '==container_load': newContainerLoad, '==container_item_types': [newContainerItemType]}});
-      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(item, {'system.container_type': newDroneItemType, 'system.container_load': newContainerLoad, 'system.==container_item_types': [newContainerItemType]});
+      await this.actor.sheet.render(true);
     });
 
     // Update Vehicle Gear Form
@@ -245,7 +245,7 @@ export class BeamVehicleSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest(".item");
       let currentItemId = element.data("itemId");
       let [_, item] = this.actor.getItemOwner(currentItemId);
-      await BladesHelpers.tryUpdate(item, {system: {'==form': (item.system.form + 1) % 3}});
+      await BladesHelpers.tryUpdate(item, {'system.form': (item.system.form + 1) % 3});
       await this.actor.updateVehicleForm();
     });
 
@@ -254,9 +254,9 @@ export class BeamVehicleSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest(".item");
       let currentItemId = element.data("itemId");
       let [_, item] = this.actor.getItemOwner(currentItemId);
-      await BladesHelpers.tryUpdate(item, {system: {'==collapsed': !item.system.collapsed}});
+      await BladesHelpers.tryUpdate(item, {'system.collapsed': !item.system.collapsed});
       let childrenElement = $(element[0].parentElement).children('.item-container');
-      childrenElement.slideToggle(200, async () => await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name}));
+      childrenElement.slideToggle(200, async () => await this.actor.sheet.render(true));
     });
 
     // Delete Inventory Item
@@ -268,7 +268,7 @@ export class BeamVehicleSheet extends BladesSheet {
         element = element.parent();
       element.slideUp(200, async () => {
         await gearOwner.removeItem(item);
-        await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+        await this.actor.sheet.render(true);
       });
     });
 
@@ -276,7 +276,7 @@ export class BeamVehicleSheet extends BladesSheet {
       if (this.actor.system.pilot) {
         let pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot);
         if (pilotFull)
-          await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
+          await pilotFull.sheet.render(true);
       }
     };
 
