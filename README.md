@@ -43,7 +43,8 @@ Squad Types:
 ## To be done in the nearest future
 - Update all character sheet styling
 - Support Junking equipment
-- Add a way to allow drag-n-dropping actors without enabling the Create Tokens permission for players
+- Properly link Vehicle and Pilot sheets (some stuff dosn't update properly on the Pilot sheet when the Vehicle sheet is changed)
+- Update the system to SheetV2 and prepare for v16 support
 
 ## Troubleshooting
 - If you can't find the drag-n-dropped item, refer to "All Items" tab on each sheet.

@@ -295,7 +295,7 @@ export class BladesActor extends Actor {
         let input = html.find("input[type=radio]:checked");
         if (input.length > 0) {
           let rollType = input[0].id.split('-')[0];
-          enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, rollType, groupActionData ? extraFields.group_action.position : html.find('[name="pos"]')[0].value, dialog.attributeName);
+          enabledConditionalModifiers = keepValidModifiersFromRollType(enabledConditionalModifiers, rollType, groupActionData ? groupActionData.position : dialog.element.querySelector('[name="pos"]')?.value, dialog.attributeName);
           let extraFields = { roll_type: rollType, modifiers: [ ...dialog.permanentModifiers, ...enabledConditionalModifiers ], actor: this };
           switch (rollType) {
             case 'actionRoll':

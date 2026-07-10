@@ -989,11 +989,11 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
   let squadUpdateObject = {};
   if (materielChanges) {
     squadUpdateObject['system.materiel.value'] = Math.min(Math.max(Number(squadFull.system.materiel.value) + materielChanges, 0), Number(squadFull.system.materiel.max));
-    rollData.realMateriel = squadUpdateObject.system.materiel - Number(squadFull.system.materiel.value);
+    rollData.realMateriel = squadUpdateObject['system.materiel.value'] - Number(squadFull.system.materiel.value);
   }
   if (personnelChanges) {
     squadUpdateObject['system.personnel.value'] = Math.min(Math.max(Number(squadFull.system.personnel.value) + personnelChanges, 0), Number(squadFull.system.personnel.max));
-    rollData.realPersonnel = squadUpdateObject.system.personnel - Number(squadFull.system.personnel.value);
+    rollData.realPersonnel = squadUpdateObject['system.personnel.value'] - Number(squadFull.system.personnel.value);
   }
   if (Object.keys(squadUpdateObject).length)
     await BladesHelpers.tryUpdate(squadFull, squadUpdateObject);
@@ -1044,7 +1044,10 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
       }
       await BladesHelpers.tryUpdate(extraFields.actor, actorUpdateObject);
     } else
-      await actorUpdateObject.sheet.render(true);
+      if (extraFields.actor.type == 'cohort')
+        await BladesHelpers.resolveActor(extraFields.actor.system.crew).sheet.render(true);
+      else
+        await extraFields.actor.sheet.render(true);
   }
 
   // Only apply modified position and effect if they haven't been forced

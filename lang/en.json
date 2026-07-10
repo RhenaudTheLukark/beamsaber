@@ -867,7 +867,7 @@
     "EndMissionReward": "Reward Process",
     "EndMissionClickHereToExpand": "Click Here to Expand",
     "EndMissionClickHereToCollapse": "Click Here to Collapse",
-    "EndMissionDescription": "This popup allows you to automate some parts of the mission ending process.<br/>Any ticked checkbox will let the system automate that part of the process to the best of its ability.<br/>This also serves as a cheat sheet: only green options have automation linked to them.<br/>For anything related to Trust changes, enabling a bullet point means it's effect is applied.<br/>Only enable the ones that apply to the mission!",
+    "EndMissionDescription": "This popup allows you to automate some parts of the mission ending process.<br/>Any ticked checkbox will let the system automate that part of the process to the best of its ability.<br/>This also serves as a cheat sheet: only green options have automation linked to them.<br/>For anything related to Trust changes, enabling a bullet point means its effect is applied.<br/>Only enable the ones that apply to the mission!",
     "EndMissionSupplyRoll": "If the mission was successful, take a Supply Roll from the employer Faction. (Must be rolled manually)<br/>If the mission's employer was Independent, {independentSupplyRoll}<br/>",
     "EndMissionSupplyRollIndependentNone": "do not make a Supply Roll.",
     "EndMissionSupplyRollIndependent": "thanks to friends in high places, make a 0d Supply Roll.",
@@ -920,7 +920,6 @@
     "EndMissionVendettaEffect": "Since the Squad is in <strong>Vendetta</strong> with the Squad(s) {vendettas}, the Pilots have <strong>less time to rest</strong> before the next mission.",
     "EndMissionDowntimeStart": "Pilots may now partake in Downtime Activities.",
 
-    "EndSession": "End Session",
     "EndSessionCheatSheet": "End Session Cheat Sheet",
     "EndSessionDescription": "This sheet has no automation linked to it. It is merely just a cheat sheet for handling the end of a session.<br/>Feel free to untick tasks you've already done as you go through them with your players!",
     "EndSessionSquadXP": "Check the squad's XP goals, and mark 1 XP for each item that occurred (or 2 XP if that item happened multiple times).",
