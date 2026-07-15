@@ -918,7 +918,7 @@
     "EndMissionFactionGoalUp": "The goal {goal} of your Patron Faction has progressed.",
     "EndMissionFactionGoalDone": "The goal has been completed, all squads patronized by the faction gain a benefit.",
     "EndMissionVendettaEffect": "Since the Squad is in <strong>Vendetta</strong> with the Squad(s) {vendettas}, the Pilots have <strong>less time to rest</strong> before the next mission.",
-    "EndMissionDowntimeStart": "Pilots may now partake in Downtime Activities.",
+    "EndMissionDowntimeStart": "The Mission has ended, Pilots may now partake in Downtime Activities.",
 
     "EndSessionCheatSheet": "End Session Cheat Sheet",
     "EndSessionDescription": "This sheet has no automation linked to it. It is merely just a cheat sheet for handling the end of a session.<br/>Feel free to untick tasks you've already done as you go through them with your players!",

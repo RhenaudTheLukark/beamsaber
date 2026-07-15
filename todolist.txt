@@ -12,14 +12,6 @@ TODO list:
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
 
-Changelog since 26/07/06:
-+ BUG: Collect: Error if no relationship between the region's owner and the squad and an Entanglement must be rolled
-+ (Partial) Foundry v14 Compatibility
-+ BUG: Hidden conditional modifiers applying on all rolls
-+ Compendium Items:
-	+ Pilot Abilities:
-		+ (Em) Work Hard, Play Hard => Do not make the other roll a Cut Loose roll, but a special Stress Loss roll
-
 + => Means it's done
 - => Means it has to be done
 
