@@ -5,7 +5,6 @@ Bug list:
 	- Can be fixed easily after switching to SheetV2
 -1 Vehicle fields not updating the Pilot sheet properly once they're changed on the Vehicle sheet
 	- Upgrade to SheetV2 to work with apps instead of updating everything manually :pray:
-- Schmooze: Error when schmoozing with a faction with no relationship
 
 
 TODO list:
@@ -14,10 +13,13 @@ TODO list:
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
 - Add non-empty Level 1 & 2 Harm/Damages as roll modifiers
-- Add Uses for Crew upgrades
 
 Changelog since 26/07/20:
 + Investigate sheet data not updating between players
++ Added Uses for Crew upgrades
++ FIX: Secured all instances of relationship data changes not checking for the relationship existing in the first place (ex: Schmooze)
++ FIX: Properly keep the relationship when a Squad leaves a Faction
++ FIX: When setting a Squad's Faction, ensure that it's not added to its relationships if the sheet is on the Relationship tab
 
 
 + => Means it's done

@@ -746,6 +746,10 @@
     "crew_upgrade": {
       "templates": ["ability", "logic", "activatedEffect", "container"],
       "crew_type": "",
+      "uses": {
+        "max": 0,
+        "value": 0
+      },
       "training_center_type": "Adepts",
       "gang_types": ["Adepts", "Rooks", "Rovers", "Skulks", "Toughs"]
     },

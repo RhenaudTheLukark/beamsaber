@@ -18,13 +18,17 @@
   </section>
   <div class='flex-vertical'>
     <div class='flex-horizontal'>
-      <div class='two-line'>
+      <div class='three-line'>
         <label class='label-stripe'>{{localize 'BITD.SquadType'}}</label>
         <input type='text' name='system.class' value='{{system.class}}'>
       </div>
-      <div class='two-line'>
+      <div class='three-line'>
         <label class='label-stripe'>{{localize 'BITD.Price'}}</label>
         <input type='number' name='system.price' onkeypress='return BladesHelpers.isNumberKey(event)' value='{{system.price}}'>
+      </div>
+      <div class='three-line'>
+        <label class='label-stripe'>{{localize 'BITD.Uses'}}</label>
+        <input type='number' name='system.uses.max' onkeypress='return BladesHelpers.isNumberKey(event)' value='{{system.uses.max}}'>
       </div>
     </div>
     {{#if isGM}}
