@@ -966,7 +966,7 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
       let resultStress = Math.max(Math.min(Number(stressActorFull.system.stress.value) + stressChange, stressActorFull.system.stress.max), 0);
       stressChangeItem.realValue = resultStress - Number(stressActorFull.system.stress.value);
       if (resultStress != stressActorFull.system.stress.value)
-        await BladesHelpers.tryUpdate(stressActorFull, {'system.stress.value': resultStress});
+        await BladesHelpers.tryUpdate(stressActorFull, {'system.stress.==value': resultStress});
       rollData.stressChanges[stressActorFull._id] = stressChangeItem;
     }
   }
@@ -988,12 +988,12 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
   // Materiel & Personnel Changes
   let squadUpdateObject = {};
   if (materielChanges) {
-    squadUpdateObject['system.materiel.value'] = Math.min(Math.max(Number(squadFull.system.materiel.value) + materielChanges, 0), Number(squadFull.system.materiel.max));
-    rollData.realMateriel = squadUpdateObject['system.materiel.value'] - Number(squadFull.system.materiel.value);
+    squadUpdateObject['system.materiel.==value'] = Math.min(Math.max(Number(squadFull.system.materiel.value) + materielChanges, 0), Number(squadFull.system.materiel.max));
+    rollData.realMateriel = squadUpdateObject['system.materiel.==value'] - Number(squadFull.system.materiel.value);
   }
   if (personnelChanges) {
-    squadUpdateObject['system.personnel.value'] = Math.min(Math.max(Number(squadFull.system.personnel.value) + personnelChanges, 0), Number(squadFull.system.personnel.max));
-    rollData.realPersonnel = squadUpdateObject['system.personnel.value'] - Number(squadFull.system.personnel.value);
+    squadUpdateObject['system.personnel.==value'] = Math.min(Math.max(Number(squadFull.system.personnel.value) + personnelChanges, 0), Number(squadFull.system.personnel.max));
+    rollData.realPersonnel = squadUpdateObject['system.personnel.==value'] - Number(squadFull.system.personnel.value);
   }
   if (Object.keys(squadUpdateObject).length)
     await BladesHelpers.tryUpdate(squadFull, squadUpdateObject);
@@ -1016,7 +1016,10 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
           otherValue = otherValue[pathPart];
         }
         let resultOther = Math.max(Number(otherValue) + otherChange, 0);
-        updateObject[otherPath] = resultOther;
+        let updatePath = otherPath.split('.');
+        updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
+        updatePath = updatePath.join('.');
+        updateObject[updatePath] = resultOther;
         otherChangeItem.realValue[otherPath] = resultOther - Number(otherValue);
       }
       await BladesHelpers.tryUpdate(otherActorFull, updateObject);
@@ -1029,25 +1032,27 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
     let actorUpdateObject;
     if (extraFields.actor.type == 'character') {
       let downtimeShift = Math.max(extraFields.actor.system.downtime_count.value + downtimeCountChanges, 0);
-      actorUpdateObject = {'system.downtime_count.value': downtimeShift};
+      actorUpdateObject = {'system.downtime_count.==value': downtimeShift};
       if (downtimeCountChanges < 0) {
         let rollTypeString = Object.entries(rollTypeLabels).find(l => l[1] == attributeOrRollName)[0];
-        actorUpdateObject[`system.downtime_activities.${rollTypeString}`] = true;
+        actorUpdateObject[`system.downtime_activities.==${rollTypeString}`] = true;
         rollData.downtime = {value: downtimeShift, activities: {train_types: {}}};
         if (!extraFields.actor.system.downtime_activities[rollTypeString])
           rollData.downtime.activities[rollTypeString] = true;
         if (attributeOrRollName == 'BITD.TrainRoll') {
-          actorUpdateObject[`system.downtime_activities.train_types.${extraFields.trainType}`] = true;
+          actorUpdateObject[`system.downtime_activities.train_types.==${extraFields.trainType}`] = true;
           if (!extraFields.actor.system.downtime_activities.train_types[extraFields.trainType])
             rollData.downtime.activities.train_types[extraFields.trainType] = true;
         }
       }
       await BladesHelpers.tryUpdate(extraFields.actor, actorUpdateObject);
     } else
-      if (extraFields.actor.type == 'cohort')
-        await BladesHelpers.resolveActor(extraFields.actor.system.crew).sheet.render(true);
+      if (extraFields.actor.type == 'cohort') {
+        let squadFull = BladesHelpers.resolveActor(extraFields.actor.system.crew)
+        await BladesHelpers.tryUpdate(squadFull, {'==name': squadFull.name});
+      }
       else
-        await extraFields.actor.sheet.render(true);
+        await BladesHelpers.tryUpdate(extraFields.actor, {'==name': extraFields.actor.name});
   }
 
   // Only apply modified position and effect if they haven't been forced
@@ -1143,10 +1148,10 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
     result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/group-action-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, attribute_label: attributeLabel, note: note, edge: edge, extraFields: extraFields });
     // Dire Action
     if (extraFields.dire && rollStatus == 'critical-success')
-      await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.value': Math.max(Number(extraFields.actor.system.stress.value) - 1, 0)});
+      await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.==value': Math.max(Number(extraFields.actor.system.stress.value) - 1, 0)});
     if (extraFields.vehicleDire && (rollStatus == 'failure' || (rollStatus == 'partial-success' && !extraFields.lastStand))) {
       let vehicleFull = BladesHelpers.resolveActor(extraFields.actor.system.vehicle);
-      await BladesHelpers.tryUpdate(vehicleFull, {'system.breakdown': Math.min(Number(vehicleFull.system.breakdown) + 1, Number(vehicleFull.system.breakdown_max))});
+      await BladesHelpers.tryUpdate(vehicleFull, {'system.==breakdown': Math.min(Number(vehicleFull.system.breakdown) + 1, Number(vehicleFull.system.breakdown_max))});
     }
     let squadFull = BladesHelpers.resolveActor(extraFields.actor.system.crew);
     squadFull?.updateGroupActionRoll(extraFields.actor.id, rollStatus);
@@ -1195,18 +1200,18 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
         extraFields.rollData.stressChanges[extraFields.actor._id].realValue -= 1;
       } else
         extraFields.rollData.stressChanges[extraFields.actor._id] = {value: -1, realValue: -1};
-      await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.value': Math.max(Number(extraFields.actor.system.stress.value) - 1, 0)});
+      await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.==value': Math.max(Number(extraFields.actor.system.stress.value) - 1, 0)});
     }
     if (extraFields.vehicleDire && (rollStatus == 'failure' || (rollStatus == 'partial-success' && !extraFields.lastStand))) {
       let vehicleFull = BladesHelpers.resolveActor(extraFields.actor.system.vehicle);
       let oldBreakdown = Number(vehicleFull.system.breakdown);
-      await BladesHelpers.tryUpdate(vehicleFull, {'system.breakdown': Math.min(Number(vehicleFull.system.breakdown) + 1, Number(vehicleFull.system.breakdown_max))});
+      await BladesHelpers.tryUpdate(vehicleFull, {'system.==breakdown': Math.min(Number(vehicleFull.system.breakdown) + 1, Number(vehicleFull.system.breakdown_max))});
       let newBreakdown = Number(vehicleFull.system.breakdown);
       extraFields.rollData.otherChanges[extraFields.actor._id] = {
         value: BladesHelpers.mergeAddObjects(extraFields.rollData.otherChanges?.[extraFields.actor._id]?.value, {'system.breakdown': 1}),
         realValue: BladesHelpers.mergeAddObjects(extraFields.rollData.otherChanges?.[extraFields.actor._id]?.realValue, {'system.breakdown': newBreakdown - oldBreakdown})
       };
-      await extraFields.actor.sheet.render(true);
+      await BladesHelpers.tryUpdate(extraFields.actor, {'==name': extraFields.actor.name});
     }
 
     result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/action-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, attribute_label: attributeLabel, position_localize: positionLocalize, effect_localize: effectLocalize, note: note, edge: edge, extraFields: extraFields });
@@ -1216,7 +1221,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
     let stress = getBladesRollResistanceStress(rolls, extraResult, zeromode);
     let resultStress = Math.max(Math.min(Number(extraFields.actor.system.stress.value) + stress, Number(extraFields.actor.system.stress.max)), 0);
     if (resultStress != extraFields.actor.system.stress.value)
-      await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.value': resultStress});
+      await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.==value': resultStress});
     result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/resistance-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, attribute_label: attributeLabel, stress: stress, note: note, edge: edge, extraFields: extraFields });
   }
   // Check for Gather Information roll
@@ -1268,7 +1273,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
   else if (attributeOrRollName == 'BITD.CollectRoll') {
     let squadFull = BladesHelpers.resolveActor(extraFields.actor.system.crew);
     let supplyPoints = getBladesRollCollect(rolls, extraResult, zeromode);
-    await BladesHelpers.tryUpdate(extraFields.region, {'system.collect_vigilance': extraFields.region.system.collect_vigilance + 1});
+    await BladesHelpers.tryUpdate(extraFields.region, {'system.==collect_vigilance': extraFields.region.system.collect_vigilance + 1});
     let entanglement = rolls.map(i => i.result).find(r => r == 1) >= 0;
     if (entanglement) {
       let ownerFull = BladesHelpers.resolveActor(extraFields.region.system.owner);
@@ -1316,7 +1321,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
             extraFields.rollData.stressChanges[connectionFull._id].realValue += 1;
           } else
             extraFields.rollData.stressChanges[connectionFull._id] = {value: 1, realValue: 1};
-        await BladesHelpers.tryUpdate(connectionFull, {'system.stress.value': Math.max(Number(connectionFull.system.stress.value) - 1, 0)});
+        await BladesHelpers.tryUpdate(connectionFull, {'system.stress.==value': Math.max(Number(connectionFull.system.stress.value) - 1, 0)});
       }
     }
     extraFields.rollData.connections = {};
@@ -1338,11 +1343,11 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
       otherClockMaxxed = newClockValue >= connection.clock.max;
       newClockValue = newClockValue - (otherClockMaxxed ? 3 : 0);
       let connectionUpdateObject = {};
-      connectionUpdateObject[`system.connections.${connectionId}.clock.value`] = newClockValue;
+      connectionUpdateObject[`system.connections.${connectionId}.clock.==value`] = newClockValue;
       extraFields.rollData.connections[`${connectionFull._id}/${extraFields.actor._id}`] = newClockValue - Number(connection.clock.value);
       await BladesHelpers.tryUpdate(connectionFull, connectionUpdateObject);
     }
-    updateObject['system.stress.value'] = remainingStress;
+    updateObject['system.stress.==value'] = remainingStress;
     let shiftValue = remainingStress - extraFields.stress;
     if (extraFields.rollData.stressChanges[extraFields.actor._id]) {
       extraFields.rollData.stressChanges[extraFields.actor._id].value += realClearStress;
@@ -1365,16 +1370,16 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
 
     // Update damage
     let damageLevels = ['', 'light', 'medium', 'heavy', 'deadly'];
-    vehicleUpdateObject['system.damage.light.one'] = '';
-    vehicleUpdateObject['system.damage.light.two'] = '';
+    vehicleUpdateObject['system.damage.light.==one'] = '';
+    vehicleUpdateObject['system.damage.light.==two'] = '';
     if (clockFills > 0)
       for (let [damageId, damageLevel] of Object.entries(damageLevels)) {
         if (damageId == 0) continue
         let sourceDamageId = Number(damageId) + clockFills;
         let sourceDamageLevel = sourceDamageId >= damageLevels.length ? '' : damageLevels[sourceDamageId];
-        vehicleUpdateObject[`system.damage.${damageLevel}.one`] = sourceDamageLevel != '' ? vehicleFull.system.damage[sourceDamageLevel].one : '';
+        vehicleUpdateObject[`system.damage.${damageLevel}.==one`] = sourceDamageLevel != '' ? vehicleFull.system.damage[sourceDamageLevel].one : '';
         if (damageId <= 2)
-          vehicleUpdateObject[`system.damage.${damageLevel}.two`] = (sourceDamageLevel != '' && sourceDamageId <= 2) ? vehicleFull.system.damage[sourceDamageLevel].two : '';
+          vehicleUpdateObject[`system.damage.${damageLevel}.==two`] = (sourceDamageLevel != '' && sourceDamageId <= 2) ? vehicleFull.system.damage[sourceDamageLevel].two : '';
       }
     await BladesHelpers.tryUpdate(vehicleFull, vehicleUpdateObject);
 
@@ -1382,9 +1387,9 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
     if (!workshop) {
       let resultStress = Math.max(Math.min(Number(extraFields.actor.system.stress.value) + 2, extraFields.actor.system.stress.max), 0);
       if (resultStress != extraFields.actor.system.stress.value)
-        await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.value': resultStress});
+        await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.==value': resultStress});
     }
-    await extraFields.actor.sheet.render(true);
+    await BladesHelpers.tryUpdate(extraFields.actor, {'==name': extraFields.actor.name});
     let fixActorName = extraFields.fixActor.uuid == extraFields.actor.uuid ? game.i18n.localize('BITD.You') : extraFields.fixActor.name;
 
     result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/downtime/fix-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, fixActorName: fixActorName, workshop: workshop, levelOneDamage: levelOneDamage, tick: tick, clockFills: clockFills, note: note, edge: edge, extraFields: extraFields });
@@ -1430,9 +1435,9 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
         overTicks = tick;
       tick = baseTick;
       for (let maxxedProject of maxxedProjects)
-        crewUpdateObject.system.projects[maxxedProject] = {'clock.value': squadFull.system.projects[maxxedProject].clock.max};
+        crewUpdateObject[`system.projects.${maxxedProject}.clock.==value`] = squadFull.system.projects[maxxedProject].clock.max;
       for (let projectData of unfinishedProjectsData)
-        crewUpdateObject.system.projects[projectData.id] = {'clock.value': Number(squadFull.system.projects[projectData.id].clock.value) + eachTick};
+        crewUpdateObject[`system.projects.${projectData.id}.clock.==value`] = Number(squadFull.system.projects[projectData.id].clock.value) + eachTick;
       extraFields.allProjectsDone = unfinishedProjectsData.length == 0;
       let projectsDoneString = maxxedProjects.map(pId => squadFull.system.projects[pId].title).join(', ');
       if (game.i18n.lang == 'en') projectsDoneString = projectsDoneString.replace(/,([^,]*)$/, ' and$1');
@@ -1445,7 +1450,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
       let clockFilled = newTick >= Number(project.clock.max);
       if (clockFilled)
         tick = Number(project.clock.max) - Number(project.clock.value);
-      crewUpdateObject.system.projects[extraFields.ltpId] = {'clock.value': newTick};
+      crewUpdateObject[`system.projects.${extraFields.ltpId}.clock.==value`] = newTick;
       extraFields.project = project.title;
       extraFields.clockFilled = clockFilled;
     }
@@ -1488,16 +1493,16 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
 
     // Update harm
     let harmLevels = ['', 'light', 'medium', 'heavy', 'deadly'];
-    updateObject['system.harm.light.one'] = '';
-    updateObject['system.harm.light.two'] = '';
+    updateObject['system.harm.light.==one'] = '';
+    updateObject['system.harm.light.==two'] = '';
     if (clockFills > 0)
       for (let [harmId, harmLevel] of Object.entries(harmLevels)) {
         if (harmId == 0) continue;
         let sourceHarmId = Number(harmId) + clockFills;
         let sourceHarmLevel = sourceHarmId >= harmLevels.length ? '' : harmLevels[sourceHarmId];
-        updateObject[`system.harm.${harmLevel}.one`] = sourceHarmLevel != '' ? extraFields.actor.system.harm[sourceHarmLevel].one : '';
+        updateObject[`system.harm.${harmLevel}.==one`] = sourceHarmLevel != '' ? extraFields.actor.system.harm[sourceHarmLevel].one : '';
         if (harmId <= 2)
-          updateObject[`system.harm.${harmLevel}.two`] = (sourceHarmLevel != '' && sourceHarmId <= 2) ? extraFields.actor.system.harm[sourceHarmLevel].two : '';
+          updateObject[`system.harm.${harmLevel}.==two`] = (sourceHarmLevel != '' && sourceHarmId <= 2) ? extraFields.actor.system.harm[sourceHarmLevel].two : '';
       }
     await BladesHelpers.tryUpdate(extraFields.actor, updateObject);
 
@@ -1507,7 +1512,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
     if (naturalRecovery || selfHeal) {
       let resultStress = Math.max(Math.min(Number(extraFields.actor.system.stress.value) + (naturalRecovery ? 1 : 2), extraFields.actor.system.stress.max), 0);
       if (resultStress != extraFields.actor.system.stress.value)
-        await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.value': resultStress});
+        await BladesHelpers.tryUpdate(extraFields.actor, {'system.stress.==value': resultStress});
     }
     let recoverActorName = naturalRecovery || selfHeal ? game.i18n.localize('BITD.You') : extraFields.recoverActor.name;
 
@@ -1519,10 +1524,10 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
     if (extraFields.salvageVehicle) {
       let deadlyDamage = extraFields.salvageVehicle.system.damage.deadly.one;
       deadlyDamage += (deadlyDamage ? ', ' : '') + game.i18n.localize('BITD.Salvaged');
-      await BladesHelpers.tryUpdate(extraFields.salvageVehicle, {'system.damage.deadly.one': deadlyDamage, 'system.dead': true});
+      await BladesHelpers.tryUpdate(extraFields.salvageVehicle, {'system.damage.deadly.==one': deadlyDamage, 'system.==dead': true});
       let pilotFull = BladesHelpers.resolveActor(extraFields.salvageVehicle.system.pilot);
       if (pilotFull)
-        await pilotFull.sheet.render(true);
+        await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
     }
 
     let supplyPoints = getBladesRollDowntime(rolls, extraResult, zeromode);
@@ -1549,9 +1554,9 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
     if (recoveredAllQuirks) {
       let vehicleUpdateObject = {};
       for (let quirkId in Object.keys(vehicleFull.system.quirks))
-        vehicleUpdateObject[`system.quirks.${quirkId}.usable`] = true;
+        vehicleUpdateObject[`system.quirks.${quirkId}.==usable`] = true;
       await BladesHelpers.tryUpdate(vehicleFull, vehicleUpdateObject);
-      await extraFields.actor.sheet.render(true);
+      await BladesHelpers.tryUpdate(extraFields.actor, {'==name': extraFields.actor.name});
     }
 
     result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/downtime/upkeep-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, materiel: -extraFields.materiel, quirks: recoveredQuirks, recoveredAllQuirks: recoveredAllQuirks, note: note, edge: edge, extraFields: extraFields });
@@ -1570,9 +1575,9 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
 
       let updateObject = {};
       if (attributeOrRollName == 'BITD.CollectionAgency')
-        updateObject['system.materiel.value'] = Math.min(Math.max(Number(extraFields.actor.system.materiel.value) + value, 0), Number(extraFields.actor.system.materiel.max));
+        updateObject['system.materiel.==value'] = Math.min(Math.max(Number(extraFields.actor.system.materiel.value) + value, 0), Number(extraFields.actor.system.materiel.max));
       else
-        updateObject['system.personnel.value'] = Math.min(Math.max(Number(extraFields.actor.system.personnel.value) + value, 0), Number(extraFields.actor.system.personnel.max));
+        updateObject['system.personnel.==value'] = Math.min(Math.max(Number(extraFields.actor.system.personnel.value) + value, 0), Number(extraFields.actor.system.personnel.max));
       await BladesHelpers.tryUpdate(extraFields.actor, updateObject);
     } else if (attributeOrRollName == 'BITD.StressLoss') {
       let connectionFull = BladesHelpers.resolveActor(extraFields.connection);
@@ -1586,7 +1591,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
         clearStress = extraFields.stress;
       }
 
-      let updateObject = {'system.stress.value': remainingStress};
+      let updateObject = {'system.stress.==value': remainingStress};
       await BladesHelpers.tryUpdate(extraFields.actor, updateObject);
 
       if (rollStatus == 'failure') {
@@ -1663,8 +1668,8 @@ async function showChatMessage(dice, attributeOrRollName = '', note = '', extraF
       return;
     let newEnhanceValue = Number(vehicleFull.system.enhance) + enhanceGain;
     let enhanceMaxxed = newEnhanceValue >= Number(vehicleFull.system.enhance_max);
-    await BladesHelpers.tryUpdate(vehicleFull, {'system.enhance': newEnhanceValue % Number(vehicleFull.system.enhance_max)});
-    await extraFields.actor.sheet.render(true);
+    await BladesHelpers.tryUpdate(vehicleFull, {'system.==enhance': newEnhanceValue % Number(vehicleFull.system.enhance_max)});
+    await BladesHelpers.tryUpdate(extraFields.actor, {'==name': extraFields.actor.name});
     result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/downtime/enhance-get.html', { num: enhanceGain, enhance_maxxed: enhanceMaxxed, note: note, extraFields: extraFields });
   }
   // Check for Train
@@ -1680,7 +1685,7 @@ async function showChatMessage(dice, attributeOrRollName = '', note = '', extraF
     newXPValue = newXPValue % maxXPValue;
     await BladesHelpers.tryUpdate(xpActor, BladesHelpers.createUpdateObjectFromPath(newXPValue, xpPath));
     if (xpActor != extraFields.actor)
-      await extraFields.actor.sheet.render(true);
+      await BladesHelpers.tryUpdate(extraFields.actor, {'==name': extraFields.actor.name});
     let trainTypeText = game.i18n.localize(`BITD.Actions${BladesHelpers.capitalize(extraFields.trainType)}`);
     let trainTypeDescriptionKey = extraFields.trainType == 'playbook' ? 'BITD.TrainTextGeneral' : ['expertise', 'acuity'].includes(extraFields.trainType) ? 'BITD.TrainTextVehicle' : 'BITD.TrainTextPilot';
     let trainTypeDescription = game.i18n.format(trainTypeDescriptionKey, {trainType: trainTypeText});
@@ -1702,15 +1707,15 @@ export async function cancelRollResult(rollData, actorFull) {
   let squadFull = BladesHelpers.resolveActor(actorFull.system.crew);
   let squadUpdateObject = {};
   if (rollData.realMateriel)
-    squadUpdateObject['system.materiel.value'] = Math.min(Math.max(Number(squadFull.system.materiel.value) - rollData.realMateriel, 0), Number(squadFull.system.materiel.max));
+    squadUpdateObject['system.materiel.==value'] = Math.min(Math.max(Number(squadFull.system.materiel.value) - rollData.realMateriel, 0), Number(squadFull.system.materiel.max));
   if (rollData.realPersonnel)
-    squadUpdateObject['system.personnel.value'] = Math.min(Math.max(Number(squadFull.system.personnel.value) - rollData.realPersonnel, 0), Number(squadFull.system.personnel.max));
+    squadUpdateObject['system.personnel.==value'] = Math.min(Math.max(Number(squadFull.system.personnel.value) - rollData.realPersonnel, 0), Number(squadFull.system.personnel.max));
   if (Object.keys(squadUpdateObject).length > 0)
     await BladesHelpers.tryUpdate(squadFull, squadUpdateObject);
 
   for (let [stressChangeId, stressChange] of Object.entries(rollData.stressChanges)) {
     let stressActorFull = BladesHelpers.resolveActor(`Actor.${stressChangeId}`);
-    await BladesHelpers.tryUpdate(stressActorFull, {'system.stress.value': Math.min(Math.max(Number(stressActorFull.system.stress.value) - stressChange.realValue, 0), stressActorFull.system.stress.max)});
+    await BladesHelpers.tryUpdate(stressActorFull, {'system.stress.==value': Math.min(Math.max(Number(stressActorFull.system.stress.value) - stressChange.realValue, 0), stressActorFull.system.stress.max)});
   }
   for (let [trustChangeId, trustChange] of Object.entries(rollData.trustChanges)) {
     let trustActorFull = BladesHelpers.resolveActor(`Actor.${trustChangeId}`);
@@ -1728,7 +1733,10 @@ export async function cancelRollResult(rollData, actorFull) {
           otherValue = otherValue[pathPart];
         }
         let resultOther = Math.max(Number(otherValue) - otherChange, 0);
-        updateObject[otherPath] = resultOther;
+        let updatePath = otherPath.split('.');
+        updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
+        updatePath = updatePath.join('.');
+        updateObject[updatePath] = resultOther;
       }
       await BladesHelpers.tryUpdate(otherActorFull, updateObject);
     }
@@ -1737,12 +1745,12 @@ export async function cancelRollResult(rollData, actorFull) {
   let actorUpdateObject = {};
   if (rollData.downtime) {
     if (rollData.downtime.value != 0)
-      actorUpdateObject['system.downtime_count.value'] = actorFull.system.downtime_count.value - rollData.downtime.value;
+      actorUpdateObject['system.downtime_count.==value'] = actorFull.system.downtime_count.value - rollData.downtime.value;
     for (let activity of Object.keys(rollData.downtime.activities)) {
       if (activity != 'train_types')
-        actorUpdateObject[`system.downtime_activities.${activity}`] = false;
+        actorUpdateObject[`system.downtime_activities.==${activity}`] = false;
       for (let train_type of Object.keys(rollData.downtime.activities.train_types))
-        actorUpdateObject[`system.downtime_activities.train_types.${train_type}`] = false;
+        actorUpdateObject[`system.downtime_activities.train_types.==${train_type}`] = false;
     }
   }
   if (Object.keys(actorUpdateObject).length > 0)
@@ -1756,7 +1764,7 @@ export async function cancelRollResult(rollData, actorFull) {
       let connectionIndex = Object.entries(actorFull.system.connections).find(c => c[1].uuid == connectionFull.uuid)[0];
       let connection = actorFull.system.connections[connectionIndex];
       let connectionUpdateObject = {};
-      connectionUpdateObject[`system.connections.${connectionIndex}.clock.value`] = Math.min(Math.max(connection.clock.value - connectionShift, 0), 4);
+      connectionUpdateObject[`system.connections.${connectionIndex}.clock.==value`] = Math.min(Math.max(connection.clock.value - connectionShift, 0), 4);
       await BladesHelpers.tryUpdate(ownerFull, connectionUpdateObject);
     }
 
@@ -1764,12 +1772,12 @@ export async function cancelRollResult(rollData, actorFull) {
     if (modifier.itemNeeded) {
       let exhaustableItems = actor.items.filter(i => i.system[modifier.itemNeeded] && Number(i.system.uses.value) < Number(i.system.uses.max));
       if (exhaustableItems.length > 0)
-        await BladesHelpers.tryUpdate(exhaustableItems[exhaustableItems.length - 1], {'system.uses.value': exhaustableItems[exhaustableItems.length - 1].system.uses.value + 1});
+        await BladesHelpers.tryUpdate(exhaustableItems[exhaustableItems.length - 1], {'system.uses.==value': exhaustableItems[exhaustableItems.length - 1].system.uses.value + 1});
     }
     if (modifier.convictionCutLoose)
-      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.value': Math.max(Number(actor.system.conviction_uses.value) - 1, 0)});
+      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.==value': Math.max(Number(actor.system.conviction_uses.value) - 1, 0)});
     if (modifier.convictionExtra)
-      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.value': Math.min(Number(actor.system.conviction_uses.value) + 1, actor.system.conviction_uses.max)});
+      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.==value': Math.min(Number(actor.system.conviction_uses.value) + 1, actor.system.conviction_uses.max)});
   }
 }
 
@@ -2727,12 +2735,12 @@ export async function postRollProcessing(actor, extraFields) {
     if (modifier.itemNeeded) {
       let exhaustableItems = actor.items.filter(i => i.system[modifier.itemNeeded] && i.system.uses.value > 0);
       if (exhaustableItems.length > 0)
-        await BladesHelpers.tryUpdate(exhaustableItems[0], {'system.uses.value': exhaustableItems[0].system.uses.value - 1});
+        await BladesHelpers.tryUpdate(exhaustableItems[0], {'system.uses.==value': exhaustableItems[0].system.uses.value - 1});
     }
     if (modifier.convictionCutLoose)
-      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.value': Math.min(Number(actor.system.conviction_uses.value) + 1, actor.system.conviction_uses.max)});
+      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.==value': Math.min(Number(actor.system.conviction_uses.value) + 1, actor.system.conviction_uses.max)});
     if (modifier.convictionExtra)
-      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.value': Math.max(Number(actor.system.conviction_uses.value) - 1, 0)});
+      await BladesHelpers.tryUpdate(actor, {'system.conviction_uses.==value': Math.max(Number(actor.system.conviction_uses.value) - 1, 0)});
   }
 }
 
@@ -2771,7 +2779,7 @@ export async function computeGroupActionResultAndSendMessage(groupActionData, cr
   if (!isVehicleAction) {
     let resultStress = Math.max(Math.min(Number(leaderFull.system.stress.value) + stress, Number(leaderFull.system.stress.max)), 0);
     if (resultStress != leaderFull.system.stress.value)
-      await BladesHelpers.tryUpdate(leaderFull, {'system.stress.value': resultStress});
+      await BladesHelpers.tryUpdate(leaderFull, {'system.stress.==value': resultStress});
   }
 
   let messageData = {

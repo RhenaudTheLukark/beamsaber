@@ -68,7 +68,7 @@ export class BeamChatMessage extends foundry.documents.ChatMessage {
     }
 
     if (this.canUserModify(game.user, 'update'))
-      await this.update({system: {handled: true}});
+      await this.update({'system.==handled': true});
 
     const id = this._id;
     await BladesHelpers.tryDelete(this);

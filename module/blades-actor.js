@@ -496,7 +496,7 @@ export class BladesActor extends Actor {
     if (!squadFull) {
       let updateObject = {system: {}};
       for (let modifier of this.crewWideModifiers)
-        updateObject[`system.${modifier}_owners`] = null;
+        updateObject[`system.==${modifier}_owners`] = null;
       await BladesHelpers.tryUpdate(actor, updateObject);
     }
     if (actor.type == 'character' && squadFull) {
@@ -607,8 +607,8 @@ export class BladesActor extends Actor {
       let squadStrength = 2 * Number(this.system.tier.value) + (this.system.hold == 'strong' ? 1 : 0);
       squadStrength = Math.max(Math.min(squadStrength + (inVendetta ? -1 : 1), 8), 0);
       squadStrength = squadStrength;
-      updateObject['system.tier.value'] = Math.floor(squadStrength / 2);
-      updateObject['system.hold'] = squadStrength % 2 == 1 ? 'strong' : 'weak';
+      updateObject['system.tier.==value'] = Math.floor(squadStrength / 2);
+      updateObject['system.==hold'] = squadStrength % 2 == 1 ? 'strong' : 'weak';
       await BladesHelpers.tryUpdate(this, updateObject);
       for (let cohort of this.items.filter(i => i.type == 'cohort'))
         await cohort.updateCohortQualityScale();
@@ -691,7 +691,7 @@ export class BladesActor extends Actor {
       }
 
       if (gear.system.suppressed != suppressed) {
-        await BladesHelpers.tryUpdate(gear, {'system.suppressed': suppressed});
+        await BladesHelpers.tryUpdate(gear, {'system.==suppressed': suppressed});
         if (suppressed)
           await BladesHelpers.preDeleteItem(gear, gearOwner, false);
         else

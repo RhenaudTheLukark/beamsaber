@@ -123,7 +123,7 @@ export class BladesFactionSheet extends BladesSheet {
         element = element.parent();
       element.slideUp(200, async () => {
         await this.actor.removeItem(item);
-        await BladesHelpers.tryUpdate(this.actor, {'system.type': null});
+        await BladesHelpers.tryUpdate(this.actor, {'system.==type': null});
       });
     });
 
@@ -187,7 +187,7 @@ export class BladesFactionSheet extends BladesSheet {
       if (relationshipId == -1) return;
 
       let factionUpdate = {};
-      factionUpdate[`system.relationships.${relationshipId}.collapsed`] = !relationshipFull.collapsed;
+      factionUpdate[`system.relationships.${relationshipId}.==collapsed`] = !relationshipFull.collapsed;
       let childrenElement = $(element[0].parentElement).children('.relationship-child-list');
       childrenElement.slideToggle(200, async () => await BladesHelpers.tryUpdate(this.actor, factionUpdate));
     });

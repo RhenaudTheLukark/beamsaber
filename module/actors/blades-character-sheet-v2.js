@@ -254,13 +254,13 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
 
   async _onSparkToggleLeftClick(event) {
     if (event.target.checked)
-      await BladesHelpers.tryUpdate(this.actor, {'system.spark': true});
+      await BladesHelpers.tryUpdate(this.actor, {'system.==spark': true});
     else
       await this.sparkUsagePopup();
   }
 
   async onSparkToggleRightClick(event) {
-    await BladesHelpers.tryUpdate(this.actor, {'system.spark': !event.target.checked});
+    await BladesHelpers.tryUpdate(this.actor, {'system.==spark': !event.target.checked});
   }
 
   /**
@@ -330,7 +330,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
           }
           ChatMessage.create(messageData);
 
-          await BladesHelpers.tryUpdate(this.actor, {'system.spark': false});
+          await BladesHelpers.tryUpdate(this.actor, {'system.==spark': false});
         }
       }
     });
@@ -358,7 +358,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
 
   // Delete Character's Class
   static async #deleteClass(event, target) {
-    await BladesHelpers.tryUpdate(this.actor, {'system.class': null});
+    await BladesHelpers.tryUpdate(this.actor, {'system.==class': null});
   }
 
   // Remove Squad from character sheet
@@ -426,7 +426,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
         if (result != 'update') return;
 
         const updateObject = {};
-        updateObject[`system.connections.${currentConnectionId}.uuid`] = dialog._value;
+        updateObject[`system.connections.${currentConnectionId}.==uuid`] = dialog._value;
         await BladesHelpers.tryUpdate(this.actor, updateObject);
       }
     });
@@ -479,7 +479,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
     const quirks = vehicleFull.system.quirks;
     quirks[Object.keys(quirks).length] = { name: '', usable: true };
     await BladesHelpers.tryUpdate(vehicleFull, {'system.==quirks': quirks});
-    await this.actor.sheet.render(true);
+    await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
   }
 
   // Delete Quirk
@@ -494,7 +494,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
     for (let id in quirksEntries)
       quirksEntries[id][0] = String(id);
     await BladesHelpers.tryUpdate(vehicleFull, {'system.==quirks': Object.fromEntries(quirksEntries)});
-    await this.actor.sheet.render(true);
+    await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
   }
 
   // Use Stay Late
@@ -543,7 +543,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
         let actorFull = BladesHelpers.resolveActor(dialog.element.querySelector('.form-group').dataset.actorId);
         if (!targetFull || !actorFull) return;
 
-        await BladesHelpers.tryUpdate(targetFull, {'system.downtime_count.value': targetFull.system.downtime_count.value + 1});
+        await BladesHelpers.tryUpdate(targetFull, {'system.downtime_count.==value': targetFull.system.downtime_count.value + 1});
 
         let speaker = {
           actor: this.actor._id,
@@ -580,7 +580,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
     const element = target.closest('.item');
     let currentItemId = element.dataset.itemId;
     let item = this.actor.items.get(currentItemId);
-    await BladesHelpers.tryUpdate(item, {'system.form': (item.system.form + 1) % 3});
+    await BladesHelpers.tryUpdate(item, {'system.==form': (item.system.form + 1) % 3});
     if (!this.actor.system.vehicle) return;
     let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
     if (vehicleFull)
@@ -595,9 +595,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
     let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
     let childrenElement = element.parentElement.querySelector('.item-container');
     childrenElement.slideToggle(200, async () => {
-      await BladesHelpers.tryUpdate(item, {'system.collapsed': !item.system.collapsed});
+      await BladesHelpers.tryUpdate(item, {'system.==collapsed': !item.system.collapsed});
       if (vehicleFull)
-        await vehicleFull.sheet.render(true);
+        await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
   };
 
@@ -623,7 +623,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
 
     let updateObject = BladesHelpers.createUpdateObjectFromPath(value, path);
     await BladesHelpers.tryUpdate(vehicleFull, updateObject);
-    await this.actor.sheet.render(true);
+    await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
   }
 
   static async #otherRolls(event, target) {
@@ -903,9 +903,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       let currentItemId = element.dataset.itemId;
       const selectedAction = ev.currentTarget.value;
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.expertise_action': selectedAction});
+      await BladesHelpers.tryUpdate(item, {'system.==expertise_action': selectedAction});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Vehicle Gear Experimental Toggle
@@ -913,9 +913,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       const element = ev.currentTarget.closest('.item');
       let currentItemId = element.dataset.itemId;
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.experimental': ev.currentTarget.checked});
+      await BladesHelpers.tryUpdate(item, {'system.==experimental': ev.currentTarget.checked});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Items' Hidden Toggle
@@ -923,9 +923,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       const element = ev.currentTarget.closest('.item');
       let currentItemId = element.dataset.itemId;
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.hidden': ev.currentTarget.checked});
+      await BladesHelpers.tryUpdate(item, {'system.==hidden': ev.currentTarget.checked});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Item Uses
@@ -933,9 +933,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       const element = ev.currentTarget.closest('.item');
       let currentItemId = element.dataset.itemId;
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.uses.value': ev.currentTarget.value});
+      await BladesHelpers.tryUpdate(item, {'system.uses.==value': ev.currentTarget.value});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Item Description
@@ -943,9 +943,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       const element = ev.currentTarget.closest('.item');
       let currentItemId = element.dataset.itemId;
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.extra_description': ev.currentTarget.value});
+      await BladesHelpers.tryUpdate(item, {'system.==extra_description': ev.currentTarget.value});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Hackrig Type
@@ -955,9 +955,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       let item = this.actor.items.get(currentItemId);
       let newHackrigType = ev.currentTarget.value;
       let hackrigLoad = newHackrigType == 'tablet' ? 3 : newHackrigType == 'laptop' ? 5 : newHackrigType == 'tower' ? 6 : item.system.container_load;
-      await BladesHelpers.tryUpdate(item, {'system.container_type': newHackrigType, 'system.container_load': hackrigLoad});
+      await BladesHelpers.tryUpdate(item, {'system.==container_type': newHackrigType, 'system.==container_load': hackrigLoad});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Special Ammunition
@@ -966,9 +966,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       let currentItemId = element.dataset.itemId;
       const selectedAmmo = ev.currentTarget.value;
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.special_ammunition_type': selectedAmmo});
+      await BladesHelpers.tryUpdate(item, {'system.==special_ammunition_type': selectedAmmo});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Drone Item Type
@@ -982,9 +982,9 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
           await this.actor.removeItem(containedItem);
       let newContainerItemType = newDroneItemType == 'pilot' ? 'item' : 'vehicle_gear';
       let newContainerLoad = newDroneItemType == 'pilot' ? 2 : 1;
-      await BladesHelpers.tryUpdate(item, {'system.container_type': newDroneItemType, 'system.container_load': newContainerLoad, 'system.==container_item_types': [newContainerItemType]});
+      await BladesHelpers.tryUpdate(item, {'system.==container_type': newDroneItemType, 'system.==container_load': newContainerLoad, 'system.==container_item_types': [newContainerItemType]});
       let vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
-      await vehicleFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(vehicleFull, {'==name': vehicleFull.name});
     });
 
     // Update Any Vehicle Data

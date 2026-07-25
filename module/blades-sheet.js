@@ -114,10 +114,10 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     html.find('.death-toggle').click(async ev => {
       const targetId = $(ev.currentTarget).data('targetId') ?? this.actor.uuid;
       const targetFull = BladesHelpers.resolveActor(targetId);
-      await BladesHelpers.tryUpdate(targetFull, {'system.dead': !targetFull.system.dead});
+      await BladesHelpers.tryUpdate(targetFull, {'system.==dead': !targetFull.system.dead});
       const pilotFull = BladesHelpers.resolveActor(targetFull.system.pilot);
       if (pilotFull)
-        await pilotFull.sheet.render(true);
+        await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
     });
 
     // manage active effects
@@ -323,13 +323,13 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
       let items = await Item.create(itemsToAdd, {parent: owner});
       for (let item of items) {
         if (containerId)
-          await BladesHelpers.tryUpdate(item, {'system.owner': containerId});
+          await BladesHelpers.tryUpdate(item, {'system.==owner': containerId});
         await BladesHelpers.postCreateItem(item, owner);
-        await BladesHelpers.tryUpdate(item, {'system.uses.value': item.system.uses.max});
+        await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
       }
       if (owner != this.actor)
         // Update sheet for everyone
-        await this.actor.sheet.render(true);
+        await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
     } else if (addAsItem)
       await this.actor.sheet.handleAddedObjects(itemsToAdd);
     else
@@ -339,7 +339,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
   async addItemAsObjectAndStoreReference(itemToAdd, valuePath) {
     let itemsFull = await Item.create([itemToAdd], {parent: this.document});
     if (itemsFull[0].system.uses)
-      await BladesHelpers.tryUpdate(itemsFull[0], {'system.uses.value': itemsFull[0].system.uses.max});
+      await BladesHelpers.tryUpdate(itemsFull[0], {'system.uses.==value': itemsFull[0].system.uses.max});
     let updateObject = BladesHelpers.createUpdateObjectFromPath(itemsFull[0]._id, valuePath);
     // Fetch object and delete it if it exists
     let objectToDelete = this.actor;
@@ -429,13 +429,14 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     let oldFormField = actionData.first_form != 0 ? 'first_form' : actionData.second_form != 0 ? 'second_form' : '';
     let formField = oldFormField == 'first_form' ? 'second_form' : oldFormField == 'second_form' ? '' : 'first_form';
     let updateObject = {};
-    if (formField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.${formField}`] = value - actionData.value;
-    if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.${oldFormField}`] = 0;
+    if (formField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${formField}`] = value - actionData.value;
+    if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${oldFormField}`] = 0;
     if (Object.keys(updateObject).length > 0) {
       await BladesHelpers.tryUpdate(actor, updateObject);
       if (isVehicle && actor.system.pilot) {
         let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
-        await pilotFull.sheet.render(true);
+        if (pilotFull)
+          await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
       }
     }
   }
@@ -476,7 +477,10 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
 
         let value = dialog.element.querySelector('select').value;
         let updateObject = {};
-        updateObject[path] = value;
+        let updatePath = path.split('.');
+        updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
+        updatePath = updatePath.join('.');
+        updateObject[updatePath] = value;
         await BladesHelpers.tryUpdate(this.actor, updateObject);
       }
     });
@@ -817,10 +821,10 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #deathToggle(event, target) {
     const targetId = target.dataset.targetId ?? this.actor.uuid;
     const targetFull = BladesHelpers.resolveActor(targetId);
-    await BladesHelpers.tryUpdate(targetFull, {'system.dead': !targetFull.system.dead});
+    await BladesHelpers.tryUpdate(targetFull, {'system.==dead': !targetFull.system.dead});
     const pilotFull = BladesHelpers.resolveActor(targetFull.system.pilot);
     if (pilotFull)
-      await pilotFull.sheet.render(true);
+      await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
   }
 
   // mMnage active effects
@@ -862,13 +866,13 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
       let items = await Item.create(itemsToAdd, {parent: owner});
       for (let item of items) {
         if (containerId)
-          await BladesHelpers.tryUpdate(item, {'systemowner': containerId});
+          await BladesHelpers.tryUpdate(item, {'system.==owner': containerId});
         await BladesHelpers.postCreateItem(item, owner);
-        await BladesHelpers.tryUpdate(item, {'system.uses.value': item.system.uses.max});
+        await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
       }
       if (owner != this.actor)
         // Update sheet for everyone
-        await this.actor.sheet.render(true);
+        await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
     } else if (addAsItem && itemsToAdd.length)
       await this.addItemAsObjectAndStoreReference(itemsToAdd[0], valuePath);
     await this.actor.sheet.handleAddedObjects(itemsToAdd);
@@ -877,7 +881,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   async addItemAsObjectAndStoreReference(itemToAdd, valuePath) {
     let itemsFull = await Item.create([itemToAdd], {parent: this.document});
     if (itemsFull[0].system.uses)
-      await BladesHelpers.tryUpdate(itemsFull[0], {'system.uses.value': itemsFull[0].system.uses.max});
+      await BladesHelpers.tryUpdate(itemsFull[0], {'system.uses.==value': itemsFull[0].system.uses.max});
     let updateObject = BladesHelpers.createUpdateObjectFromPath(itemsFull[0]._id, valuePath);
     // Fetch object and delete it if it exists
     let objectToDelete = this.actor;
@@ -926,13 +930,14 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
     let oldFormField = actionData.first_form != 0 ? 'first_form' : actionData.second_form != 0 ? 'second_form' : '';
     let formField = oldFormField == 'first_form' ? 'second_form' : oldFormField == 'second_form' ? '' : 'first_form';
     let updateObject = {};
-    if (formField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.${formField}`] = value - actionData.value;
-    if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.${oldFormField}`] = 0;
+    if (formField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${formField}`] = value - actionData.value;
+    if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${oldFormField}`] = 0;
     if (Object.keys(updateObject).length > 0) {
       await BladesHelpers.tryUpdate(actor, updateObject);
       if (isVehicle && actor.system.pilot) {
         let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
-        await pilotFull.sheet.render(true);
+        if (pilotFull)
+          await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
       }
     }
   }
@@ -973,7 +978,9 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
 
         let value = dialog.element.querySelector('select').value;
         let updateObject = {};
-        updateObject[path] = value;
+        updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
+        updatePath = updatePath.join('.');
+        updateObject[updatePath] = value;
         await BladesHelpers.tryUpdate(this.actor, updateObject);
       }
     });

@@ -5,12 +5,20 @@ Bug list:
 	- Can be fixed easily after switching to SheetV2
 -1 Vehicle fields not updating the Pilot sheet properly once they're changed on the Vehicle sheet
 	- Upgrade to SheetV2 to work with apps instead of updating everything manually :pray:
+- Schmooze: Error when schmoozing with a faction with no relationship
+
 
 TODO list:
 -1 Upgrade sheets from V1 to V2 (low priority)
 	- Note: prepareData() may not always have all actors known, use prepareContext() instead to replace getData()
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
+- Add non-empty Level 1 & 2 Harm/Damages as roll modifiers
+- Add Uses for Crew upgrades
+
+Changelog since 26/07/20:
++ Investigate sheet data not updating between players
+
 
 + => Means it's done
 - => Means it has to be done

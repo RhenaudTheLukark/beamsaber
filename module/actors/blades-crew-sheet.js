@@ -288,7 +288,7 @@ export class BladesSquadSheet extends BladesSheet {
             let memberFull = BladesHelpers.resolveActor(selectedOption.value);
             let trauma = Number(memberFull.system.trauma.value);
             let resultStress = Math.max(Math.min(Number(memberFull.system.stress.value) + trauma, memberFull.system.stress.max), 0);
-            await BladesHelpers.tryUpdate(memberFull, {'system.stress.value': resultStress});
+            await BladesHelpers.tryUpdate(memberFull, {'system.stress.==value': resultStress});
             cutLooseScarMessage += ` ${game.i18n.format('BITD.StartMissionNoCutLooseScarPilotEffect', {pilot: memberFull.name, num: trauma})}`;
           }
           if (cutLooseScarMessage)
@@ -308,7 +308,7 @@ export class BladesSquadSheet extends BladesSheet {
 
 
         // Set Phase to Mission
-        await BladesHelpers.tryUpdate(this.actor, {'system.phase': 'mission'});
+        await BladesHelpers.tryUpdate(this.actor, {'system.==phase': 'mission'});
 
         let speaker = {
           actor: this.actor._id,
@@ -382,14 +382,14 @@ export class BladesSquadSheet extends BladesSheet {
         let messageContents = '';
 
         if (dialog.element.querySelector('[name="factionBonus"]').checked && Object.values(factionBonus.rewards).length > 0) {
-          let updateObject = {system: {}};
+          let updateObject = {};
           let bonusMessage = '';
           if (factionBonus.rewards.materiel) {
-            updateObject['system.materiel.value'] = Math.min(Math.max(Number(this.actor.system.materiel.value) + factionBonus.rewards.materiel, 0), Number(this.actor.system.materiel.max));
+            updateObject['system.materiel.==value'] = Math.min(Math.max(Number(this.actor.system.materiel.value) + factionBonus.rewards.materiel, 0), Number(this.actor.system.materiel.max));
             bonusMessage += ` ${game.i18n.format(`BITD.GenericSquad${factionBonus.rewards.materiel < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(factionBonus.rewards.materiel), name: game.i18n.localize('BITD.Materiel'), reason: game.i18n.localize('BITD.EndMissionFromFactionBonus')})}`;
           }
           if (factionBonus.rewards.personnel) {
-            updateObject['system.personnel.value'] = Math.min(Math.max(Number(this.actor.system.personnel.value) + factionBonus.rewards.personnel, 0), Number(this.actor.system.personnel.max));
+            updateObject['system.personnel.==value'] = Math.min(Math.max(Number(this.actor.system.personnel.value) + factionBonus.rewards.personnel, 0), Number(this.actor.system.personnel.max));
             bonusMessage += ` ${game.i18n.format(`BITD.GenericSquad${factionBonus.rewards.personnel < 0 ? 'Loss' : 'Gain'}`, {num: Math.abs(factionBonus.rewards.personnel), name: game.i18n.localize('BITD.Personnel'), reason: game.i18n.localize('BITD.EndMissionFromFactionBonus')})}`;
           }
           if (factionBonus.rewards.trust)
@@ -415,8 +415,8 @@ export class BladesSquadSheet extends BladesSheet {
             if (memberFull && memberFull.type == 'character') {
               let memberVehicleFull = BladesHelpers.resolveActor(memberFull?.system.vehicle);
               if (memberVehicleFull)
-                BladesHelpers.tryUpdate(memberVehicleFull, {'system.damage.light.one': '', 'system.damage.light.two': ''});
-              BladesHelpers.tryUpdate(memberFull, {'system.harm.light.one': '', 'system.harm.light.two': ''});
+                BladesHelpers.tryUpdate(memberVehicleFull, {'system.damage.light.==one': '', 'system.damage.light.==two': ''});
+              BladesHelpers.tryUpdate(memberFull, {'system.harm.light.==one': '', 'system.harm.light.==two': ''});
             }
           }
           messageContents += `<div class="description"><p>${game.i18n.localize('BITD.EndMissionHealUp')}</p></div>`;
@@ -425,11 +425,11 @@ export class BladesSquadSheet extends BladesSheet {
           let factionGoalId = dialog.element.querySelector('[name="factionGoalId"]').value;
           let factionGoal = patronFactionFull.system.goals[factionGoalId];
           let factionUpdateObject = {};
-          factionUpdateObject[`system.goals.${factionGoalId}.clock.value`] = Number(factionGoal.clock.value) + 1;
+          factionUpdateObject[`system.goals.${factionGoalId}.clock.==value`] = Number(factionGoal.clock.value) + 1;
           BladesHelpers.tryUpdate(patronFactionFull, factionUpdateObject);
 
           let factionGoalMessage = game.i18n.format('BITD.EndMissionFactionGoalUp', {goal: factionGoal.title});
-          if (factionUpdateObject[`system.goals.${factionGoalId}.clock.value`] == Number(factionGoal.clock.max))
+          if (factionUpdateObject[`system.goals.${factionGoalId}.clock.==value`] == Number(factionGoal.clock.max))
             factionGoalMessage += ` ${game.i18n.localize('BITD.EndMissionFactionGoalDone')}`;
           messageContents += `<div class="description"><p>${factionGoalMessage}</p></div>`;
         }
@@ -540,11 +540,11 @@ export class BladesSquadSheet extends BladesSheet {
         for (let member of Object.values(this.actor.system.members)) {
           let memberFull = BladesHelpers.resolveActor(member.uuid);
           if (memberFull && memberFull.type == 'character')
-            BladesHelpers.tryUpdate(memberFull, {'system.downtime_count.value': Number(memberFull.system.downtime_count.base) + downtimeActivitiesShift});
+            BladesHelpers.tryUpdate(memberFull, {'system.downtime_count.==value': Number(memberFull.system.downtime_count.base) + downtimeActivitiesShift});
         }
 
         // Set Phase to Downtime & Reset Cohort Downtime Activity for All Hands
-        BladesHelpers.tryUpdate(this.actor, {'system.phase': 'downtime', 'system.cohort_downtime_done': false});
+        BladesHelpers.tryUpdate(this.actor, {'system.==phase': 'downtime', 'system.==cohort_downtime_done': false});
 
         let speaker = {
           actor: this.actor._id,
@@ -698,7 +698,7 @@ export class BladesSquadSheet extends BladesSheet {
               break;
           }
           if (rollType != 'cohort')
-            await BladesHelpers.tryUpdate(this.actor, {'system.cohort_downtime_done': true});
+            await BladesHelpers.tryUpdate(this.actor, {'system.==cohort_downtime_done': true});
           await postRollProcessing(this.actor, extraFields);
         }
       }
@@ -787,8 +787,8 @@ export class BladesSquadSheet extends BladesSheet {
       let element = ev.currentTarget;
       let newTier = Number(element.value);
       if (newTier != this.actor.system.tier.value)
-        await this.actor.update({'system.hold': newTier > Number(this.actor.system.tier.value) ? 'weak' : 'strong'});
-      await this.actor.update({'system.tier.value': newTier});
+        await this.actor.update({'system.==hold': newTier > Number(this.actor.system.tier.value) ? 'weak' : 'strong'});
+      await this.actor.update({'system.tier.==value': newTier});
       for (let cohort of this.actor.items.filter(i => i.type == 'cohort'))
         await cohort.updateCohortQualityScale();
     });
@@ -801,7 +801,7 @@ export class BladesSquadSheet extends BladesSheet {
     html.find('.is-player-crew > input').change(async ev => {
       let maxTier = $(ev.currentTarget).checked ? 4 : 5;
       let valueTier = Math.min(maxTier, this.actor.system.tier.value);
-      let updateObject = {'system.tier.max': maxTier, 'system.tier.value': valueTier};
+      let updateObject = {'system.tier.==max': maxTier, 'system.tier.==value': valueTier};
       await BladesHelpers.tryUpdate(this.actor, updateObject);
     });
 
@@ -810,14 +810,14 @@ export class BladesSquadSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest('.item');
       let itemId = element.data('itemId');
       let harmId = $(ev.currentTarget).val();
-      await this.actor.updateEmbeddedDocuments('Item', [{_id: itemId, 'system.harm': harmId}]);
+      await this.actor.updateEmbeddedDocuments('Item', [{_id: itemId, 'system.==harm': harmId}]);
     });
 
     html.find('.cohort-armor').click(async ev => {
       const element = $(ev.currentTarget).closest('.item');
       let itemId = element.data('itemId');
       let armor = ev.currentTarget.checked;
-      await this.actor.updateEmbeddedDocuments('Item', [{_id: itemId, 'system.armor': armor}]);
+      await this.actor.updateEmbeddedDocuments('Item', [{_id: itemId, 'system.==armor': armor}]);
     })
 
     html.find('.cohort-block-wrapper .add-cohort-roll').click(async ev => {
@@ -861,7 +861,7 @@ export class BladesSquadSheet extends BladesSheet {
         element = element.parent();
       element.slideUp(200, async () => {
         await this.actor.removeItem(item);
-        await BladesHelpers.tryUpdate(this.actor, {'system.crew_reputation': null});
+        await BladesHelpers.tryUpdate(this.actor, {'system.==crew_reputation': null});
       });
     });
 
@@ -907,7 +907,7 @@ export class BladesSquadSheet extends BladesSheet {
       const element = $(ev.currentTarget).closest('.item');
       let currentItemId = element.data('itemId');
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.uses.value': ev.currentTarget.value});
+      await BladesHelpers.tryUpdate(item, {'system.uses.==value': ev.currentTarget.value});
     });
 
     // Update Upgrade Cohort Choice
@@ -916,7 +916,7 @@ export class BladesSquadSheet extends BladesSheet {
       let currentItemId = element.data('itemId');
       const selectedCohort = ev.currentTarget.value;
       let item = this.actor.items.get(currentItemId);
-      await BladesHelpers.tryUpdate(item, {'system.barracks_cohort_id': selectedCohort});
+      await BladesHelpers.tryUpdate(item, {'system.==barracks_cohort_id': selectedCohort});
     });
 
     // Update Training Center Fire Team Type
@@ -927,7 +927,7 @@ export class BladesSquadSheet extends BladesSheet {
       let item = this.actor.items.get(currentItemId);
       let oldSelectedType = item.system.training_center_type;
       await BladesHelpers.updateTrainingCenterType(this.actor, oldSelectedType, selectedType);
-      await BladesHelpers.tryUpdate(item, {'system.training_center_type': selectedType});
+      await BladesHelpers.tryUpdate(item, {'system.==training_center_type': selectedType});
     });
 
     // Roll Collection Agency
@@ -951,7 +951,7 @@ export class BladesSquadSheet extends BladesSheet {
       if (relationshipId == -1) return;
 
       let factionUpdate = {};
-      factionUpdate[`system.relationships.${relationshipId}.collapsed`] = !relationshipFull.collapsed;
+      factionUpdate[`system.relationships.${relationshipId}.==collapsed`] = !relationshipFull.collapsed;
       let childrenElement = $(element[0].parentElement).children('.relationship-child-list');
       childrenElement.slideToggle(200, async () => await BladesHelpers.tryUpdate(this.actor, factionUpdate));
     });

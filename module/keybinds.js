@@ -15,7 +15,7 @@ export const registerSystemKeybinds = function() {
       let maxClocks = context.event.shiftKey;
       const clockActors = canvas.tokens.controlled.map(t => t.actor).filter(a => a.type == '\uD83D\uDD5B clock').filter(c => c.system.value !== c.system.size);
       for (let clockActor of clockActors) {
-        let updateObject = {'system.value': maxClocks ? Number(clockActor.system.size) : (Number(clockActor.system.value) + 1)};
+        let updateObject = {'system.==value': maxClocks ? Number(clockActor.system.size) : (Number(clockActor.system.value) + 1)};
         updateObject = await clockActor.sheet.updateTokens(updateObject);
         await BladesHelpers.tryUpdate(clockActor, updateObject);
       }
@@ -37,7 +37,7 @@ export const registerSystemKeybinds = function() {
       let emptyClocks = context.event.shiftKey;
       const clockActors = canvas.tokens.controlled.map(t => t.actor).filter(a => a.type == '\uD83D\uDD5B clock').filter(c => c.system.value !== 0);
       for (let clockActor of clockActors) {
-        let updateObject = {'system.value': emptyClocks ? 0 : (Number(clockActor.system.value) - 1)};
+        let updateObject = {'system.==value': emptyClocks ? 0 : (Number(clockActor.system.value) - 1)};
         updateObject = await clockActor.sheet.updateTokens(updateObject);
         await BladesHelpers.tryUpdate(clockActor, updateObject);
       }
