@@ -331,7 +331,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
         // Update sheet for everyone
         await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
     } else if (addAsItem)
-      await this.actor.sheet.handleAddedObjects(itemsToAdd);
+      await this.actor.sheet.handleAddedObjects(itemsToAdd, false);
     else
       this.addItemAsReference(itemsToAdd[0], valuePath);
   }
@@ -368,7 +368,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
       actorsToAdd.push(actors.find(e => e._id === $(this).val()));
     });
 
-    await this.actor.sheet.handleAddedObjects(actorsToAdd);
+    await this.actor.sheet.handleAddedObjects(actorsToAdd, false);
   }
 
   /* -------------------------------------------- */
@@ -875,7 +875,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
         await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
     } else if (addAsItem && itemsToAdd.length)
       await this.addItemAsObjectAndStoreReference(itemsToAdd[0], valuePath);
-    await this.actor.sheet.handleAddedObjects(itemsToAdd);
+    await this.actor.sheet.handleAddedObjects(itemsToAdd, false);
   }
 
   async addItemAsObjectAndStoreReference(itemToAdd, valuePath) {
@@ -902,7 +902,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
       actorsToAdd.push(actors.find(e => e._id === $(this).val()));
     });
 
-    await this.actor.sheet.handleAddedObjects(actorsToAdd);
+    await this.actor.sheet.handleAddedObjects(actorsToAdd, false);
   }
 
   /* -------------------------------------------- */

@@ -56,6 +56,7 @@ export class BladesHelpers {
   }
 
   static async handleRelationshipValue(ownerFull, entityFull, path, change, set = false, recursive = false) {
+    await BladesHelpers.fetchRelationshipAndAddItIfNotfound(ownerFull, entityFull);
     if (path == 'trust')
       return (await BladesHelpers.handleTrust(ownerFull, entityFull, change, set, recursive))[1];
 
@@ -85,6 +86,7 @@ export class BladesHelpers {
   }
 
   static async handleTrust(ownerFull, entityFull, trustChange, set = false, recursive = false) {
+    await BladesHelpers.fetchRelationshipAndAddItIfNotfound(ownerFull, entityFull);
     let squadEntry = ownerFull.system.squads ? Object.entries(ownerFull.system.squads).find(s => s[1].uuid == entityFull.uuid) : null;
     let relationshipEntry = Object.entries(ownerFull.system.relationships).find(s => s[1].uuid == entityFull.uuid);
     let [relationshipId, relationship] = squadEntry ?? relationshipEntry;
@@ -1287,17 +1289,19 @@ export class BladesHelpers {
       await BladesHelpers.removeFactionSquad(squadFull);
 
     // Check if relationship and delete it
-    let crewAsRelationship = Object.values(factionFull.system.relationships).find(r => r.uuid == squadFull.uuid);
-    if (crewAsRelationship)
+    let relationship = BladesHelpers.fetchRelationship(factionFull, squadFull);
+    if (relationship) {
+      relationship = foundry.utils.deepClone(relationship);
       await BladesHelpers.removeRelationship(factionFull, squadFull);
+      await BladesHelpers.addRelationship(squadFull, factionFull, true, relationship);
+    }
 
     // Add as owner
     let squads = factionFull.system.squads;
-    squads[Object.entries(squads).length] = {uuid: squadFull.uuid, trust: crewAsRelationship?.trust ?? 5, status: 0, beliefs: ''};
+    squads[Object.entries(squads).length] = {uuid: squadFull.uuid, trust: relationship?.trust ?? 5, status: relationship?.status ?? 0};
     squads = Object.assign({}, BladesHelpers.sortObjects(squads, BladesHelpers.fetchSimpleData, BladesHelpers._factionSquadCompareFunc, BladesHelpers.rebuildSimplesFromData, ['trust', 'status']));
     await BladesHelpers.tryUpdate(factionFull, {'system.==squads': squads});
     await BladesHelpers.tryUpdate(squadFull, {'system.==faction': factionFull.uuid});
-    await BladesHelpers.addRelationship(squadFull, factionFull, true);
 
     // Add NPCs as belonging to the faction
     for (let member of Object.values(squadFull.system.members)) {
@@ -1316,13 +1320,13 @@ export class BladesHelpers {
 
   // Removes a faction's squad and removes the squad from the faction's squad list
   static async removeFactionSquad(squadFull) {
-    let factionFull = BladesHelpers.resolveActor(squadFull.system.faction);
+    const factionFull = BladesHelpers.resolveActor(squadFull.system.faction);
     if (factionFull) {
-      await BladesHelpers.removeRelationship(squadFull, factionFull, true);
       let factionSquadsArray = Object.values(factionFull.system.squads);
-      factionSquadsArray.splice(factionSquadsArray.map(e => e.uuid).indexOf(squadFull.uuid), 1);
+      let relationshipData = foundry.utils.deepClone(factionSquadsArray.splice(factionSquadsArray.map(e => e.uuid).indexOf(squadFull.uuid), 1)[0]);
       let newFactionSquads = Object.assign({}, factionSquadsArray);
       await BladesHelpers.tryUpdate(factionFull, {'system.==squads': newFactionSquads});
+      await BladesHelpers.addRelationship(factionFull, squadFull, true, relationshipData);
 
       // Remove NPCs from the faction
       for (let member of Object.values(squadFull.system.members)) {
@@ -1369,7 +1373,7 @@ export class BladesHelpers {
 
   /* -------------------------------------------- */
 
-  static async addRelationship(ownerFull, entityFull, recursive = false) {
+  static async addRelationship(ownerFull, entityFull, recursive = false, data = {}) {
     let relationships = ownerFull.system.relationships;
     let squads = ownerFull.system.squads;
 
@@ -1385,9 +1389,11 @@ export class BladesHelpers {
     }
 
     // Add new relationship
-    let relationship = {uuid: entityFull.uuid, status: 0, collapsed: false};
+    let relationship = {uuid: entityFull.uuid, status: data.status ?? 0, collapsed: data.collapsed ?? false};
     if (ownerFull.type == 'crew' || entityFull.type == 'crew')
-      relationship.trust = 5;
+      relationship.trust = data.trust ?? 5;
+    if (ownerFull.type == 'crew' && entityFull.type == 'crew')
+      relationship.beliefs = data.beliefs ?? '';
     relationships[Object.entries(relationships).length] = relationship;
     relationships = Object.assign({}, BladesHelpers.sortObjects(relationships, BladesHelpers.fetchRelationshipData, BladesHelpers._relationshipCompareFunc, BladesHelpers.rebuildRelationshipListFromData));
 
@@ -1541,16 +1547,15 @@ export class BladesHelpers {
 
   static async removeRelationship(ownerFull, entityFull, recursive = false) {
     let relationshipFull = Object.values(ownerFull.system.relationships).find(r => r.uuid == entityFull.uuid);
-    if (!relationshipFull)
-      return;
+    if (relationshipFull) {
+      // Remove the relationship from the table
+      let relationshipsArray = Object.values(ownerFull.system.relationships);
+      relationshipsArray.splice(relationshipsArray.indexOf(relationshipFull), 1);
+      let newRelationships = Object.assign({}, relationshipsArray);
 
-    // Remove the relationship from the table
-    let relationshipsArray = Object.values(ownerFull.system.relationships);
-    relationshipsArray.splice(relationshipsArray.indexOf(relationshipFull), 1);
-    let newRelationships = Object.assign({}, relationshipsArray);
-
-    // Update the data
-    await BladesHelpers.tryUpdate(ownerFull, {'system.==relationships': newRelationships});
+      // Update the data
+      await BladesHelpers.tryUpdate(ownerFull, {'system.==relationships': newRelationships});
+    }
     if (['faction', 'crew'].includes(entityFull.type) && !recursive)
       await BladesHelpers.removeRelationship(entityFull, ownerFull, true);
   }

@@ -70,7 +70,7 @@ export class BladesRegionSheet extends BladesSheet {
     await this.handleAddedObjects([droppedEntityFull]);
   }
 
-  async handleAddedObjects(droppedEntitiesFull) {
+  async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     let currentTab = this._tabs[0].active;
     for (let droppedEntityFull of droppedEntitiesFull) {
       if (!droppedEntityFull || droppedEntityFull.uuid == this.actor.uuid)

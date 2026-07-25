@@ -92,7 +92,7 @@ export class BladesSquadSheet extends BladesSheet {
     await this.handleAddedObjects([droppedEntityFull]);
   }
 
-  async handleAddedObjects(droppedEntitiesFull) {
+  async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     let currentTab = this._tabs[0].active;
     for (let droppedEntityFull of droppedEntitiesFull) {
       if (!droppedEntityFull || droppedEntityFull.uuid == this.actor.uuid)
@@ -100,7 +100,7 @@ export class BladesSquadSheet extends BladesSheet {
 
       switch (droppedEntityFull.type) {
         case 'faction':
-          if (currentTab == 'relationships')
+          if (currentTab == 'relationships' && actuallyDropped)
             await BladesHelpers.addRelationship(this.actor, droppedEntityFull);
           else
             await BladesHelpers.addFactionSquad(droppedEntityFull, this.actor, false);

@@ -118,7 +118,7 @@ export class BeamVehicleSheet extends BladesSheet {
     await this.handleAddedObjects([droppedEntityFull]);
   }
 
-  async handleAddedObjects(droppedEntitiesFull) {
+  async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     for (let droppedEntityFull of droppedEntitiesFull) {
       if (!droppedEntityFull || droppedEntityFull.uuid == this.actor.uuid)
         continue;
