@@ -5,6 +5,42 @@ import { BeamChatMessage } from "./messages/beam-chat-message.js";
  * Object holding all existing roll modifiers.
  */
 export const bladesRollModifierList = {
+  level_one_harm: {
+    name: 'BITD.LevelOneHarm',
+    nameArgs: {},
+    rollTypes: ['actionRoll', 'groupAction'],
+    effect: -1
+  },
+  level_two_harm: {
+    name: 'BITD.LevelTwoHarm',
+    nameArgs: {},
+    rollTypes: ['actionRoll', 'groupAction'],
+    dice: -1
+  },
+  level_two_harm_tough_as_nails: {
+    name: 'BITD.LevelTwoHarm',
+    nameArgs: {},
+    rollTypes: ['actionRoll', 'groupAction'],
+    effect: -1
+  },
+  level_three_harm_tough_as_nails: {
+    name: 'BITD.LevelThreeHarm',
+    nameArgs: {},
+    rollTypes: ['actionRoll', 'groupAction'],
+    dice: -1
+  },
+  level_one_damage: {
+    name: 'BITD.LevelOneDamage',
+    nameArgs: {},
+    rollTypes: ['actionRoll', 'groupAction'],
+    effect: -1
+  },
+  level_two_damage: {
+    name: 'BITD.LevelTwoDamage',
+    nameArgs: {},
+    rollTypes: ['actionRoll', 'groupAction'],
+    dice: -1
+  },
   collateral_die: {
     name: 'BITD.CollateralDie',
     notRollTypes: ['enhance', 'train', 'moveBase'],
@@ -2433,8 +2469,31 @@ function computeModifierMessages(modifiers) {
   return output;
 }
 
-export async function resolveRollModifierArray(modifiers, actor, attributeName) {
+export async function resolveRollModifierArray(modifiers, actorFull, attributeName) {
   let output = [];
+
+  let attribute = BladesHelpers.getAttributeFromAction(attributeName);
+  let isVehicleAction = ['expertise', 'acuity'].includes(attribute);
+  let harmContainer = isVehicleAction ? BladesHelpers.resolveActor(actorFull?.system.vehicle)?.system.damage : actorFull?.system.harm;
+  if (harmContainer && BladesHelpers.isAttributeAction(attributeName)) {
+    let toughAsNails = actorFull?.system.tough_as_nails && !isVehicleAction;
+    let levelOneHarms = Object.values(toughAsNails ? harmContainer.medium : harmContainer.light).filter(h => h != '');
+    let levelTwoHarms = Object.values(toughAsNails ? harmContainer.heavy : harmContainer.medium).filter(h => h != '');
+    let harms = [ ...levelOneHarms.map(h => [1, h]),  ...levelTwoHarms.map(h => [2, h]) ];
+    let idToNumber = {
+      1: 'one',
+      2: 'two',
+      3: 'three'
+    }
+    for (let harm of harms) {
+      let key = toughAsNails ? `level_${idToNumber[harm[0] + 1]}_harm_tough_as_nails` : isVehicleAction ? `level_${idToNumber[harm[0]]}_damage` : `level_${idToNumber[harm[0]]}_harm`;
+      let result = foundry.utils.deepClone(bladesRollModifierList[key]);
+      result.key = key;
+      result.nameArgs.harm = harm[1];
+      output.push(result);
+    }
+  }
+
   if (modifiers)
     for (let [key, value] of Object.entries(modifiers)) {
       if (value === true)
@@ -2443,18 +2502,18 @@ export async function resolveRollModifierArray(modifiers, actor, attributeName) 
           result.key = key;
           if (result.push_yourself) {
             // Push Yourself: Choose the right cost
-            if (actor.type != 'character') continue;
+            if (actorFull.type != 'character') continue;
             let attribute = BladesHelpers.getAttributeFromAction(attributeName);
             let isVehicleAction = ['expertise', 'acuity'].includes(attribute) || ['expertise', 'acuity'].includes(attributeName);
-            if (actor.system.travelling_companion && isVehicleAction)
+            if (actorFull.system.travelling_companion && isVehicleAction)
               result.fields['BITD.Cost'] = ['BITD.Quirks', 'BITD.Stress'];
             else
               result.fields['BITD.Cost'] = undefined;
           } else if (result.assist) {
             // Assist: List all Connections from other Pilots with at least 1 tick
-            if (actor.type != 'character') continue;
+            if (actorFull.type != 'character') continue;
             result.fields['BITD.Connection'] = {};
-            for (let connection of BladesHelpers.fetchConnectionsToActor(actor.uuid)) {
+            for (let connection of BladesHelpers.fetchConnectionsToActor(actorFull.uuid)) {
               if (connection.clock.value < 1) continue;
               let characterFull = BladesHelpers.resolveActor(connection.uuid);
               if (characterFull?.type != 'character') continue;
@@ -2463,41 +2522,41 @@ export async function resolveRollModifierArray(modifiers, actor, attributeName) 
             if (!Object.values(result.fields['BITD.Connection']).length) continue;
           } else if (result.telepathy) {
             // Telepathy: List all squadmates who own the Ability
-            await actor.updateCrewWideAbilityOwnership(actor);
-            if (!actor.system.telepathy_owners) continue;
-            if (!actor.system.telepathy_owners.length) continue;
+            await actorFull.updateCrewWideAbilityOwnership(actorFull);
+            if (!actorFull.system.telepathy_owners) continue;
+            if (!actorFull.system.telepathy_owners.length) continue;
             result.fields['BITD.User'] = [];
-            for (let owner of actor.system.telepathy_owners) {
+            for (let owner of actorFull.system.telepathy_owners) {
               let ownerFull = BladesHelpers.resolveActor(owner);
               result.fields['BITD.User'].push(ownerFull.name);
             }
           } else if (result.crowdsource) {
             // Crowdsource: List all squadmates except yourself
-            if (!actor.system.crew) continue;
-            let squadFull = BladesHelpers.resolveActor(actor.system.crew);
+            if (!actorFull.system.crew) continue;
+            let squadFull = BladesHelpers.resolveActor(actorFull.system.crew);
             if (!squadFull) continue;
             if (Object.values(squadFull.system.members).length == 1) continue;
             result.fields['BITD.Crewmate'] = {};
             for (let character of Object.values(squadFull.system.members)) {
-              if (character.uuid == actor.uuid) continue;
+              if (character.uuid == actorFull.uuid) continue;
               let characterFull = BladesHelpers.resolveActor(character.uuid);
               if (characterFull.type != 'character') continue;
               result.fields['BITD.Crewmate'][character.uuid] = characterFull.name;
             }
           } else if (result.downtime_assist) {
             // Downtime Assist: List all Pilot Squad Members, Pilot Connections and Cohorts
-            if (actor.type != 'character') continue;
+            if (actorFull.type != 'character') continue;
             result.fields['BITD.Helper'] = {};
-            let squadFull = BladesHelpers.resolveActor(actor.system.crew);
+            let squadFull = BladesHelpers.resolveActor(actorFull.system.crew);
             if (squadFull) {
               for (let member of Object.values(squadFull.system.members)) {
-                if (member.uuid == actor.uuid) continue;
+                if (member.uuid == actorFull.uuid) continue;
                 let characterFull = BladesHelpers.resolveActor(member.uuid);
                 if (characterFull.type != 'character') continue;
                 result.fields['BITD.Helper'][characterFull.uuid] = characterFull.name;
               }
             }
-            for (let connection of Object.values(actor.system.connections)) {
+            for (let connection of Object.values(actorFull.system.connections)) {
               let characterFull = BladesHelpers.resolveActor(connection.uuid);
               if (characterFull?.type != 'character') continue;
               result.fields['BITD.Helper'][characterFull.uuid] = characterFull.name;
@@ -2507,7 +2566,7 @@ export async function resolveRollModifierArray(modifiers, actor, attributeName) 
                 result.fields['BITD.Helper'][cohort.uuid] = cohort.name;
             result.fields['BITD.Helper'][''] = 'BITD.Other';
           } else if (result.needsRealWorkshop) {
-            let squadFull = actor.type == 'crew' ? actor : BladesHelpers.resolveActor(actor.system.crew);
+            let squadFull = actorFull.type == 'crew' ? actorFull : BladesHelpers.resolveActor(actorFull.system.crew);
             if (!squadFull?.system.real_workshop) continue;
           }
           output.push(result);

@@ -6,17 +6,18 @@ Bug list:
 -1 Vehicle fields not updating the Pilot sheet properly once they're changed on the Vehicle sheet
 	- Upgrade to SheetV2 to work with apps instead of updating everything manually :pray:
 
-
 TODO list:
 -1 Upgrade sheets from V1 to V2 (low priority)
 	- Note: prepareData() may not always have all actors known, use prepareContext() instead to replace getData()
 - ASK: Automated messages when some tracks/clocks are full (connection, playbook/attribute XP)
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
-- Add non-empty Level 1 & 2 Harm/Damages as roll modifiers
+
 
 Changelog since 26/07/20:
 + Investigate sheet data not updating between players
 + Added Uses for Crew upgrades
++ Added non-empty Level 1 & 2 Harm/Damages as roll modifiers
++ Implemented the Compendium Pilot Ability "Tough As Nails"
 + FIX: Secured all instances of relationship data changes not checking for the relationship existing in the first place (ex: Schmooze)
 + FIX: Properly keep the relationship when a Squad leaves a Faction
 + FIX: When setting a Squad's Faction, ensure that it's not added to its relationships if the sheet is on the Relationship tab

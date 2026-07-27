@@ -736,6 +736,11 @@
     "CarryThatWeightDescription": "{actor} took on <strong>{stress}</strong> of {target}'s <strong>Stress</strong>.",
 
     "ToggleableModifiers": "Toggleable Modifiers",
+    "LevelOneHarm": "<span style=\"color:#ffc0c0\">Level One Harm: {harm} <i class=\"fas fa-question-circle\" data-tooltip=\"Only enable this if this Harm impairs your ability to do this action.\"></i></span>",
+    "LevelTwoHarm": "<span style=\"color:#ffc0c0\">Level Two Harm: {harm} <i class=\"fas fa-question-circle\" data-tooltip=\"Only enable this if this Harm impairs your ability to do this action.\"></i></span>",
+    "LevelThreeHarm": "<span style=\"color:#ffc0c0\">Level Three Harm: {harm} <i class=\"fas fa-question-circle\" data-tooltip=\"Only enable this if this Harm impairs your ability to do this action.\"></i></span>",
+    "LevelOneDamage": "<span style=\"color:#ffc0c0\">Level One Damage: {harm} <i class=\"fas fa-question-circle\" data-tooltip=\"Only enable this if this Damage impairs your ability to do this action.\"></i></span>",
+    "LevelTwoDamage": "<span style=\"color:#ffc0c0\">Level Two Damage: {harm} <i class=\"fas fa-question-circle\" data-tooltip=\"Only enable this if this Damage impairs your ability to do this action.\"></i></span>",
     "CollateralDie": "Collateral Die",
     "CollateralDieEffect": "You took a collateral die. Its consequences are unavoidable, nor can they be reduced or negated with a resistance roll or armor.",
     "PushYourself": "Push Yourself",

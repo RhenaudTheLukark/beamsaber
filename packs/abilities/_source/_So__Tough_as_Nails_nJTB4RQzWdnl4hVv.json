@@ -1,7 +1,52 @@
 {
   "name": "(So) Tough as Nails",
   "type": "ability",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Tough As Nails Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.ability.Item.nJTB4RQzWdnl4hVv",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zgzGniTxuUWFntbA",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.tough_as_nails",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "1.0.1",
+        "createdTime": 1785120461028,
+        "modifiedTime": 1785120477451,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!nJTB4RQzWdnl4hVv.zgzGniTxuUWFntbA"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -11,9 +56,9 @@
   "_stats": {
     "coreVersion": "13.351",
     "systemId": "beamsaber",
-    "systemVersion": "0.6.0",
+    "systemVersion": "1.0.1",
     "createdTime": null,
-    "modifiedTime": 1768404568840,
+    "modifiedTime": 1785120478155,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.9jKaFPUiS05x9lNb",
     "duplicateSource": null,
@@ -26,9 +71,9 @@
   "system": {
     "description": "<p>Penalties from Harm are one level less severe (though level 4 Harm is still fatal).</p>",
     "class": "Soldier",
-    "price": "1",
+    "price": 1,
     "uses": {
-      "max": "0",
+      "max": 0,
       "value": 0,
       "per": null
     },
@@ -59,7 +104,16 @@
       "type": "",
       "target": null,
       "amount": null
-    }
+    },
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "expertise_action": ""
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!nJTB4RQzWdnl4hVv"
