@@ -127,7 +127,9 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
       let element = ev.currentTarget;
       let path = element.dataset.path;
       let themeColor = element.dataset.themeColor;
-      await this.clockStylePickerPopup(path, themeColor);
+      let isVehicleProxy = element.dataset.isVehicleProxy;
+      let isVehicle = element.dataset.isVehicle;
+      await this.clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle);
     });
   }
 
@@ -446,7 +448,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
   /**
    * Call a popup for changing a clock's theme and color.
    */
-  async clockStylePickerPopup(path, themeColor) {
+  async clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle) {
     let defaultThemeColor = game.settings.get('beamsaber', 'DefaultClockThemeColor');
 
     let clockStylesDropdown = { 'null': `${defaultThemeColor} (default)` };
@@ -481,7 +483,21 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
         updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
         updatePath = updatePath.join('.');
         updateObject[updatePath] = value;
-        await BladesHelpers.tryUpdate(this.actor, updateObject);
+        await BladesHelpers.tryUpdate(isVehicleProxy ? BladesHelpers.resolveActor(this.actor.system.vehicle) : this.actor, updateObject);
+        if (isVehicleProxy)
+          await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+
+        const refreshPilot = async (a) => {
+          if (a)
+            setTimeout(refreshPilot, 200);
+          if (this.actor.system.pilot) {
+            let pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot);
+            if (pilotFull)
+              await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
+          }
+        }
+        if (isVehicle)
+          refreshPilot(1);
       }
     });
     await dialog.render(true);
@@ -833,7 +849,9 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #clockStylePicker(event, target) {
     let path = target.dataset.path;
     let themeColor = target.dataset.themeColor;
-    await this.clockStylePickerPopup(path, themeColor);
+    let isVehicleProxy = target.dataset.isVehicleProxy;
+    let isVehicle = target.dataset.isVehicle;
+    await this.clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle);
   }
 
   /* -------------------------------------------- */
@@ -947,7 +965,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   /**
    * Call a popup for changing a clock's theme and color.
    */
-  async clockStylePickerPopup(path, themeColor) {
+  async clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle) {
     let defaultThemeColor = game.settings.get('beamsaber', 'DefaultClockThemeColor');
 
     let clockStylesDropdown = { 'null': `${defaultThemeColor} (default)` };
@@ -981,7 +999,21 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
         updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
         updatePath = updatePath.join('.');
         updateObject[updatePath] = value;
-        await BladesHelpers.tryUpdate(this.actor, updateObject);
+        await BladesHelpers.tryUpdate(isVehicleProxy ? BladesHelpers.resolveActor(this.actor.system.vehicle) : this.actor, updateObject);
+        if (isVehicleProxy)
+          await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+
+        const refreshPilot = async (a) => {
+          if (a)
+            setTimeout(refreshPilot, 200);
+          if (this.actor.system.pilot) {
+            let pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot);
+            if (pilotFull)
+              await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
+          }
+        }
+        if (isVehicle)
+          refreshPilot(1);
       }
     });
     await dialog.render(true);

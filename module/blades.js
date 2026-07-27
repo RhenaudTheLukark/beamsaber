@@ -296,7 +296,7 @@ Hooks.once("init", async function () {
 
     html += `<img src="${clockSpritePath}" data-theme="${theme}" data-color="${color}" data-size="${size}" data-fill="${fill}" onerror="return BladesHelpers.handleClockImageError(event)"/>`;
     if (objPath)
-      html += `<a class="clock-style-picker" data-path="${objPath}.theme_color" data-theme-color="${isDefaultStyle ? 'null' : `${theme}/${color}`}"><i class="fas fa-gear"></i></a>`;
+      html += `<a class="clock-style-picker" ${isVehicleProxy ? 'data-is-vehicle-proxy="true" ' : isVehicle ? 'data-is-vehicle="true" ' : ''}data-path="${objPath}.theme_color" data-theme-color="${isDefaultStyle ? 'null' : `${theme}/${color}`}"><i class="fas fa-gear"></i></a>`;
     html += `</div></div>`;
     return html;
   }
