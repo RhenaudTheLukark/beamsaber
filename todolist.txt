@@ -13,17 +13,6 @@ TODO list:
 - Add the ability to use Spark to cancel Push Yourself costs in rolls
 
 
-Changelog since 26/07/20:
-+ Investigate sheet data not updating between players
-+ Added Uses for Crew upgrades
-+ Added non-empty Level 1 & 2 Harm/Damages as roll modifiers
-+ Implemented the Compendium Pilot Ability "Tough As Nails"
-+ FIX: Repair Clock style not updating correctly on the Pilot sheet
-+ FIX: Secured all instances of relationship data changes not checking for the relationship existing in the first place (ex: Schmooze)
-+ FIX: Properly keep the relationship when a Squad leaves a Faction
-+ FIX: When setting a Squad's Faction, ensure that it's not added to its relationships if the sheet is on the Relationship tab
-
-
 + => Means it's done
 - => Means it has to be done
 
