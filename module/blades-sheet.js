@@ -435,11 +435,9 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${oldFormField}`] = 0;
     if (Object.keys(updateObject).length > 0) {
       await BladesHelpers.tryUpdate(actor, updateObject);
-      if (isVehicle && actor.system.pilot) {
-        let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
-        if (pilotFull)
-          await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
-      }
+      let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
+      if (pilotFull)
+        await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
     }
   }
 
@@ -952,11 +950,9 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
     if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${oldFormField}`] = 0;
     if (Object.keys(updateObject).length > 0) {
       await BladesHelpers.tryUpdate(actor, updateObject);
-      if (isVehicle && actor.system.pilot) {
-        let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
-        if (pilotFull)
-          await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
-      }
+      let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
+      if (pilotFull)
+        await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
     }
   }
 
