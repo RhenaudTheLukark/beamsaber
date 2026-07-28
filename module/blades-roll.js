@@ -2469,28 +2469,30 @@ function computeModifierMessages(modifiers) {
   return output;
 }
 
-export async function resolveRollModifierArray(modifiers, actorFull, attributeName) {
+export async function resolveRollModifierArray(modifiers, actorFull, attributeName, includeHarm = false) {
   let output = [];
 
-  let attribute = BladesHelpers.getAttributeFromAction(attributeName);
-  let isVehicleAction = ['expertise', 'acuity'].includes(attribute);
-  let harmContainer = isVehicleAction ? BladesHelpers.resolveActor(actorFull?.system.vehicle)?.system.damage : actorFull?.system.harm;
-  if (harmContainer && BladesHelpers.isAttributeAction(attributeName)) {
-    let toughAsNails = actorFull?.system.tough_as_nails && !isVehicleAction;
-    let levelOneHarms = Object.values(toughAsNails ? harmContainer.medium : harmContainer.light).filter(h => h != '');
-    let levelTwoHarms = Object.values(toughAsNails ? harmContainer.heavy : harmContainer.medium).filter(h => h != '');
-    let harms = [ ...levelOneHarms.map(h => [1, h]),  ...levelTwoHarms.map(h => [2, h]) ];
-    let idToNumber = {
-      1: 'one',
-      2: 'two',
-      3: 'three'
-    }
-    for (let harm of harms) {
-      let key = toughAsNails ? `level_${idToNumber[harm[0] + 1]}_harm_tough_as_nails` : isVehicleAction ? `level_${idToNumber[harm[0]]}_damage` : `level_${idToNumber[harm[0]]}_harm`;
-      let result = foundry.utils.deepClone(bladesRollModifierList[key]);
-      result.key = key;
-      result.nameArgs.harm = harm[1];
-      output.push(result);
+  if (includeHarm) {
+    let attribute = BladesHelpers.getAttributeFromAction(attributeName);
+    let isVehicleAction = ['expertise', 'acuity'].includes(attribute);
+    let harmContainer = isVehicleAction ? BladesHelpers.resolveActor(actorFull?.system.vehicle)?.system.damage : actorFull?.system.harm;
+    if (harmContainer && BladesHelpers.isAttributeAction(attributeName)) {
+      let toughAsNails = actorFull?.system.tough_as_nails && !isVehicleAction;
+      let levelOneHarms = Object.values(toughAsNails ? harmContainer.medium : harmContainer.light).filter(h => h != '');
+      let levelTwoHarms = Object.values(toughAsNails ? harmContainer.heavy : harmContainer.medium).filter(h => h != '');
+      let harms = [ ...levelOneHarms.map(h => [1, h]),  ...levelTwoHarms.map(h => [2, h]) ];
+      let idToNumber = {
+        1: 'one',
+        2: 'two',
+        3: 'three'
+      }
+      for (let harm of harms) {
+        let key = toughAsNails ? `level_${idToNumber[harm[0] + 1]}_harm_tough_as_nails` : isVehicleAction ? `level_${idToNumber[harm[0]]}_damage` : `level_${idToNumber[harm[0]]}_harm`;
+        let result = foundry.utils.deepClone(bladesRollModifierList[key]);
+        result.key = key;
+        result.nameArgs.harm = harm[1];
+        output.push(result);
+      }
     }
   }
 
