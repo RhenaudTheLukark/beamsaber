@@ -2323,13 +2323,7 @@ export async function simpleRollPopup(title1 = 'BITD.SimpleRoll', title2 = 'BITD
   dialog.attributeName = '';
   dialog.rollTypes = rollTypes;
   dialog._onFirstRender = dialogOnFirstRender;
-  dialog._onRender = function(context, options) {
-    dialogOnRender(context, options, this);
-
-    let allowedToRoll = true;
-    allowedToRoll &&= checkDowntimeRules(this);
-    this.element.querySelector('[data-action="roll"]').disabled = !allowedToRoll;
-  };
+  dialog._onRender = dialogOnRender;
   dialog.refreshModifiers = refreshModifiers;
   dialog.actor = targetActor;
   await dialog.render(true);
@@ -2353,6 +2347,56 @@ export async function simpleRollPopup(title1 = 'BITD.SimpleRoll', title2 = 'BITD
       }
     }
   };
+
+  for (let element of dialog.element.querySelectorAll('input[type=radio]')) {
+    element.onclick = function (ev) {
+      // Connection update & Trigger it
+      let connectionSelector = this.closest('.window-content').querySelector('.modifier[data-modifier="assist"] select[field="BITD.Connection"]');
+      if (connectionSelector) {
+        connectionSelector.addEventListener('change', (event) => {
+          let modifierElement = connectionSelector.closest('.modifier');
+          let connectionSelectElementVal = $(modifierElement).find('span:first-of-type select').val();
+          if (!connectionSelectElementVal)
+            return;
+          let connectionValue = BladesHelpers.fetchConnectionsToActor(targetActor.uuid).find(c => c.uuid == connectionSelectElementVal).clock.value;
+          let effectsLabelElement = modifierElement.querySelector('span:last-of-type label');
+          if (effectsLabelElement)
+            effectsLabelElement.innerText = `${game.i18n.localize('BITD.Effects')} (${game.i18n.format('BITD.ChooseX', {num: connectionValue})})`;
+
+          let connectionFull = BladesHelpers.resolveActor(connectionSelectElementVal);
+          let tacticalGeniusElement = connectionSelector.closest('.modifier[data-modifier="assist"]').querySelector('input[name="BITD.TacticalGenius"]');
+          let tacticalGeniusFieldGroup = tacticalGeniusElement.parentElement;
+          let activeTacticalGenius = connectionFull.system.tactical_genius && connectionFull.system.tactical_genius_uses.value > 0;
+          if (!activeTacticalGenius)
+            tacticalGeniusElement.checked = false;
+          tacticalGeniusFieldGroup.style.display = activeTacticalGenius ? null : 'none';
+
+          let combinedArmsElement = connectionSelector.closest('.modifier[data-modifier="assist"]').querySelector('input[name="BITD.CombinedArms"]');
+          let combinedArmsFieldGroup = combinedArmsElement.parentElement;
+          let squadFull = BladesHelpers.resolveActor(targetActor.system.crew);
+          let activeCombinedArms = squadFull?.system.combined_arms;
+          if (!activeCombinedArms)
+            combinedArmsElement.checked = false;
+          combinedArmsFieldGroup.style.display = activeCombinedArms ? null : 'none';
+        });
+
+        var event = new Event('change');
+        connectionSelector.dispatchEvent(event);
+      }
+
+      // Update the HTML in case of Combined Arms
+      let combinedArmsSelector = this.closest('.window-content').querySelector('.modifier[data-modifier="assist"] input[name="BITD.CombinedArms"]');
+      if (combinedArmsSelector) {
+        combinedArmsSelector.addEventListener('change', async (event) => {
+          let combinedArmsActive = event.currentTarget.checked;
+          await targetActor.handleCombinedArms(combinedArmsActive, combinedArmsSelector.parentElement);
+        });
+      }
+    }
+  }
+
+  var event = new Event('click');
+  dialog.element.querySelectorAll('input[type=radio]')[0].dispatchEvent(event);
 }
 
 export function dialogOnFirstRender(context, options, thisPass) {

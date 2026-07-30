@@ -361,6 +361,9 @@
   border-top: 2px solid black;
   margin-top: 1em;
 }
+.beamsaber .extra-content:empty {
+  display: none;
+}
 .beamsaber .extra-content > *:first-child {
   margin-top: 1em;
 }
@@ -7936,6 +7939,9 @@
 .settings.clock-styles .extra-content {
   border-top: 2px solid black;
   margin-top: 1em;
+}
+.settings.clock-styles .extra-content:empty {
+  display: none;
 }
 .settings.clock-styles .extra-content > *:first-child {
   margin-top: 1em;
