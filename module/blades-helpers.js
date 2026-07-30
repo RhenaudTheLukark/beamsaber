@@ -503,33 +503,44 @@ export class BladesHelpers {
     return result;
   }
 
-  static async postCreateItem(item, actor) {
-    if (item.type == 'cohort') {
-      await BladesHelpers.tryUpdate(item, {'system.==crew': actor.uuid});
+  static crewWideModifiers = {
+    lay_of_the_land: {
+      conditional: true,
+      includeOwner: true
+    },
+    telepathy: {
+      conditional: true,
+      includeOwner: true
+    }
+  };
+
+  static async postCreateItem(itemFull, actorFull) {
+    if (itemFull.type == 'cohort') {
+      await BladesHelpers.tryUpdate(itemFull, {'system.==crew': actorFull.uuid});
 
       let updatedGangType = false;
       // Blood Brothers: All newly created Fire Team Cohorts are Toughs
-      if (actor.system.blood_brothers) {
-        item.system.gang_type.push('Toughs');
+      if (actorFull.system.blood_brothers) {
+        itemFull.system.gang_type.push('Toughs');
         updatedGangType = true;
       }
       // Training Center: All newly created Fire Team Cohorts are matching the Training Center's Fire Team type
-      if (actor.system.training_center) {
-        let training_center = actor.items.filter(i => i.system.training_center == true)[0];
-        if (!item.system.gang_type.includes(training_center.system.training_center_type)) {
-          item.system.gang_type.push(training_center.system.training_center_type);
+      if (actorFull.system.training_center) {
+        let training_center = actorFull.items.filter(i => i.system.training_center == true)[0];
+        if (!itemFull.system.gang_type.includes(training_center.system.training_center_type)) {
+          itemFull.system.gang_type.push(training_center.system.training_center_type);
           updatedGangType = true;
         }
       }
       if (updatedGangType) {
-        item.system.gang_type.sort();
-        await BladesHelpers.tryUpdate(item, {'system.==gang_type': item.system.gang_type});
+        itemFull.system.gang_type.sort();
+        await BladesHelpers.tryUpdate(itemFull, {'system.==gang_type': itemFull.system.gang_type});
       }
     }
 
     // Blood Brothers: Give all Fire Team Cohorts the Toughs type
-    if (item.system.blood_brothers) {
-      for (let cohort of actor.items.filter(i => i.type == 'cohort')) {
+    if (itemFull.system.blood_brothers) {
+      for (let cohort of actorFull.items.filter(i => i.type == 'cohort')) {
         if (cohort.system.type == 'Gang' && !cohort.system.gang_type.includes('Toughs')) {
           cohort.system.gang_type.push('Toughs');
           cohort.system.gang_type.sort();
@@ -538,50 +549,55 @@ export class BladesHelpers {
       }
     }
     // Training Center: Give all Fire Team Cohorts the Toughs type
-    if (item.system.training_center) {
-      for (let cohort of actor.items.filter(i => i.type == 'cohort')) {
-        if (cohort.system.type == 'Gang' && !cohort.system.gang_type.includes(item.system.training_center_type)) {
-          cohort.system.gang_type.push(item.system.training_center_type);
+    if (itemFull.system.training_center) {
+      for (let cohort of actorFull.items.filter(i => i.type == 'cohort')) {
+        if (cohort.system.type == 'Gang' && !cohort.system.gang_type.includes(itemFull.system.training_center_type)) {
+          cohort.system.gang_type.push(itemFull.system.training_center_type);
           cohort.system.gang_type.sort();
           await BladesHelpers.tryUpdate(cohort, {'system.==gang_type': cohort.system.gang_type});
         }
       }
     }
     // Well-Trained Hunter Robot: Create a special Cohort
-    if (item.system.hunter_robot) {
+    if (itemFull.system.hunter_robot) {
       let squadFull = null;
-      if (actor.system.crew)
-        squadFull = BladesHelpers.resolveActor(actor.system.crew);
+      if (actorFull.system.crew)
+        squadFull = BladesHelpers.resolveActor(actorFull.system.crew);
       if (squadFull) {
-        let data = {name: game.i18n.format('BITD.HunterRobotName', {characterName: actor.name}), type: 'cohort', system: {type: 'Expert', owner: actor.uuid}};
+        let data = {name: game.i18n.format('BITD.HunterRobotName', {characterName: actorFull.name}), type: 'cohort', system: {type: 'Expert', owner: actorFull.uuid}};
         let result = await squadFull.createEmbeddedDocuments('Item', [data]);
         for (let item of result)
           await BladesHelpers.postCreateItem(item, squadFull);
       }
     }
     // War Dogs: Update Vendetta status
-    if (item.system.war_dogs)
-      await actor.handleVendetta();
+    if (itemFull.system.war_dogs)
+      await actorFull.handleVendetta();
+
+    // Crew-wide modifiers: Update the crew's values
+    if (actorFull?.type == 'character')
+      if (itemFull.effects.filter(e => e.changes.filter(c => c.value == "true" && c.mode == 5 && Object.keys(BladesHelpers.crewWideModifiers).includes(c.key.split('.').reverse()[0])).length).length)
+        await actorFull.updateCrewWideAbilityOwnership();
 
     // Pilot & Vehicle Armor
-    if (['item', 'vehicle_gear'].includes(item.type) && item.system.armor) {
+    if (['item', 'vehicle_gear'].includes(itemFull.type) && itemFull.system.armor) {
       let differentActor = false;
-      if (item.type == 'vehicle_gear' && actor.type != 'vehicle') {
-        actor = BladesHelpers.resolveActor(actor.system.vehicle);
+      if (itemFull.type == 'vehicle_gear' && actorFull.type != 'vehicle') {
+        actorFull = BladesHelpers.resolveActor(actorFull.system.vehicle);
         differentActor = true;
       }
-      let armorData = actor.system.armor;
+      let armorData = actorFull.system.armor;
       armorData.max ++;
       armorData.value ++;
-      await BladesHelpers.tryUpdate(actor, {'system.armor.==max': armorData.max, 'system.armor.==value': armorData.value});
+      await BladesHelpers.tryUpdate(actorFull, {'system.armor.==max': armorData.max, 'system.armor.==value': armorData.value});
     }
   }
 
-  static async preDeleteItem(item, actorFull, realDelete = true) {
-    let [owner, _] = actorFull.getItemOwner(item);
+  static async preDeleteItem(itemFull, actorFull, realDelete = true) {
+    let [owner, _] = actorFull.getItemOwner(itemFull);
 
     // Well-Trained Hunter Robot: Remove the special Cohort
-    if (item.system.hunter_robot) {
+    if (itemFull.system.hunter_robot) {
       let squadFull = null;
       if (owner.system.crew)
         squadFull = BladesHelpers.resolveActor(owner.system.crew);
@@ -593,10 +609,10 @@ export class BladesHelpers {
     }
 
     // Pilot & Vehicle Armor
-    if (['item', 'vehicle_gear'].includes(item.type)) {
-      if (item.system.armor) {
+    if (['item', 'vehicle_gear'].includes(itemFull.type)) {
+      if (itemFull.system.armor) {
         let shieldOwner = actorFull;
-        if (item.type == 'vehicle_gear' && shieldOwner.type != 'vehicle')
+        if (itemFull.type == 'vehicle_gear' && shieldOwner.type != 'vehicle')
           shieldOwner = BladesHelpers.resolveActor(actorFull.system.vehicle);
         let armorData = shieldOwner.system.armor;
         armorData.max --;
@@ -607,14 +623,19 @@ export class BladesHelpers {
 
     // Containers: Remove all items contained within
     if (realDelete)
-      for (let containedItem of owner.items.filter(i => i.system.owner == item._id))
+      for (let containedItem of owner.items.filter(i => i.system.owner == itemFull._id))
         await owner.removeItem(containedItem);
   }
 
-  static async postDeleteItem(itemCopy, actor, realDelete = true) {
+  static async postDeleteItem(itemCopy, actorFull, realDelete = true) {
     // Update Vendetta
     if (itemCopy.system.war_dogs)
-      await actor.handleVendetta();
+      await actorFull.handleVendetta();
+
+    // Crew-wide modifiers: Update the crew's values
+    if (actorFull?.type == 'character')
+      if (itemCopy.effects.filter(e => e.changes.filter(c => c.value == "true" && c.mode == 5 && Object.keys(BladesHelpers.crewWideModifiers).includes(c.key.split('.').reverse()[0])).length).length)
+        await actorFull.updateCrewWideAbilityOwnership();
   }
 
   static async updateTrainingCenterType(squadFull, oldGangType, newGangType) {
@@ -1104,11 +1125,12 @@ export class BladesHelpers {
     // Well-Trained Hunter Robot: Add the special cohort
     for (let hunter_robot of characterFull.items.filter(i => i.system.hunter_robot == true))
       await BladesHelpers.postCreateItem(hunter_robot, characterFull);
+    await squadFull.updateCrewWideAbilityOwnership();
   }
 
   // Removes a character's squad and remove the character from its squad's member list
   static async removeSquadCharacter(characterFull) {
-    let squadFull = BladesHelpers.resolveActor(characterFull.system.crew);
+    const squadFull = BladesHelpers.resolveActor(characterFull.system.crew);
     if (squadFull) {
       let squadMembersArray = Object.values(squadFull.system.members);
       squadMembersArray.splice(squadMembersArray.map(e => e.uuid).indexOf(characterFull.uuid), 1);
@@ -1117,6 +1139,7 @@ export class BladesHelpers {
       for (let hunter_robot of characterFull.items.filter(i => i.system.hunter_robot == true))
         await BladesHelpers.preDeleteItem(hunter_robot, characterFull, false);
       await BladesHelpers.tryUpdate(squadFull, {'system.==members': newSquadMembers});
+      await squadFull.updateCrewWideAbilityOwnership();
     }
     await BladesHelpers.tryUpdate(characterFull, {'system.==crew': null});
   }

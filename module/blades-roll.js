@@ -157,7 +157,7 @@ export const bladesRollModifierList = {
     resolveFunc: (fields, extraData) => {
       return { dice: 0, telepathy: true, rollText: 'BITD.AbilityUpgrade.Telepathy', rollTextArgs: {owner: fields['BITD.User'], leader: extraData.leader} };
     },
-    telepathy: true
+    exclude: true
   },
   ironwill: {
     rollType: 'resistance',
@@ -290,7 +290,8 @@ export const bladesRollModifierList = {
   lay_of_the_land: {
     name: 'BITD.AbilityUpgrade.LayOfTheLandTitle',
     rollType: 'resistance',
-    dice: 1
+    dice: 1,
+    exclude: true
   },
   ranger_gather_info: {
     name: 'BITD.AbilityUpgrade.RangerGatherInfoTitle',
@@ -2248,7 +2249,7 @@ export async function simpleRollPopup(title1 = 'BITD.SimpleRoll', title2 = 'BITD
   if (targetActor) {
     [_, allPermanentModifiers, allConditionalModifiers] = targetActor.getModifiers();
     allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, targetActor);
-    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, targetActor);
+    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, targetActor, true);
     allConditionalModifiers = pruneInvalidConditionalRollModifiers(targetActor, allConditionalModifiers);
   }
 
@@ -2513,10 +2514,10 @@ function computeModifierMessages(modifiers) {
   return output;
 }
 
-export async function resolveRollModifierArray(modifiers, actorFull, attributeName, includeHarm = false) {
+export async function resolveRollModifierArray(modifiers, actorFull, conditional = false, attributeName = null) {
   let output = [];
 
-  if (includeHarm) {
+  if (conditional) {
     let attribute = BladesHelpers.getAttributeFromAction(attributeName);
     let isVehicleAction = ['expertise', 'acuity'].includes(attribute);
     let harmContainer = isVehicleAction ? BladesHelpers.resolveActor(actorFull?.system.vehicle)?.system.damage : actorFull?.system.harm;
@@ -2545,6 +2546,8 @@ export async function resolveRollModifierArray(modifiers, actorFull, attributeNa
       if (value === true)
         if (Object.keys(bladesRollModifierList).includes(key)) {
           let result = foundry.utils.deepClone(bladesRollModifierList[key]);
+          if (result.exclude)
+            continue;
           result.key = key;
           if (result.push_yourself) {
             // Push Yourself: Choose the right cost
@@ -2566,16 +2569,6 @@ export async function resolveRollModifierArray(modifiers, actorFull, attributeNa
               result.fields['BITD.Connection'][characterFull.uuid] = characterFull.name;
             }
             if (!Object.values(result.fields['BITD.Connection']).length) continue;
-          } else if (result.telepathy) {
-            // Telepathy: List all squadmates who own the Ability
-            await actorFull.updateCrewWideAbilityOwnership(actorFull);
-            if (!actorFull.system.telepathy_owners) continue;
-            if (!actorFull.system.telepathy_owners.length) continue;
-            result.fields['BITD.User'] = [];
-            for (let owner of actorFull.system.telepathy_owners) {
-              let ownerFull = BladesHelpers.resolveActor(owner);
-              result.fields['BITD.User'].push(ownerFull.name);
-            }
           } else if (result.crowdsource) {
             // Crowdsource: List all squadmates except yourself
             if (!actorFull.system.crew) continue;
@@ -2619,6 +2612,30 @@ export async function resolveRollModifierArray(modifiers, actorFull, attributeNa
         } else
           console.error(`Unknown modifier '${key}'`);
     }
+
+  // Crew-wide modifiers
+  let squadFull = BladesHelpers.resolveActor(actorFull.system.crew);
+  if (squadFull) {
+    for (let [modifierId, modifierData] of Object.entries(BladesHelpers.crewWideModifiers).filter(m => m[1].conditional == conditional)) {
+      let modifierOwners = foundry.utils.deepClone(squadFull.system[`${modifierId}_owners`]);
+      if (!modifierData.includeOwner) {
+        let ownerId = modifierOwners.indexOf(actorFull.uuid);
+        if (ownerId >= 0)
+          modifierOwners.splice(ownerId, 1);
+      }
+
+      let result = foundry.utils.deepClone(bladesRollModifierList[modifierId]);
+      result.key = modifierId;
+      if (modifierId == 'telepathy') {
+        result.fields['BITD.User'] = [];
+        for (let owner of squadFull.system.telepathy_owners) {
+          let ownerFull = BladesHelpers.resolveActor(owner);
+          result.fields['BITD.User'].push(ownerFull.name);
+        }
+      }
+      output.push(result);
+    }
+  }
   return output;
 }
 

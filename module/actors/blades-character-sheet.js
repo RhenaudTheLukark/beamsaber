@@ -764,7 +764,7 @@ export class BladesCharacterSheet extends BladesSheet {
       // Fetch roll modifiers
       let [_, allPermanentModifiers, allConditionalModifiers] = this.actor.getModifiers();
       allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, this.actor);
-      allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this.actor);
+      allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this.actor, true);
       allConditionalModifiers = pruneInvalidConditionalRollModifiers(this.actor, allConditionalModifiers);
 
       let title = game.i18n.localize('BITD.DowntimeActivity');

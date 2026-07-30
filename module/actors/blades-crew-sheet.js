@@ -622,7 +622,7 @@ export class BladesSquadSheet extends BladesSheet {
     // Fetch roll modifiers
     let [_, allPermanentModifiers, allConditionalModifiers] = this.actor.getModifiers(cohortFull);
     allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, cohortFull);
-    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, cohortFull);
+    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, cohortFull, true);
     allConditionalModifiers = pruneInvalidConditionalRollModifiers(cohortFull, allConditionalModifiers);
 
     let rollTypes = ['cohort'];

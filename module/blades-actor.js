@@ -258,8 +258,8 @@ export class BladesActor extends Actor {
 
     // Fetch roll modifiers
     let [_, allPermanentModifiers, allConditionalModifiers] = this.getModifiers();
-    allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, this, attributeName);
-    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this, attributeName, true);
+    allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, this, false, attributeName);
+    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this, true, attributeName);
     allConditionalModifiers = pruneInvalidConditionalRollModifiers(this, allConditionalModifiers);
 
     let isAction = BladesHelpers.isAttributeAction(attributeName);
@@ -395,7 +395,7 @@ export class BladesActor extends Actor {
     // Fetch roll modifiers
     let [_, allPermanentModifiers, allConditionalModifiers] = this.getModifiers();
     allPermanentModifiers = await resolveRollModifierArray(allPermanentModifiers, this);
-    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this);
+    allConditionalModifiers = await resolveRollModifierArray(allConditionalModifiers, this, true);
     allConditionalModifiers = pruneInvalidConditionalRollModifiers(this, allConditionalModifiers);
 
     let otherPilotFull = BladesHelpers.resolveActor(otherPilotUuid);
@@ -486,48 +486,34 @@ export class BladesActor extends Actor {
     return attributes;
   }
 
-  crewWideModifiers = ['lay_of_the_land', 'telepathy'];
   // Store the ID of each user who owns the crew-wide abilities if they're needed
-  async updateCrewWideAbilityOwnership(actor) {
-    if (!actor) actor = this;
-    let modifiersCollection = { modifiers: actor.system.modifiers, roll_modifiers: actor.system.roll_modifiers, conditional_roll_modifiers: actor.system.conditional_roll_modifiers };
+  async updateCrewWideAbilityOwnership() {
+    const modifiersCollection = ['roll_modifiers', 'conditional_roll_modifiers'];
 
-    let squadFull = BladesHelpers.resolveActor(actor.system.crew);
-    if (!squadFull) {
-      let updateObject = {system: {}};
-      for (let modifier of this.crewWideModifiers)
-        updateObject[`system.==${modifier}_owners`] = null;
-      await BladesHelpers.tryUpdate(actor, updateObject);
-    }
-    if (actor.type == 'character' && squadFull) {
-      let characterLists = {};
-      for (let modifier of this.crewWideModifiers)
-        characterLists[modifier] = [];
+    let squadFull = this.type == 'crew' ? this : BladesHelpers.resolveActor(this.system.crew);
+    if (!squadFull) return;
 
-      // Fetch character modifiers applying to the whole crew
-      for (let characterUuid of Object.values(squadFull.system.members).map(e => e.uuid)) {
-        if (characterUuid == actor.uuid) continue;
+    let characterLists = {};
+    for (let modifier of Object.keys(BladesHelpers.crewWideModifiers))
+      characterLists[modifier] = [];
 
-        let characterFull = BladesHelpers.resolveActor(characterUuid);
-        if (!characterFull || characterFull.type != 'character') continue;
-        for (let modifierPath of Object.keys(modifiersCollection)) {
-          let characterCrewWideModifiers = Object.fromEntries(Object.entries(characterFull.system[modifierPath]).filter(([k, _]) => this.crewWideModifiers.includes(k)));
-          Object.assign(modifiersCollection[modifierPath], characterCrewWideModifiers);
-          for (let modifier of Object.keys(characterCrewWideModifiers))
-            if (!characterLists[modifier].includes(characterFull.uuid))
-              characterLists[modifier].push(characterFull.uuid);
-        }
-      }
-
-      // Store the name of all members of the team who owns crew-wide abilities
-      for (let [modifier, owners] of Object.entries(characterLists)) {
-        if (owners.toString() == actor.system[`${modifier}_owners`]?.toString())
-          continue;
-        let updateObject = {};
-        updateObject[`system.==${modifier}_owners`] = owners;
-        await BladesHelpers.tryUpdate(actor, updateObject);
+    // Fetch character modifiers applying to the whole crew
+    for (let characterUuid of Object.values(squadFull.system.members).map(e => e.uuid)) {
+      let characterFull = BladesHelpers.resolveActor(characterUuid);
+      if (!characterFull || characterFull.type != 'character') continue;
+      for (let modifierPath of modifiersCollection) {
+        let characterCrewWideModifiers = Object.fromEntries(Object.entries(characterFull.system[modifierPath]).filter(([k, v]) => Object.keys(BladesHelpers.crewWideModifiers).includes(k) && v));
+        for (let modifier of Object.keys(characterCrewWideModifiers))
+          if (!characterLists[modifier].includes(characterFull.uuid))
+            characterLists[modifier].push(characterFull.uuid);
       }
     }
+
+    // Store the uuid of all members of the team who owns crew-wide abilities
+    let updateObject = {};
+    for (let [modifier, owners] of Object.entries(characterLists))
+      updateObject[`system.==${modifier}_owners`] = owners;
+    await BladesHelpers.tryUpdate(squadFull, updateObject);
   }
 
   getModifiers(actor) {
