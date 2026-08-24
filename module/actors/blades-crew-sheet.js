@@ -295,17 +295,26 @@ export class BladesSquadSheet extends BladesSheet {
             messageContents += `<div class="description"><p>${game.i18n.localize('BITD.StartMissionNoCutLooseScarEffect')}${cutLooseScarMessage}</p></div>`;
         }
 
-        // Reset Downtime Activities, Spark, Tactical Genius for all Pilots
+        // Reset Downtime Activities, Spark, Replenishable Items, Armor and Tactical Genius for all Pilots
         let sparkUsed = false;
         for (let member of Object.values(this.actor.system.members)) {
           let memberFull = BladesHelpers.resolveActor(member.uuid);
           if (!memberFull || memberFull.type != 'character') continue;
           sparkUsed ||= !memberFull.system.spark;
-          await BladesHelpers.tryUpdate(memberFull, {'system.==downtime_activities': {train_types: {}}, 'system.==spark': true, 'system.tactical_genius_uses.==value': memberFull.system.tactical_genius_uses.max});
+          await BladesHelpers.tryUpdate(memberFull, {'system.==downtime_activities': {train_types: {}}, 'system.==spark': true, 'system.armor.==value': memberFull.system.armor.max, 'system.tactical_genius_uses.==value': memberFull.system.tactical_genius_uses.max});
+          for (let item of memberFull.items.filter(i => i.system.uses?.max && i.system.replenish))
+              await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
+
+          let vehicleFull = BladesHelpers.resolveActor(memberFull.system.vehicle);
+          if (vehicleFull)
+            BladesHelpers.tryUpdate(vehicleFull, {'system.armor.==value': vehicleFull.system.armor.max});
         }
         if (sparkUsed)
           messageContents += `<div class="description"><p>${game.i18n.localize('BITD.StartMissionRecoverSpark')}</p></div>`;
 
+        // Reset Crew Abilities & Foundations
+        for (let item of this.actor.items.filter(i => i.system.uses?.max && i.system.replenish))
+          await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
 
         // Set Phase to Mission
         await BladesHelpers.tryUpdate(this.actor, {'system.==phase': 'mission'});

@@ -18,17 +18,23 @@
   </section>
   <div class='flex-vertical'>
     <div class='flex-horizontal'>
-      <div class='three-line'>
+      <div class='two-line'>
         <label class='label-stripe'>{{localize 'BITD.Load'}}</label>
         <input type='number' name='system.load' value='{{system.load}}' onkeypress='return BladesHelpers.isNumberKey(event)' placeholder='{{localize 'BITD.Load'}}'>
       </div>
-      <div class='three-line'>
+      <div class='two-line'>
+        <label class='label-stripe'>{{localize 'BITD.Class'}}</label>
+        <input type='text' name='system.class' value='{{system.class}}' placeholder='{{localize 'BITD.Class'}}'>
+      </div>
+    </div>
+    <div class='flex-horizontal'>
+      <div class='two-line'>
         <label class='label-stripe'>{{localize 'BITD.Uses'}}</label>
         <input type='number' name='system.uses.max' value='{{system.uses.max}}' onkeypress='return BladesHelpers.isNumberKey(event)' placeholder='{{localize 'BITD.Uses'}}'>
       </div>
-      <div class='three-line'>
-        <label class='label-stripe'>{{localize 'BITD.Class'}}</label>
-        <input type='text' name='system.class' value='{{system.class}}' placeholder='{{localize 'BITD.Class'}}'>
+      <div class='two-line'>
+        <label class='label-stripe'>{{localize 'BITD.ReplenishOnMissionStart'}}</label>
+        <input type='checkbox' name='system.replenish' data-dType='Boolean' {{checked system.replenish}}>
       </div>
     </div>
     <div class='flex-horizontal'>

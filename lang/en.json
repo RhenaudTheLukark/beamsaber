@@ -377,6 +377,7 @@
     "IsContainer": "Is Container?",
     "ContainerLoad": "Container Load",
     "ContainerItemTypes": "Container Item Types",
+    "ReplenishOnMissionStart": "Replenish On Mission Start?",
 
     "Position": "Position",
     "ForcePosition": "Force? <i class=\"fas fa-question-circle\" data-tooltip=\"Enable this to force the roll's position to be as selected without taking in account effects from abilities, upgrades and items.\"></i>",
@@ -1175,7 +1176,7 @@
         "CarryThatWeightNoSquad": "Carry That Weight can only be used if you are in a Squad!",
         "StayLateNoSquad": "Stay Late can only be used if you are in a Squad!",
         "SalvageVehicleAlreadySalvaged": "The vehicle {vehicle} has already been salvaged!",
-        "NoSparkOptions": "You currently have no way to utilize your Spark!",
+        "NoSparkOptions": "You currently have no way to utilize your Spark! Right click the checkbox if you want to manually disable your Spark.",
         "NoRollFromVehicle": "Rolls from the Vehicle sheet are not handled by the system. Please initiate a roll from this vehicle's pilot's sheet instead.",
         "NotItemOwnerVehicle": "The gear owned by this vehicle is internally owned by its pilot. Please open this vehicle's gear from its pilot' sheet instead.",
         "NoAddFromSuppressedContainer": "Items cannot be added to a disabled container. Enable it first by changing the vehicle's current form.",

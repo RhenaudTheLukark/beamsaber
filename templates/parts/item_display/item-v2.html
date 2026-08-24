@@ -10,7 +10,7 @@
       <div class="item-name"><p>{{item.name}}</p></div>
       <div class="item-description">{{{item.system.description}}}</div>
     </div>
-    {{#if (gteq item.system.uses.max 2)}}
+    {{#if (gteq item.system.uses.max 1)}}
     <div class="supply-container flex-vertical">
       <label id="{{actor.type}}-{{actor._id}}-loadout-uses-{{id}}"><b>{{localize 'BITD.UsesShort'}}</b></label>
       <div class="supply uses">

@@ -56,9 +56,9 @@
   "_stats": {
     "coreVersion": "13.351",
     "systemId": "beamsaber",
-    "systemVersion": "0.6.0",
+    "systemVersion": "1.0.2.1",
     "createdTime": null,
-    "modifiedTime": 1771656039114,
+    "modifiedTime": 1787602806414,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY",
     "compendiumSource": "Item.lYXM5c8Kc8a7zDCr",
     "duplicateSource": null,
@@ -70,13 +70,22 @@
   },
   "system": {
     "description": "<p>[Load 0] Information provided to the squad that you can access. Spend 1 Personnel point to get +1d on a gather information roll while on a mission.</p>",
-    "logic": "",
-    "class": "",
-    "load": "0",
     "uses": {
       "value": "1",
-      "max": "0"
+      "max": 0
     },
+    "replenish": true,
+    "logic": "",
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "class": "",
+    "load": 0,
     "extra_description": "",
     "additional_info": "",
     "equipped": false,

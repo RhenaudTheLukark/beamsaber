@@ -5,14 +5,26 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "description": "<p>[Load 0, Load 2 if carried as a secondary outfit] A uniform befitting one in a position of command.</p>",
-    "logic": "",
-    "class": "",
-    "load": "2",
     "uses": {
-      "value": "1"
+      "value": "1",
+      "max": 0
     },
+    "replenish": true,
+    "logic": "",
+    "owner": null,
+    "is_container": false,
+    "container_load": 0,
+    "container_item_types": [
+      "item"
+    ],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
+    "class": "Officer",
+    "load": 2,
+    "extra_description": "",
     "additional_info": "",
     "equipped": false,
+    "hidden": false,
     "num_available": "1"
   },
   "effects": [],
@@ -29,9 +41,9 @@
     "exportSource": null,
     "coreVersion": "13.351",
     "systemId": "beamsaber",
-    "systemVersion": "0.6.0",
+    "systemVersion": "1.0.2.1",
     "createdTime": 1763581009271,
-    "modifiedTime": 1768602717127,
+    "modifiedTime": 1787602726299,
     "lastModifiedBy": "YR7rqLkjCwcJpOjY"
   },
   "_key": "!items!z3bgSHwNtyCCKHgi"

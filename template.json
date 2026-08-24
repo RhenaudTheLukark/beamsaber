@@ -515,13 +515,14 @@
       "ability": {
         "description": "",
         "class": "",
-        "price": 1,
+        "price": 1
+      },
+      "usable": {
         "uses": {
-          "max": 0,
-          "value": 0
+          "value": 0,
+          "max": 0
         },
-        "purchased": false,
-        "class_default": false
+        "replenish": true
       },
       "logic": {
         "logic": ""
@@ -555,11 +556,6 @@
           "long": null,
           "units": ""
         },
-        "uses": {
-          "value": 1,
-          "max": 1,
-          "per": null
-        },
         "consume": {
           "type": "",
           "target": null,
@@ -568,13 +564,9 @@
       }
     },
     "item": {
-      "templates": ["default", "logic", "container"],
+      "templates": ["default", "usable", "logic", "container"],
       "class": "",
       "load": 0,
-      "uses": {
-        "value": 1,
-        "max": 1
-      },
       "extra_description": "",
       "additional_info": "",
       "equipped": false,
@@ -586,13 +578,9 @@
       "rewards": {}
     },
     "vehicle_gear": {
-      "templates": ["default", "logic", "activatedEffect", "container"],
+      "templates": ["default", "usable", "logic", "activatedEffect", "container"],
       "class": "",
       "load": 1,
-      "uses": {
-        "max": 0,
-        "value": 0
-      },
       "form": 0,
       "suppressed": false,
       "experimental": false,
@@ -604,7 +592,7 @@
       "experience_clues": ""
     },
     "ability": {
-      "templates": ["ability", "logic", "activatedEffect", "container"],
+      "templates": ["ability", "usable", "logic", "activatedEffect", "container"],
       "expertise_action": ""
     },
     "cohort": {
@@ -744,17 +732,13 @@
       "templates": ["default"]
     },
     "crew_upgrade": {
-      "templates": ["ability", "logic", "activatedEffect", "container"],
+      "templates": ["ability", "usable", "logic", "activatedEffect", "container"],
       "crew_type": "",
-      "uses": {
-        "max": 0,
-        "value": 0
-      },
       "training_center_type": "Adepts",
       "gang_types": ["Adepts", "Rooks", "Rovers", "Skulks", "Toughs"]
     },
     "crew_ability": {
-      "templates": ["ability", "activatedEffect", "container"]
+      "templates": ["ability", "usable", "activatedEffect", "container"]
     },
     "crew_type": {
       "templates": ["default"],
