@@ -568,6 +568,7 @@ export class BladesSquadSheet extends BladesSheet {
         BeamChatMessage.create(messageData);
       }
     });
+    extraData.dialog = dialog;
     await dialog.render(true);
 
     for (let element of dialog.element.querySelectorAll('.collapse-category legend'))
@@ -575,12 +576,14 @@ export class BladesSquadSheet extends BladesSheet {
         let element = ev.currentTarget;
         let fieldSetElement = element.parentElement;
         fieldSetElement.classList.add('collapsed-category');
+        extraData.dialog.setPosition();
       });
     for (let element of dialog.element.querySelectorAll('div:has(+ .collapse-category)'))
       element.addEventListener('click', (ev) => {
         let element = ev.currentTarget;
         let fieldSetElement = element.nextElementSibling;
         fieldSetElement.classList.remove('collapsed-category');
+        extraData.dialog.setPosition();
       });
     for (let element of dialog.element.querySelectorAll('.faction-category'))
       element.addEventListener('drop', (ev) => {
@@ -602,7 +605,8 @@ export class BladesSquadSheet extends BladesSheet {
             });
           }
         }
-    });
+        extraData.dialog.setPosition();
+      });
   }
 
   /**
