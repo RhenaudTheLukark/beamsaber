@@ -2620,11 +2620,15 @@ export async function resolveRollModifierArray(modifiers, actorFull, conditional
   if (squadFull) {
     for (let [modifierId, modifierData] of Object.entries(BladesHelpers.crewWideModifiers).filter(m => m[1].conditional == conditional)) {
       let modifierOwners = foundry.utils.deepClone(squadFull.system[`${modifierId}_owners`]);
+      if (!modifierOwners)
+        continue;
       if (!modifierData.includeOwner) {
         let ownerId = modifierOwners.indexOf(actorFull.uuid);
         if (ownerId >= 0)
           modifierOwners.splice(ownerId, 1);
       }
+      if (modifierOwners?.length)
+        continue;
 
       let result = foundry.utils.deepClone(bladesRollModifierList[modifierId]);
       result.key = modifierId;

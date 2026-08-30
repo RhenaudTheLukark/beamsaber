@@ -174,7 +174,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     const containerId = target.dataset.containerId;
     const inputType = unique !== undefined ? 'radio' : 'checkbox';
 
-    const itemElement = target.closest('.item-with-container').querySelector('.item');
+    const itemElement = target.closest('.item-with-container')?.querySelector('.item');
     if (itemElement) {
       const [_, item] = this.actor.getItemOwner(itemElement.dataset.itemId);
       if (item.system.suppressed) {
