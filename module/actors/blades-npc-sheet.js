@@ -1,6 +1,6 @@
 
-import { BladesHelpers } from "../blades-helpers.js";
-import { BladesSheet } from "../blades-sheet.js";
+import { BladesHelpers } from '../blades-helpers.js';
+import { BladesSheet } from '../blades-sheet.js';
 
 /**
  * @extends {BladesSheet}
@@ -10,11 +10,11 @@ export class BladesNPCSheet extends BladesSheet {
   /** @override */
 	static get defaultOptions() {
 	  return foundry.utils.mergeObject(super.defaultOptions, {
-  	  classes: ["beamsaber", "sheet", "actor", "npc"],
-  	  template: "systems/beamsaber/templates/actors/npc-sheet.html",
+  	  classes: ['beamsaber', 'sheet', 'actor', 'npc'],
+  	  template: 'systems/beamsaber/templates/actors/npc-sheet.html',
       width: 900,
       height: 'auto',
-      tabs: [{navSelector: ".tabs", contentSelector: ".tab-content"}]
+      tabs: [{navSelector: '.tabs', contentSelector: '.tab-content'}]
     });
   }
 
@@ -31,9 +31,9 @@ export class BladesNPCSheet extends BladesSheet {
     sheetData.isGM = game.user.isGM;
 
     // Fetch region & faction data
-    sheetData.system.region = BladesHelpers.resolveActor(sheetData.system.region, { name: "Unknown Region" });
-    sheetData.system.faction = BladesHelpers.resolveActor(sheetData.system.faction, { name: "Unknown Faction" });
-    sheetData.system.crew = BladesHelpers.resolveActor(sheetData.system.crew, { name: "Unknown Squad" });
+    sheetData.system.region = BladesHelpers.resolveActor(sheetData.system.region, { name: 'Unknown Region' });
+    sheetData.system.faction = BladesHelpers.resolveActor(sheetData.system.faction, { name: 'Unknown Faction' });
+    sheetData.system.crew = BladesHelpers.resolveActor(sheetData.system.crew, { name: 'Unknown Squad' });
 
     sheetData.system.class = BladesHelpers.getOwnedItem(this.actor, sheetData.system.class);
 
@@ -43,32 +43,6 @@ export class BladesNPCSheet extends BladesSheet {
   }
 
   /* -------------------------------------------- */
-
-  /** @override */
-  async _onDropItem(event, droppedItem) {
-    await super._onDropItem(event, droppedItem);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedItem);
-  }
-
-  /** @override */
-  async _onDropActor(event, droppedActor) {
-    await super._onDropActor(event, droppedActor);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedActor);
-  }
-
-  /** @override */
-  async handleDrop(event, droppedEntity) {
-    let droppedEntityFull = BladesHelpers.resolveActor(droppedEntity.uuid);
-    await this.handleAddedObjects([droppedEntityFull]);
-  }
 
   async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     for (let droppedEntityFull of droppedEntitiesFull) {

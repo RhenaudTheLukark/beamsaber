@@ -66,31 +66,7 @@ export class BladesSquadSheet extends BladesSheet {
     return sheetData;
   }
 
-  /** @override */
-  async _onDropItem(event, droppedItem) {
-    await super._onDropItem(event, droppedItem);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this squad. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedItem);
-  }
-
-  /** @override */
-  async _onDropActor(event, droppedActor) {
-    await super._onDropActor(event, droppedActor);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this squad. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedActor);
-  }
-
-  /** @override */
-  async handleDrop(event, droppedEntity) {
-    let droppedEntityFull = BladesHelpers.resolveActor(droppedEntity.uuid);
-    await this.handleAddedObjects([droppedEntityFull]);
-  }
+  /* -------------------------------------------- */
 
   async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     let currentTab = this._tabs[0].active;
@@ -123,6 +99,11 @@ export class BladesSquadSheet extends BladesSheet {
           break;
         case 'crew_reputation':
           await this.addItemAsObjectAndStoreReference(droppedEntityFull, 'system.crew_reputation');
+          break;
+        case 'crew_ability':
+        case 'crew_upgrade':
+        case 'cohort':
+          await this.addItemsToSheet([droppedEntityFull]);
           break;
         default:
           break;
@@ -235,7 +216,7 @@ export class BladesSquadSheet extends BladesSheet {
           },
           content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/group-action-begin.html', { attribute_label: BladesHelpers.getAttributeLabel(attribute), position: this.actor.system.group_action.position, effect: this.actor.system.group_action.effect, leader: leaderFull, note: note, isGM: game.user.isGM })
         }
-        BeamChatMessage.create(messageData);
+        await BeamChatMessage.create(messageData);
       }
     });
     dialog.render(true);
@@ -331,7 +312,7 @@ export class BladesSquadSheet extends BladesSheet {
           speaker: speaker,
           content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/start-mission.html', { contents: messageContents })
         }
-        ChatMessage.create(messageData);
+        await ChatMessage.create(messageData);
       }
     });
     await dialog.render(true);
@@ -407,7 +388,7 @@ export class BladesSquadSheet extends BladesSheet {
             bonusMessage += ` ${(await BladesHelpers.handleTrust(patronFactionFull, this.actor, factionBonus.rewards.trust))[0]}`;
           if (factionBonus.rewards.reputation)
             bonusMessage += ` ${await BladesHelpers.handleReputation(this.actor, factionBonus.rewards.reputation, game.i18n.localize('BITD.EndMissionFromFactionBonus'))}`;
-          BladesHelpers.tryUpdate(this.actor, updateObject);
+          await BladesHelpers.tryUpdate(this.actor, updateObject);
           messageContents += `<div class="description"><p>${bonusMessage.trimStart()}</p></div>`;
         }
         if (dialog.element.querySelector('[name="rep"]').checked) {
@@ -426,8 +407,8 @@ export class BladesSquadSheet extends BladesSheet {
             if (memberFull && memberFull.type == 'character') {
               let memberVehicleFull = BladesHelpers.resolveActor(memberFull?.system.vehicle);
               if (memberVehicleFull)
-                BladesHelpers.tryUpdate(memberVehicleFull, {'system.damage.light.==one': '', 'system.damage.light.==two': ''});
-              BladesHelpers.tryUpdate(memberFull, {'system.harm.light.==one': '', 'system.harm.light.==two': ''});
+                await BladesHelpers.tryUpdate(memberVehicleFull, {'system.damage.light.==one': '', 'system.damage.light.==two': ''});
+              await BladesHelpers.tryUpdate(memberFull, {'system.harm.light.==one': '', 'system.harm.light.==two': ''});
             }
           }
           messageContents += `<div class="description"><p>${game.i18n.localize('BITD.EndMissionHealUp')}</p></div>`;
@@ -437,7 +418,7 @@ export class BladesSquadSheet extends BladesSheet {
           let factionGoal = patronFactionFull.system.goals[factionGoalId];
           let factionUpdateObject = {};
           factionUpdateObject[`system.goals.${factionGoalId}.clock.==value`] = Number(factionGoal.clock.value) + 1;
-          BladesHelpers.tryUpdate(patronFactionFull, factionUpdateObject);
+          await BladesHelpers.tryUpdate(patronFactionFull, factionUpdateObject);
 
           let factionGoalMessage = game.i18n.format('BITD.EndMissionFactionGoalUp', {goal: factionGoal.title});
           if (factionUpdateObject[`system.goals.${factionGoalId}.clock.==value`] == Number(factionGoal.clock.max))
@@ -551,11 +532,11 @@ export class BladesSquadSheet extends BladesSheet {
         for (let member of Object.values(this.actor.system.members)) {
           let memberFull = BladesHelpers.resolveActor(member.uuid);
           if (memberFull && memberFull.type == 'character')
-            BladesHelpers.tryUpdate(memberFull, {'system.downtime_count.==value': Number(memberFull.system.downtime_count.base) + downtimeActivitiesShift});
+            await BladesHelpers.tryUpdate(memberFull, {'system.downtime_count.==value': Number(memberFull.system.downtime_count.base) + downtimeActivitiesShift});
         }
 
         // Set Phase to Downtime & Reset Cohort Downtime Activity for All Hands
-        BladesHelpers.tryUpdate(this.actor, {'system.==phase': 'downtime', 'system.==cohort_downtime_done': false});
+        await BladesHelpers.tryUpdate(this.actor, {'system.==phase': 'downtime', 'system.==cohort_downtime_done': false});
 
         let speaker = {
           actor: this.actor._id,
@@ -567,7 +548,7 @@ export class BladesSquadSheet extends BladesSheet {
           speaker: speaker,
           content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/end-mission.html', { contents: messageContents })
         }
-        ChatMessage.create(messageData);
+        await ChatMessage.create(messageData);
       }
     });
     extraData.dialog = dialog;

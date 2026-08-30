@@ -1,6 +1,6 @@
 
-import { BladesHelpers } from "../blades-helpers.js";
-import { BladesSheet } from "../blades-sheet.js";
+import { BladesHelpers } from '../blades-helpers.js';
+import { BladesSheet } from '../blades-sheet.js';
 
 /**
  * @extends {BladesSheet}
@@ -9,11 +9,11 @@ export class BladesRegionSheet extends BladesSheet {
   /** @override */
 	static get defaultOptions() {
 	  return foundry.utils.mergeObject(super.defaultOptions, {
-  	  classes: ["beamsaber", "sheet", "actor", "region"],
-  	  template: "systems/beamsaber/templates/actors/region-sheet.html",
+  	  classes: ['beamsaber', 'sheet', 'actor', 'region'],
+  	  template: 'systems/beamsaber/templates/actors/region-sheet.html',
       width: 550,
       height: 650,
-      tabs: [{navSelector: ".tabs", contentSelector: ".tab-content", initial: "squads"}]
+      tabs: [{navSelector: '.tabs', contentSelector: '.tab-content', initial: 'squads'}]
     });
   }
 
@@ -30,7 +30,7 @@ export class BladesRegionSheet extends BladesSheet {
     sheetData.isGM = game.user.isGM;
 
     // Fetch data
-    sheetData.system.owner = BladesHelpers.resolveActor(sheetData.system.owner, { name: "Unknown Owner" });
+    sheetData.system.owner = BladesHelpers.resolveActor(sheetData.system.owner, { name: 'Unknown Owner' });
     sheetData.system.squads = BladesHelpers.fetchSimpleData(sheetData.system.squads, [], BladesHelpers._factionSquadCompareFunc);
     sheetData.system.npcs = BladesHelpers.fetchSimpleData(sheetData.system.npcs, [], BladesHelpers._simpleCompareFunc);
     sheetData.system.characters = BladesHelpers.fetchSimpleData(sheetData.system.characters, [], BladesHelpers._simpleCompareFunc);
@@ -42,7 +42,7 @@ export class BladesRegionSheet extends BladesSheet {
     for (let squad of sheetData.system.squads) {
       let squadInfo = {uuid: squad.uuid, name: squad.name, img: squad.img, region_collapsed: squad.system.region_collapsed, members: []};
       for (let member of Object.values(squad.system.members))
-        squadInfo.members.push(BladesHelpers.resolveActor(member, { name: "Unknown Member" }));
+        squadInfo.members.push(BladesHelpers.resolveActor(member, { name: 'Unknown Member' }));
       members.push(squadInfo);
     }
     sheetData.system.squad_members = members;
@@ -54,21 +54,7 @@ export class BladesRegionSheet extends BladesSheet {
     return sheetData;
   }
 
-  /** @override */
-  async _onDropActor(event, droppedActor) {
-    await super._onDropActor(event, droppedActor);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedActor);
-  }
-
-  /** @override */
-  async handleDrop(event, droppedEntity) {
-    let droppedEntityFull = BladesHelpers.resolveActor(droppedEntity.uuid);
-    await this.handleAddedObjects([droppedEntityFull]);
-  }
+  /* -------------------------------------------- */
 
   async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     let currentTab = this._tabs[0].active;
@@ -109,8 +95,8 @@ export class BladesRegionSheet extends BladesSheet {
 
     // Delete Squad
     html.find('.delete-squad').click(async ev => {
-      const element = $(ev.currentTarget).closest(".item");
-      let squadFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const element = $(ev.currentTarget).closest('.item');
+      let squadFull = BladesHelpers.resolveActor(element.data('itemId'));
       if (squadFull)
         await BladesHelpers.removeSquadRegion(squadFull);
     });
@@ -126,8 +112,8 @@ export class BladesRegionSheet extends BladesSheet {
 
     // Delete Notable Person
     html.find('.delete-notable').click(async ev => {
-      const element = $(ev.currentTarget).closest(".item");
-      let notableFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const element = $(ev.currentTarget).closest('.item');
+      let notableFull = BladesHelpers.resolveActor(element.data('itemId'));
       if (notableFull)
         if (notableFull.type == 'npc')
           await BladesHelpers.removeNPCRegion(notableFull);
@@ -137,7 +123,6 @@ export class BladesRegionSheet extends BladesSheet {
 
     html.find('.add-owner').click(async ev => {
       const element = $(ev.currentTarget).closest('.item');
-      let currentConnectionId = element.data('connectionId');
       let ownerFull = BladesHelpers.resolveActor(this.actor.system.owner);
 
       let contents = `

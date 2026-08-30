@@ -49,7 +49,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     // Update Inventory Item
     html.find('.item-body').click(async ev => {
       const element = $(ev.currentTarget).closest('.item');
-      let item = this.actor.items.get(element.data('itemId'));
+      const item = this.actor.items.get(element.data('itemId'));
       if (!item && this.actor.type == 'vehicle') {
         ui.notifications.warn(game.i18n.localize('BITD.log.warn.NotItemOwnerVehicle'));
         return;
@@ -59,8 +59,8 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
 
     // Delete Inventory Item
     html.find('.delete-item').click(async ev => {
-      let element = $(ev.currentTarget).closest('.item');
-      let item = this.actor.items.get(element.data('itemId'));
+      var element = $(ev.currentTarget).closest('.item');
+      const item = this.actor.items.get(element.data('itemId'));
       if (element.parent().hasClass('item-with-container'))
         element = element.parent();
       element.slideUp(200, async () => await this.actor.removeItem(item));
@@ -70,10 +70,10 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     html.find('.open-actor').click(async ev => {
       const element = $(ev.currentTarget).closest('.item');
       //acqId is the UUID of the Actor
-      let acqId = element.data('itemId');
-      let actor = BladesHelpers.resolveActor(acqId);
+      const acqId = element.data('itemId');
+      var actor = BladesHelpers.resolveActor(acqId);
       if (!actor) {
-        let acqUuid = element.data('itemUuid');
+        const acqUuid = element.data('itemUuid');
         actor = BladesHelpers.resolveActor(acqUuid);
       }
       actor?.sheet.render(true);
@@ -82,7 +82,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     // Update Trust
     html.find('.trust-block label.input').click(async ev => {
       const element = $(ev.currentTarget).closest(".item");
-      let entityFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const entityFull = BladesHelpers.resolveActor(element.data("itemId"));
       if (entityFull)
         await BladesHelpers.handleRelationshipValue(this.actor, entityFull, 'trust', $(ev.currentTarget).data('value'), true);
     });
@@ -90,7 +90,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     // Update Beliefs
     html.find('.beliefs-block input').change(async ev => {
       const element = ev.currentTarget.closest(".item");
-      let entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
+      const entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
       if (entityFull)
         await BladesHelpers.handleRelationshipValue(this.actor, entityFull, 'beliefs', ev.currentTarget.value, true);
     });
@@ -98,7 +98,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     // Update Relationship Status
     html.find('.status-block label.input').click(async ev => {
       const element = $(ev.currentTarget).closest(".item");
-      let entityFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const entityFull = BladesHelpers.resolveActor(element.data("itemId"));
       if (entityFull)
         await BladesHelpers.handleRelationshipValue(this.actor, entityFull, 'status', $(ev.currentTarget).data('value'), true);
     });
@@ -106,7 +106,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     // Delete Relationship
     html.find('.delete-relationship:not(.disabled-item)').click(async ev => {
       const element = $(ev.currentTarget).closest(".item");
-      let entityFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const entityFull = BladesHelpers.resolveActor(element.data("itemId"));
       if (entityFull)
         BladesHelpers.removeRelationship(this.actor, entityFull);
     });
@@ -124,51 +124,78 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     html.find('.effect-control').click(ev => BladesActiveEffect.onManageActiveEffect(ev, this.actor));
 
     html.find('.clock-style-picker').click(async ev => {
-      let element = ev.currentTarget;
-      let path = element.dataset.path;
-      let themeColor = element.dataset.themeColor;
-      let isVehicleProxy = element.dataset.isVehicleProxy;
-      let isVehicle = element.dataset.isVehicle;
+      const element = ev.currentTarget;
+      const path = element.dataset.path;
+      const themeColor = element.dataset.themeColor;
+      const isVehicleProxy = element.dataset.isVehicleProxy;
+      const isVehicle = element.dataset.isVehicle;
       await this.clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle);
     });
   }
 
   /* -------------------------------------------- */
 
-  async onItemAddClick(event) {
-    event.preventDefault();
-    const itemTypes = $(event.currentTarget).data('itemType').split(',');
-    const valuePath = $(event.currentTarget).data('valuePath');
-    const unique = $(event.currentTarget).data('unique');
-    const addAsItem = $(event.currentTarget).data('addAsItem') ?? true;
-    const containerId = $(event.currentTarget).data('containerId');
-    let inputType = 'checkbox';
+  /** @override */
+  async _onDropItem(event, droppedItem) {
+    if (!this.actor.isOwner) {
+      ui.notifications.error(`You do not have sufficient permissions to edit this actor. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
+      return false;
+    }
+    await this.handleDrop(event, await Item.implementation.fromDropData(droppedItem));
+  }
 
-    let itemElement = $(event.currentTarget).closest('.item-with-container').children('.item');
-    if (itemElement.length) {
-      let [_, item] = this.actor.getItemOwner(itemElement[0].data('itemId'));
+  /** @override */
+  async _onDropActor(event, droppedActor) {
+    await super._onDropActor(event, droppedActor);
+    if (!this.actor.isOwner) {
+      ui.notifications.error(`You do not have sufficient permissions to edit this actor. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
+      return false;
+    }
+    await this.handleDrop(event, droppedActor);
+  }
+
+  /** @override */
+  async handleDrop(event, droppedEntity) {
+    const droppedEntityFull = BladesHelpers.resolveActor(droppedEntity.uuid);
+    await this.handleAddedObjects([droppedEntityFull]);
+  }
+
+  async handleAddedObjects(droppedEntitiesFull) {}
+
+  /* -------------------------------------------- */
+
+  async onItemAddClick(event) {
+    const target = event.currentTarget;
+    event.preventDefault();
+    const itemTypes = target.dataset.itemType.split(',');
+    const valuePath = target.dataset.valuePath;
+    const unique = target.dataset.unique;
+    const addAsItem = target.dataset.addAsItem;
+    const containerId = target.dataset.containerId;
+    const inputType = unique !== undefined ? 'radio' : 'checkbox';
+
+    const itemElement = target.closest('.item-with-container').querySelector('.item');
+    if (itemElement) {
+      const [_, item] = this.actor.getItemOwner(itemElement.dataset.itemId);
       if (item.system.suppressed) {
         ui.notifications.warn(game.i18n.localize('BITD.log.warn.NoAddFromSuppressedContainer'));
         return;
       }
     }
 
-    if (unique !== undefined)
-      inputType = 'radio';
-
-    let items = await BladesHelpers.getAllObjectDocumentsByType(itemTypes, [], game);
-    let title = '';
-    for (let itemType of itemTypes)
-      title += (title.length ? ' / ' : '') + game.i18n.localize(`TYPES.Item.${itemType}`);
+    const items = await BladesHelpers.getAllObjectDocumentsByType(itemTypes, [], game);
+    var title = '';
+    for (const itemType of itemTypes)
+      title += game.i18n.localize(`TYPES.Item.${itemType}`) + (itemTypes[itemTypes.length - 1] != itemType ? ' / ' : '');
     if (items.length == 0) {
       ui.notifications.warn(game.i18n.localize('BITD.log.warn.NothingToAdd'));
       return;
     }
-    let dialogId = foundry.applications.api.ApplicationV2._appId + 1;
-    let html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', { obj: title })}" autofocus>`;
+    const dialogId = foundry.applications.api.ApplicationV2._appId + 1;
+    var html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', { obj: title })}" autofocus>`;
     html += `<div class="objects-to-add">`;
     items.forEach(e => {
-      let additionPriceLoad = ``;
+      var additionPriceLoad = ``;
       if (typeof e.system.load !== 'undefined') additionPriceLoad += `(${e.system.load})`
       else if (typeof e.system.price !== 'undefined') additionPriceLoad += `(${e.system.price})`
 
@@ -180,7 +207,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
 
     html += `</div>`;
 
-    let dialog = new foundry.applications.api.DialogV2({
+    const dialog = new foundry.applications.api.DialogV2({
       window: { title: `${game.i18n.localize('Add')} ${title}` },
       content: html,
       buttons: [
@@ -198,8 +225,8 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
       ],
       submit: async (result, dialog) => {
         if (result == 'add')
-          for (let itemType of itemTypes)
-            await this.addItemsToSheet(itemType, $(dialog.element).find('.objects-to-add'), valuePath, addAsItem, containerId);
+          for (const itemType of itemTypes)
+            await this.addItemsToSheetFromDialog(itemType, $(dialog.element).find('.objects-to-add'), valuePath, addAsItem, containerId);
       }
     });
 
@@ -209,57 +236,56 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
 
   async onActorAddClick(event) {
     event.preventDefault();
-    let actorTypes = $(event.currentTarget).data('actorType');
-    let valuePaths = $(event.currentTarget).data('valuePath');
+    var actorTypes = $(event.currentTarget).data('actorType');
+    var valuePaths = $(event.currentTarget).data('valuePath');
     const parentPath = $(event.currentTarget).data('parentPath');
     const unique = $(event.currentTarget).data('unique');
-    let title = $(event.currentTarget).data('title');
+    var title = $(event.currentTarget).data('title');
 
-    let inputType = 'checkbox';
-    if (unique !== undefined)
-      inputType = 'radio';
+    const inputType = unique !== undefined ? 'radio' : 'checkbox';
 
     if (actorTypes) actorTypes = actorTypes.split(',');
     if (valuePaths) valuePaths = valuePaths.split(',');
 
-    let exclusionList = [];
+    var exclusionList = [];
     if (unique === undefined && valuePaths)
-      for (let valuePath of valuePaths) {
+      for (const valuePath of valuePaths) {
         exclusionList = BladesHelpers.getNestedProperty(this.actor, valuePath);
         exclusionList = Object.values(exclusionList).map(e => e.uuid);
       }
 
-    if (!title)
-      title = game.i18n.localize(`TYPES.Actor.${actorTypes}`);
+    if (!title) {
+      title = '';
+      for (const actorType of actorTypes)
+        title += game.i18n.localize(`TYPES.Actor.${actorType}`) + (actorTypes[actorTypes.length - 1] != actorType ? ' / ' : '');
+    }
 
-    let dialogId = foundry.applications.api.ApplicationV2._appId + 1;
-    let actors = [];
+    const dialogId = foundry.applications.api.ApplicationV2._appId + 1;
+    var actors = [];
     if (actorTypes && actorTypes[0] == 'crewmate') {
       actorTypes = ['character', 'npc'];
-      let squadFull;
-      if (this.actor.system.crew)
-        squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
+      const squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
       if (!squadFull) {
         ui.notifications.warn(game.i18n.localize('BITD.log.warn.NoSquadToAddConnection'));
         return;
       }
       actors = BladesHelpers.fetchSimpleData(Object.values(squadFull.system.members).filter(m => m.uuid != this.actor.uuid && !Object.values(this.actor.system.connections).map(c => c.uuid).includes(m.uuid)), [], BladesHelpers._simpleCompareFunc);
     } else
-      for (let actorType of actorTypes)
+      for (const actorType of actorTypes)
         actors = actors.concat(await BladesHelpers.getAllObjectDocumentsByType(actorType, exclusionList, game));
     if (actors.length == 0) {
       ui.notifications.warn(game.i18n.localize('BITD.log.warn.NothingToAdd'));
       return;
     }
-    let html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', {obj: title})}" autofocus>`
+    var html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', {obj: title})}" autofocus>`
     html += `<div class="objects-to-add">`;
 
-    for (let actor of actors) {
+    for (const actor of actors) {
       html += `<input id="${dialogId}-select-actor-${actor._id}" name="select_actors" type="${inputType}" value="${actor._id}">`;
       html += `<label class="entry" for="${dialogId}-select-actor-${actor._id}">`;
       // Try to fetch known parent if it exists
-      let parentName = ``;
-      let parentValue = undefined;
+      var parentName = ``;
+      var parentValue = undefined;
       if (parentPath) {
         parentValue = BladesHelpers.getNestedProperty(actor, parentPath);
         if (parentValue) parentValue = BladesHelpers.resolveActor(parentValue);
@@ -271,7 +297,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
 
     html += `</div>`;
 
-    let dialog = new foundry.applications.api.DialogV2({
+    const dialog = new foundry.applications.api.DialogV2({
       window: { title: `${game.i18n.localize('Add')} ${title}` },
       content: html,
       buttons: [
@@ -298,54 +324,62 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
   }
 
   dialogOnFirstRender(context, options) {
-    let searchBar = this.element.querySelector('input[type=text]');
+    const searchBar = this.element.querySelector('input[type=text]');
     searchBar.addEventListener('input', (event) => {
-      let labels = this.element.querySelector('.objects-to-add').getElementsByClassName('entry');
-      for (let label of labels)
+      const labels = this.element.querySelector('.objects-to-add').getElementsByClassName('entry');
+      for (const label of labels)
         label.style.display = label.innerText.toLowerCase().includes(event.target.value.toLowerCase()) ? 'block' : 'none';
     });
 
-    let scroll = this.element.querySelector('.window-content');
+    const scroll = this.element.querySelector('.window-content');
     scroll.scrollTop = 0;
   }
 
   /* -------------------------------------------- */
 
-  async addItemsToSheet(itemType, el, valuePath, addAsItem, containerId) {
-    let items = await BladesHelpers.getAllObjectDocumentsByType(itemType, [], game);
-    let itemsToAdd = [];
+  async addItemsToSheetFromDialog(itemType, el, valuePath, addAsItem, containerId) {
+    const items = await BladesHelpers.getAllObjectDocumentsByType(itemType, [], game);
+    const itemsToAdd = [];
     el.find('input:checked').each(function() {
-      let item = items.find(e => e._id === $(this).val());
+      const item = items.find(e => e._id === $(this).val());
       if (item)
         itemsToAdd.push(items.find(e => e._id === $(this).val()));
     });
 
+    await this.addItemsToSheet(itemsToAdd, valuePath, addAsItem, containerId, {});
+  }
+
+  async addItemsToSheet(itemsToAdd, valuePath, addAsItem, containerId, extraModifiers) {
     if (!valuePath) {
-      let owner = this.actor.getGeneralVehicleGearOwner();
-      let items = await Item.create(itemsToAdd, {parent: owner});
-      for (let item of items) {
+      const ownerFull = this.actor.getGeneralVehicleGearOwner();
+      const items = await BladesHelpers.tryCreate(itemsToAdd, ownerFull);
+      for (const item of items) {
         if (containerId)
           await BladesHelpers.tryUpdate(item, {'system.==owner': containerId});
-        await BladesHelpers.postCreateItem(item, owner);
-        await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
+        if (item?.system?.uses?.value != undefined)
+          await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
+        if (extraModifiers)
+          await BladesHelpers.tryUpdate(item, extraModifiers);
       }
-      if (owner != this.actor)
+      if (ownerFull != this.actor)
         // Update sheet for everyone
         await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
     } else if (addAsItem)
-      await this.actor.sheet.handleAddedObjects(itemsToAdd, false);
+      await this.handleAddedObjects(itemsToAdd, false);
     else
-      this.addItemAsReference(itemsToAdd[0], valuePath);
+      await this.addItemAsReference(itemsToAdd[0], valuePath);
   }
 
   async addItemAsObjectAndStoreReference(itemToAdd, valuePath) {
-    let itemsFull = await Item.create([itemToAdd], {parent: this.document});
-    if (itemsFull[0].system.uses)
-      await BladesHelpers.tryUpdate(itemsFull[0], {'system.uses.==value': itemsFull[0].system.uses.max});
-    let updateObject = BladesHelpers.createUpdateObjectFromPath(itemsFull[0]._id, valuePath);
+    const itemFull = (await BladesHelpers.tryCreate([itemToAdd], this.document))[0];
+    if (!itemFull)
+      return;
+    if (itemFull.system.uses)
+      await BladesHelpers.tryUpdate(itemFull, {'system.uses.==value': itemFull.system.uses.max});
+    const updateObject = BladesHelpers.createUpdateObjectFromPath(itemFull._id, valuePath);
     // Fetch object and delete it if it exists
-    let objectToDelete = this.actor;
-    for (let pathPart of valuePath.split('.')) {
+    var objectToDelete = this.actor;
+    for (const pathPart of valuePath.split('.')) {
       if (!objectToDelete)
         break;
       objectToDelete = objectToDelete[pathPart];
@@ -359,13 +393,13 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
     if (!itemToAdd)
       return;
     itemToAdd = { name: itemToAdd.name, id: itemToAdd.id, img: itemToAdd.img, system: foundry.utils.deepClone(itemToAdd.system) };
-    let updateObject = BladesHelpers.createUpdateObjectFromPath(itemToAdd, valuePath);
+    const updateObject = BladesHelpers.createUpdateObjectFromPath(itemToAdd, valuePath);
     await BladesHelpers.tryUpdate(this.actor, updateObject);
   }
 
   async addActorsToSheet(actorTypes, el) {
-    let actors = await BladesHelpers.getAllObjectDocumentsByType(actorTypes, [], game);
-    let actorsToAdd = [];
+    const actors = await BladesHelpers.getAllObjectDocumentsByType(actorTypes, [], game);
+    const actorsToAdd = [];
     el.find('input:checked').each(function() {
       actorsToAdd.push(actors.find(e => e._id === $(this).val()));
     });
@@ -409,33 +443,33 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
   /* -------------------------------------------- */
 
   async onRadioMiddleClick(event) {
-    let type = event.target.tagName.toLowerCase();
-    let element = event.target;
-    let target = type == 'label' ? element : element.parentElement;
-    let label = target;
+    var type = event.target.tagName.toLowerCase();
+    const element = event.target;
+    var target = type == 'label' ? element : element.parentElement;
+    const label = target;
     type = target.tagName.toLowerCase();
     if (type == 'label')
       target = label.previousElementSibling;
 
-    let actor = this.actor;
-    let isVehicle = actor.type == 'vehicle';
+    var actor = this.actor;
+    const isVehicle = actor.type == 'vehicle';
     if (actor.system.vehicle)
       actor = BladesHelpers.resolveActor(actor.system.vehicle);
     if (!actor) return;
 
-    let value = parseInt(target.value);
-    let fieldList = (isVehicle ? target.name : $(target).data('name')).split('.');
-    let attributeName = fieldList[2];
-    let actionName = fieldList[4];
-    let actionData = (await this.getData()).system.attributes[attributeName].actions[actionName];
-    let oldFormField = actionData.first_form != 0 ? 'first_form' : actionData.second_form != 0 ? 'second_form' : '';
-    let formField = oldFormField == 'first_form' ? 'second_form' : oldFormField == 'second_form' ? '' : 'first_form';
-    let updateObject = {};
+    const value = parseInt(target.value);
+    const fieldList = (isVehicle ? target.name : $(target).data('name')).split('.');
+    const attributeName = fieldList[2];
+    const actionName = fieldList[4];
+    const actionData = (await this.getData()).system.attributes[attributeName].actions[actionName];
+    const oldFormField = actionData.first_form != 0 ? 'first_form' : actionData.second_form != 0 ? 'second_form' : '';
+    const formField = oldFormField == 'first_form' ? 'second_form' : oldFormField == 'second_form' ? '' : 'first_form';
+    const updateObject = {};
     if (formField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${formField}`] = value - actionData.value;
     if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${oldFormField}`] = 0;
     if (Object.keys(updateObject).length > 0) {
       await BladesHelpers.tryUpdate(actor, updateObject);
-      let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
+      const pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
       if (pilotFull)
         await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
     }
@@ -447,16 +481,16 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
    * Call a popup for changing a clock's theme and color.
    */
   async clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle) {
-    let defaultThemeColor = game.settings.get('beamsaber', 'DefaultClockThemeColor');
+    const defaultThemeColor = game.settings.get('beamsaber', 'DefaultClockThemeColor');
 
-    let clockStylesDropdown = { 'null': `${defaultThemeColor} (default)` };
-    for (let [themeName, theme] of Object.entries(BladesHelpers.clockStyles))
+    const clockStylesDropdown = { 'null': `${defaultThemeColor} (default)` };
+    for (const [themeName, theme] of Object.entries(BladesHelpers.clockStyles))
       if (themeName != 'dataReason')
-        for (let [colorName, color] of Object.entries(theme))
+        for (const [colorName, color] of Object.entries(theme))
           if (colorName != 'dataReason')
             clockStylesDropdown[`${themeName}/${colorName}`] = `${themeName}/${colorName}`;
 
-    let dialog = new foundry.applications.api.DialogV2({
+    const dialog = new foundry.applications.api.DialogV2({
       window: { title: `${game.i18n.localize('BITD.ClockStylePicker')}` },
       content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/popups/clock-style-picker.html', { clockStylesDropdown: clockStylesDropdown, themeColor: themeColor }),
       classes: ['clock-style-picker'],
@@ -475,9 +509,9 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
       submit: async (result, dialog) => {
         if (result != 'save') return;
 
-        let value = dialog.element.querySelector('select').value;
-        let updateObject = {};
-        let updatePath = path.split('.');
+        const value = dialog.element.querySelector('select').value;
+        const updateObject = {};
+        var updatePath = path.split('.');
         updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
         updatePath = updatePath.join('.');
         updateObject[updatePath] = value;
@@ -489,7 +523,7 @@ export class BladesSheet extends foundry.appv1.sheets.ActorSheet {
           if (a)
             setTimeout(refreshPilot, 200);
           if (this.actor.system.pilot) {
-            let pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot);
+            const pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot);
             if (pilotFull)
               await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
           }
@@ -565,28 +599,28 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
     const containerId = target.dataset.containerId;
     const inputType = unique !== undefined ? 'radio' : 'checkbox';
 
-    let itemElement = target.closest('.item-with-container').children('.item');
-    if (itemElement.length) {
-      let [_, item] = this.actor.getItemOwner(itemElement[0].dataset.itemId);
+    const itemElement = target.closest('.item-with-container').querySelector('.item');
+    if (itemElement) {
+      const [_, item] = this.actor.getItemOwner(itemElement.dataset.itemId);
       if (item.system.suppressed) {
         ui.notifications.warn(game.i18n.localize('BITD.log.warn.NoAddFromSuppressedContainer'));
         return;
       }
     }
 
-    let items = await BladesHelpers.getAllObjectDocumentsByType(itemTypes, [], game);
-    let title = '';
-    for (let itemType of itemTypes)
-      title += (title.length ? ' / ' : '') + game.i18n.localize(`TYPES.Item.${itemType}`);
+    const items = await BladesHelpers.getAllObjectDocumentsByType(itemTypes, [], game);
+    var title = '';
+    for (const itemType of itemTypes)
+      title += game.i18n.localize(`TYPES.Item.${itemType}`) + (itemTypes[itemTypes.length - 1] != itemType ? ' / ' : '');
     if (items.length == 0) {
       ui.notifications.warn(game.i18n.localize('BITD.log.warn.NothingToAdd'));
       return;
     }
-    let dialogId = foundry.applications.api.ApplicationV2._appId + 1;
-    let html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', { obj: title })}" autofocus>`;
+    const dialogId = foundry.applications.api.ApplicationV2._appId + 1;
+    var html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', { obj: title })}" autofocus>`;
     html += `<div class="objects-to-add">`;
     items.forEach(e => {
-      let additionPriceLoad = ``;
+      var additionPriceLoad = ``;
       if (typeof e.system.load !== 'undefined') additionPriceLoad += `(${e.system.load})`
       else if (typeof e.system.price !== 'undefined') additionPriceLoad += `(${e.system.price})`
 
@@ -598,7 +632,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     html += `</div>`;
 
-    let dialog = new foundry.applications.api.DialogV2({
+    const dialog = new foundry.applications.api.DialogV2({
       window: { title: `${game.i18n.localize('Add')} ${title}` },
       content: html,
       buttons: [
@@ -616,8 +650,8 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
       ],
       submit: async (result, dialog) => {
         if (result == 'add')
-          for (let itemType of itemTypes)
-            await this.addItemsToSheet(itemType, $(dialog.element).find('.objects-to-add'), valuePath, addAsItem, containerId);
+          for (const itemType of itemTypes)
+            await this.addItemsToSheetFromDialog(itemType, $(dialog.element).find('.objects-to-add'), valuePath, addAsItem, containerId);
       }
     });
 
@@ -627,55 +661,56 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   static async #onActorAddClick(event, target) {
     event.preventDefault();
-    let actorTypes = target.dataset.actorType;
-    let valuePaths = target.dataset.valuePath;
+    var actorTypes = target.dataset.actorType;
+    var valuePaths = target.dataset.valuePath;
     const parentPath = target.dataset.parentPath;
     const unique = target.dataset.unique;
-    let title = target.dataset.title;
+    var title = target.dataset.title;
 
     const inputType = unique !== undefined ? 'radio' : 'checkbox';
 
     if (actorTypes) actorTypes = actorTypes.split(',');
     if (valuePaths) valuePaths = valuePaths.split(',');
 
-    let exclusionList = [];
+    var exclusionList = [];
     if (unique === undefined && valuePaths)
-      for (let valuePath of valuePaths) {
+      for (const valuePath of valuePaths) {
         exclusionList = BladesHelpers.getNestedProperty(this.actor, valuePath);
         exclusionList = Object.values(exclusionList).map(e => e.uuid);
       }
 
-    if (!title)
-      title = game.i18n.localize(`TYPES.Actor.${actorTypes}`);
+    if (!title) {
+      title = '';
+      for (const actorType of actorTypes)
+        title += game.i18n.localize(`TYPES.Actor.${actorType}`) + (actorTypes[actorTypes.length - 1] != actorType ? ' / ' : '');
+    }
 
-    let dialogId = foundry.applications.api.ApplicationV2._appId + 1;
-    let actors = [];
+    const dialogId = foundry.applications.api.ApplicationV2._appId + 1;
+    const actors = [];
     if (actorTypes && actorTypes[0] == 'crewmate') {
       actorTypes = ['character', 'npc'];
-      let squadFull;
-      if (this.actor.system.crew)
-        squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
+      const squadFull = BladesHelpers.resolveActor(this.actor.system.crew);
       if (!squadFull) {
         ui.notifications.warn(game.i18n.localize('BITD.log.warn.NoSquadToAddConnection'));
         return;
       }
       actors = BladesHelpers.fetchSimpleData(Object.values(squadFull.system.members).filter(m => m.uuid != this.actor.uuid && !Object.values(this.actor.system.connections).map(c => c.uuid).includes(m.uuid)), [], BladesHelpers._simpleCompareFunc);
     } else
-      for (let actorType of actorTypes)
+      for (const actorType of actorTypes)
         actors = actors.concat(await BladesHelpers.getAllObjectDocumentsByType(actorType, exclusionList, game));
     if (actors.length == 0) {
       ui.notifications.warn(game.i18n.localize('BITD.log.warn.NothingToAdd'));
       return;
     }
-    let html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', {obj: title})}" autofocus>`
+    var html = `<input id="${dialogId}-search-bar" type="text" value="" placeholder="${game.i18n.format('BITD.SearchBar', {obj: title})}" autofocus>`
     html += `<div class="objects-to-add">`;
 
-    for (let actor of actors) {
+    for (const actor of actors) {
       html += `<input id="${dialogId}-select-actor-${actor._id}" name="select_actors" type="${inputType}" value="${actor._id}">`;
       html += `<label class="entry" for="${dialogId}-select-actor-${actor._id}">`;
       // Try to fetch known parent if it exists
-      let parentName = ``;
-      let parentValue = undefined;
+      var parentName = ``;
+      var parentValue = undefined;
       if (parentPath) {
         parentValue = BladesHelpers.getNestedProperty(actor, parentPath);
         if (parentValue) parentValue = BladesHelpers.resolveActor(parentValue);
@@ -687,7 +722,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     html += `</div>`;
 
-    let dialog = new foundry.applications.api.DialogV2({
+    const dialog = new foundry.applications.api.DialogV2({
       window: { title: `${game.i18n.localize('Add')} ${title}` },
       content: html,
       buttons: [
@@ -754,7 +789,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Update Inventory Item
   static async #itemBody(event, target) {
     const element = target.closest('.item');
-    let item = this.actor.items.get(element.dataset.itemId);
+    const item = this.actor.items.get(element.dataset.itemId);
     if (!item && this.actor.type == 'vehicle') {
       ui.notifications.warn(game.i18n.localize('BITD.log.warn.NotItemOwnerVehicle'));
       return;
@@ -764,8 +799,8 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   // Delete Inventory Item
   static async #deleteItem(event, target) {
-    let element = target.closest('.item');
-    let item = this.actor.items.get(element.dataset.itemId);
+    var element = target.closest('.item');
+    const item = this.actor.items.get(element.dataset.itemId);
     if (element.parentElement.classList.contains('item-with-container'))
       element = element.parentElement;
     await this.actor.removeItem(item);
@@ -774,7 +809,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
 
   // Add Project
   static async #addProject(event, target) {
-    let projects = this.actor.system.projects;
+    const projects = this.actor.system.projects;
     projects[Object.keys(projects).length] = {
       title: '',
       clock: {
@@ -791,10 +826,10 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Delete Project
   static async #deleteProject(event, target) {
     const element = target.closest('.item');
-    let currentProjectId = element.dataset.projectId;
-    let projectsEntries = Object.entries(this.actor.system.projects);
+    const currentProjectId = element.dataset.projectId;
+    const projectsEntries = Object.entries(this.actor.system.projects);
     projectsEntries.splice(currentProjectId, 1);
-    for (let id in projectsEntries)
+    for (const id in projectsEntries)
       projectsEntries[id][0] = String(id);
     await BladesHelpers.tryUpdate(this.actor, {'system.==projects': Object.fromEntries(projectsEntries)});
     // TODO: Slide up animation 200ms: element.slideUp(200, async () => await BladesHelpers.tryUpdate(this.actor, {'system.==projects': Object.fromEntries(projectsEntries)}));
@@ -803,15 +838,15 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Open Actor
   static async #openActor(event, target) {
     const element = target.closest('.item');
-    let actorId = element.dataset.itemId;
-    let actorFull = BladesHelpers.resolveActor(actorId);
+    const actorId = element.dataset.itemId;
+    const actorFull = BladesHelpers.resolveActor(actorId);
     actorFull?.sheet.render(true);
   }
 
   // Update Trust
   static async #trustBlock(event, target) {
     const element = target.closest(".item");
-    let entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
+    const entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
     if (entityFull)
       await BladesHelpers.handleRelationshipValue(this.actor, entityFull, 'trust', target.dataset.value, true);
   }
@@ -819,7 +854,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Update Relationship Status
   static async #statusBlock(event, target) {
     const element = target.closest(".item");
-    let entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
+    const entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
     if (entityFull)
       await BladesHelpers.handleRelationshipValue(this.actor, entityFull, 'status', $(ev.currentTarget).dataset.value, true);
   }
@@ -827,7 +862,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   // Delete Relationship
   static async #deleteRelationship(event, target) {
     const element = target.closest(".item");
-    let entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
+    const entityFull = BladesHelpers.resolveActor(element.dataset.itemId);
     if (entityFull)
       BladesHelpers.removeRelationship(this.actor, entityFull);
   }
@@ -845,46 +880,52 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   static async #effectControl(event, target) { BladesActiveEffect.onManageActiveEffect(ev, this.actor); }
 
   static async #clockStylePicker(event, target) {
-    let path = target.dataset.path;
-    let themeColor = target.dataset.themeColor;
-    let isVehicleProxy = target.dataset.isVehicleProxy;
-    let isVehicle = target.dataset.isVehicle;
+    const path = target.dataset.path;
+    const themeColor = target.dataset.themeColor;
+    const isVehicleProxy = target.dataset.isVehicleProxy;
+    const isVehicle = target.dataset.isVehicle;
     await this.clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle);
   }
 
   /* -------------------------------------------- */
 
   dialogOnFirstRender(context, options) {
-    let searchBar = this.element.querySelector('input[type=text]');
+    const searchBar = this.element.querySelector('input[type=text]');
     searchBar.addEventListener('input', (event) => {
-      let labels = this.element.querySelector('.objects-to-add').getElementsByClassName('entry');
-      for (let label of labels)
+      const labels = this.element.querySelector('.objects-to-add').getElementsByClassName('entry');
+      for (const label of labels)
         label.style.display = label.innerText.toLowerCase().includes(event.target.value.toLowerCase()) ? 'block' : 'none';
     });
 
-    let scroll = this.element.querySelector('.window-content');
+    const scroll = this.element.querySelector('.window-content');
     scroll.scrollTop = 0;
   }
 
   /* -------------------------------------------- */
 
-  async addItemsToSheet(itemType, el, valuePath, addAsItem, containerId) {
-    let items = await BladesHelpers.getAllObjectDocumentsByType(itemType, [], game);
-    let itemsToAdd = [];
+  async addItemsToSheetFromDialog(itemType, el, valuePath, addAsItem, containerId) {
+    const items = await BladesHelpers.getAllObjectDocumentsByType(itemType, [], game);
+    const itemsToAdd = [];
     el.find('input:checked').each(function() {
-      let item = items.find(e => e._id === $(this).val());
+      const item = items.find(e => e._id === $(this).val());
       if (item)
         itemsToAdd.push(items.find(e => e._id === $(this).val()));
     });
 
+    await this.addItemsToSheet(itemsToAdd, valuePath, addAsItem, containerId, {});
+  }
+
+  async addItemsToSheet(itemsToAdd, valuePath, addAsItem, containerId, extraModifiers) {
     if (!valuePath) {
-      let owner = this.actor.getGeneralVehicleGearOwner();
-      let items = await Item.create(itemsToAdd, {parent: owner});
-      for (let item of items) {
+      const owner = this.actor.getGeneralVehicleGearOwner();
+      const items = await BladesHelpers.tryCreate(itemsToAdd, owner);
+      for (const item of items) {
         if (containerId)
           await BladesHelpers.tryUpdate(item, {'system.==owner': containerId});
-        await BladesHelpers.postCreateItem(item, owner);
-        await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
+        if (item?.system?.uses?.value != undefined)
+          await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
+        if (extraModifiers)
+          await BladesHelpers.tryUpdate(item, extraModifiers);
       }
       if (owner != this.actor)
         // Update sheet for everyone
@@ -895,13 +936,15 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   async addItemAsObjectAndStoreReference(itemToAdd, valuePath) {
-    let itemsFull = await Item.create([itemToAdd], {parent: this.document});
-    if (itemsFull[0].system.uses)
-      await BladesHelpers.tryUpdate(itemsFull[0], {'system.uses.==value': itemsFull[0].system.uses.max});
-    let updateObject = BladesHelpers.createUpdateObjectFromPath(itemsFull[0]._id, valuePath);
+    const itemFull = (await BladesHelpers.tryCreate([itemToAdd], this.document))[0];
+    if (!itemFull)
+      return;
+    if (itemFull.system.uses)
+      await BladesHelpers.tryUpdate(itemFull, {'system.uses.==value': itemFull.system.uses.max});
+    const updateObject = BladesHelpers.createUpdateObjectFromPath(itemFull._id, valuePath);
     // Fetch object and delete it if it exists
-    let objectToDelete = this.actor;
-    for (let pathPart of valuePath.split('.')) {
+    var objectToDelete = this.actor;
+    for (const pathPart of valuePath.split('.')) {
       if (!objectToDelete)
         break;
       objectToDelete = objectToDelete[pathPart];
@@ -912,45 +955,45 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
   }
 
   async addActorsToSheet(actorTypes, el) {
-    let actors = await BladesHelpers.getAllObjectDocumentsByType(actorTypes, [], game);
-    let actorsToAdd = [];
+    const actors = await BladesHelpers.getAllObjectDocumentsByType(actorTypes, [], game);
+    const actorsToAdd = [];
     el.find('input:checked').each(function() {
       actorsToAdd.push(actors.find(e => e._id === $(this).val()));
     });
 
-    await this.actor.sheet.handleAddedObjects(actorsToAdd, false);
+    await this.handleAddedObjects(actorsToAdd, false);
   }
 
   /* -------------------------------------------- */
 
   async onRadioMiddleClick(event) {
-    let type = event.target.tagName.toLowerCase();
-    let element = event.target;
-    let target = type == 'label' ? element : element.parentElement;
-    let label = target;
+    var type = event.target.tagName.toLowerCase();
+    const element = event.target;
+    var target = type == 'label' ? element : element.parentElement;
+    const label = target;
     type = target.tagName.toLowerCase();
     if (type == 'label')
       target = label.previousElementSibling;
 
-    let actor = this.actor;
-    let isVehicle = actor.type == 'vehicle';
+    var actor = this.actor;
+    const isVehicle = actor.type == 'vehicle';
     if (actor.system.vehicle)
       actor = BladesHelpers.resolveActor(actor.system.vehicle);
     if (!actor) return;
 
-    let value = parseInt(target.value);
-    let fieldList = (isVehicle ? target.name : target.dataset.name).split('.');
-    let attributeName = fieldList[2];
-    let actionName = fieldList[4];
-    let actionData = (await this._prepareContext()).system.attributes[attributeName].actions[actionName];
-    let oldFormField = actionData.first_form != 0 ? 'first_form' : actionData.second_form != 0 ? 'second_form' : '';
-    let formField = oldFormField == 'first_form' ? 'second_form' : oldFormField == 'second_form' ? '' : 'first_form';
-    let updateObject = {};
+    const value = parseInt(target.value);
+    const fieldList = (isVehicle ? target.name : target.dataset.name).split('.');
+    const attributeName = fieldList[2];
+    const actionName = fieldList[4];
+    const actionData = (await this._prepareContext()).system.attributes[attributeName].actions[actionName];
+    const oldFormField = actionData.first_form != 0 ? 'first_form' : actionData.second_form != 0 ? 'second_form' : '';
+    const formField = oldFormField == 'first_form' ? 'second_form' : oldFormField == 'second_form' ? '' : 'first_form';
+    const updateObject = {};
     if (formField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${formField}`] = value - actionData.value;
     if (oldFormField) updateObject[`system.attributes.${attributeName}.actions.${actionName}.==${oldFormField}`] = 0;
     if (Object.keys(updateObject).length > 0) {
       await BladesHelpers.tryUpdate(actor, updateObject);
-      let pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
+      const pilotFull = BladesHelpers.resolveActor(actor.system.pilot);
       if (pilotFull)
         await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
     }
@@ -962,16 +1005,16 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
    * Call a popup for changing a clock's theme and color.
    */
   async clockStylePickerPopup(path, themeColor, isVehicleProxy, isVehicle) {
-    let defaultThemeColor = game.settings.get('beamsaber', 'DefaultClockThemeColor');
+    const defaultThemeColor = game.settings.get('beamsaber', 'DefaultClockThemeColor');
 
-    let clockStylesDropdown = { 'null': `${defaultThemeColor} (default)` };
-    for (let [themeName, theme] of Object.entries(BladesHelpers.clockStyles))
+    const clockStylesDropdown = { 'null': `${defaultThemeColor} (default)` };
+    for (const [themeName, theme] of Object.entries(BladesHelpers.clockStyles))
       if (themeName != 'dataReason')
-        for (let [colorName, color] of Object.entries(theme))
+        for (const [colorName, color] of Object.entries(theme))
           if (colorName != 'dataReason')
             clockStylesDropdown[`${themeName}/${colorName}`] = `${themeName}/${colorName}`;
 
-    let dialog = new foundry.applications.api.DialogV2({
+    const dialog = new foundry.applications.api.DialogV2({
       window: { title: `${game.i18n.localize('BITD.ClockStylePicker')}` },
       content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/popups/clock-style-picker.html', { clockStylesDropdown: clockStylesDropdown, themeColor: themeColor }),
       classes: ['clock-style-picker'],
@@ -990,8 +1033,9 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
       submit: async (result, dialog) => {
         if (result != 'save') return;
 
-        let value = dialog.element.querySelector('select').value;
-        let updateObject = {};
+        const value = dialog.element.querySelector('select').value;
+        const updateObject = {};
+        var updatePath = path.split('.');
         updatePath[updatePath.length - 1] = '==' + updatePath[updatePath.length - 1];
         updatePath = updatePath.join('.');
         updateObject[updatePath] = value;
@@ -1003,7 +1047,7 @@ export class BladesSheetV2 extends HandlebarsApplicationMixin(ActorSheetV2) {
           if (a)
             setTimeout(refreshPilot, 200);
           if (this.actor.system.pilot) {
-            let pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot);
+            const pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot);
             if (pilotFull)
               await BladesHelpers.tryUpdate(pilotFull, {'==name': pilotFull.name});
           }

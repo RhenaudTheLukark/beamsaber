@@ -1197,7 +1197,8 @@
         "TryUpdateNoActiveGM": "Some data could not be updated due to having no Gamemaster or Assistant Gamemaster currently connected. It will be updated once one of them connects to the server.",
         "TryDeleteNoActiveGM": "Some data could not be deleted due to having no Gamemaster or Assistant Gamemaster currently connected. It will be deleted once one of them connects to the server.",
         "NoClockImage": "There is no existing clock image for the theme {theme}, color {color}, size {size} and fill {fill}.",
-        "MustOwnCharacterAndVehicle": "You must own both the Character and Vehicle in order to link or unlink them."
+        "MustOwnCharacterAndVehicle": "You must own both the Character and Vehicle in order to link or unlink them.",
+        "DragDropVehicleGearPilotNoVehicle": "This Pilot must have a Vehicle to assign vehicle gear to!"
       },
       "error": {
         "NoGroupAction": "This Crew does not have a Group Action. This message shouldn't be visible!"

@@ -1739,7 +1739,7 @@ async function showChatMessage(dice, attributeOrRollName = '', note = '', extraF
     speaker: speaker,
     content: result
   }
-  ChatMessage.create(messageData);
+  await ChatMessage.create(messageData);
 }
 
 export async function cancelRollResult(rollData, actorFull) {
@@ -2910,5 +2910,5 @@ export async function computeGroupActionResultAndSendMessage(groupActionData, cr
     speaker: ChatMessage.getSpeaker(),
     content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/group-action-result.html', { action: action_label, position: groupActionData.position, effect: groupActionData.effect, is_vehicle_action: isVehicleAction, roll_status: result, leader_name: leaderFull.name, stress: stress, quirks: quirks, note: groupActionData.note })
   };
-  ChatMessage.create(messageData);
+  await ChatMessage.create(messageData);
 }

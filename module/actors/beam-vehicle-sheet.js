@@ -92,31 +92,7 @@ export class BeamVehicleSheet extends BladesSheet {
     return sheetData;
   }
 
-  /** @override */
-  async _onDropItem(event, droppedItem) {
-    await super._onDropItem(event, droppedItem);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedItem);
-  }
-
-  /** @override */
-  async _onDropActor(event, droppedActor) {
-    await super._onDropActor(event, droppedActor);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this vehicle. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedActor);
-  }
-
-  /** @override */
-  async handleDrop(event, droppedEntity) {
-    let droppedEntityFull = BladesHelpers.resolveActor(droppedEntity.uuid);
-    await this.handleAddedObjects([droppedEntityFull]);
-  }
+  /* -------------------------------------------- */
 
   async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     for (let droppedEntityFull of droppedEntitiesFull) {
@@ -129,6 +105,12 @@ export class BeamVehicleSheet extends BladesSheet {
           break;
         case 'character':
           await BladesHelpers.addCharacterVehicle(droppedEntityFull, this.actor, false);
+          break;
+        case 'vehicle_gear':
+          const pilotFull = BladesHelpers.resolveActor(this.actor.system.pilot)
+          await (pilotFull?.sheet ?? this).addItemsToSheet([droppedEntityFull]);
+          if (pilotFull)
+            BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
           break;
         default:
           break;

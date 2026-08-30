@@ -155,31 +155,7 @@ export class BladesCharacterSheet extends BladesSheet {
     return sheetData;
   }
 
-  /** @override */
-  async _onDropItem(event, droppedItem) {
-    await super._onDropItem(event, droppedItem);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedItem);
-  }
-
-  /** @override */
-  async _onDropActor(event, droppedActor) {
-    await super._onDropActor(event, droppedActor);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedActor);
-  }
-
-  /** @override */
-  async handleDrop(event, droppedEntity) {
-    let droppedEntityFull = BladesHelpers.resolveActor(droppedEntity.uuid);
-    await this.handleAddedObjects([droppedEntityFull]);
-  }
+  /* -------------------------------------------- */
 
   async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     for (let droppedEntityFull of droppedEntitiesFull) {
@@ -202,6 +178,17 @@ export class BladesCharacterSheet extends BladesSheet {
           break;
         case 'class':
           await this.addItemAsObjectAndStoreReference(droppedEntityFull, 'system.class');
+          break;
+        case 'item':
+        case 'ability':
+          await this.addItemsToSheet([droppedEntityFull]);
+          break;
+        case 'vehicle_gear':
+          const vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
+          if (vehicleFull)
+            await this.addItemsToSheet([droppedEntityFull]);
+          else
+            ui.notifications.warn(game.i18n.localize('SFTD.log.warn.DragDropVehicleGearPilotNoVehicle'));
           break;
         default:
           break;
@@ -288,7 +275,7 @@ export class BladesCharacterSheet extends BladesSheet {
             speaker: speaker,
             content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/spark-usage.html', { contents: contents, note: note })
           }
-          ChatMessage.create(messageData);
+          await ChatMessage.create(messageData);
 
           await BladesHelpers.tryUpdate(this.actor, {'system.==spark': false});
         }
@@ -456,7 +443,7 @@ export class BladesCharacterSheet extends BladesSheet {
             speaker: speaker,
             content: messageHTML
           }
-          ChatMessage.create(messageData);
+          await ChatMessage.create(messageData);
         }
       });
       dialog._value = null;
@@ -551,7 +538,7 @@ export class BladesCharacterSheet extends BladesSheet {
             speaker: speaker,
             content: messageHTML
           }
-          ChatMessage.create(messageData);
+          await ChatMessage.create(messageData);
         }
       });
       dialog._value = null;
@@ -748,7 +735,7 @@ export class BladesCharacterSheet extends BladesSheet {
 
       let updateObject = BladesHelpers.createUpdateObjectFromPath(value, path);
       await BladesHelpers.tryUpdate(vehicleFull, updateObject);
-      await await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
+      await BladesHelpers.tryUpdate(this.actor, {'==name': this.actor.name});
     };
 
     // Update Any Vehicle Data

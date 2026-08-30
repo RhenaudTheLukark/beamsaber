@@ -315,10 +315,14 @@ export class BladesHelpers {
    * @param {object} updateObject
    */
   static async tryCreate(objectsData, parentFull) {
-    if (objectsData && parentFull && parentFull.isOwner)
-      return await Item.create(objectsData, {parent: parentFull});
-    else if (parentFull)
-      ui.notifications.warn(game.i18n.localize('BITD.log.warn.MustBeOwnerToCreateItem'));
+    if (objectsData && parentFull && parentFull.isOwner) {
+      let items = await Item.create(objectsData, {parent: parentFull});
+      for (let [itemIndex, item] of Object.entries(items)) {
+        await BladesHelpers.tryUpdate(item, {'system.original_id': objectsData[itemIndex]._id});
+        await BladesHelpers.postCreateItem(item, parentFull);
+      }
+      return items;
+    }
     return [];
   }
 
@@ -564,9 +568,7 @@ export class BladesHelpers {
     }
     // Well-Trained Hunter Robot: Create a special Cohort
     if (itemFull.system.hunter_robot) {
-      let squadFull = null;
-      if (actorFull.system.crew)
-        squadFull = BladesHelpers.resolveActor(actorFull.system.crew);
+      const squadFull = BladesHelpers.resolveActor(actorFull.system.crew);
       if (squadFull) {
         let data = {name: game.i18n.format('BITD.HunterRobotName', {characterName: actorFull.name}), type: 'cohort', system: {type: 'Expert', owner: actorFull.uuid}};
         let result = await squadFull.createEmbeddedDocuments('Item', [data]);

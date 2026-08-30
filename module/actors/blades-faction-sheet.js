@@ -44,31 +44,7 @@ export class BladesFactionSheet extends BladesSheet {
     return sheetData;
   }
 
-  /** @override */
-  async _onDropItem(event, droppedItem) {
-    await super._onDropItem(event, droppedItem);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedItem);
-  }
-
-  /** @override */
-  async _onDropActor(event, droppedActor) {
-    await super._onDropActor(event, droppedActor);
-    if (!this.actor.isOwner) {
-      ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
-      return false;
-    }
-    await this.handleDrop(event, droppedActor);
-  }
-
-  /** @override */
-  async handleDrop(event, droppedEntity) {
-    let droppedEntityFull = BladesHelpers.resolveActor(droppedEntity.uuid);
-    await this.handleAddedObjects([droppedEntityFull]);
-  }
+  /* -------------------------------------------- */
 
   async handleAddedObjects(droppedEntitiesFull, actuallyDropped = true) {
     let currentTab = this._tabs[0].active;
@@ -77,29 +53,28 @@ export class BladesFactionSheet extends BladesSheet {
         continue;
 
       switch (currentTab) {
-        case "relationships":
-          if (["faction", "crew", "character", "npc"].includes(droppedEntityFull.type))
+        case 'relationships':
+          if (['faction', 'crew', 'character', 'npc'].includes(droppedEntityFull.type))
             await BladesHelpers.addRelationship(this.actor, droppedEntityFull);
           break;
-        case "squads":
-          if (droppedEntityFull.type == "crew")
+        case 'squads':
+          if (droppedEntityFull.type == 'crew')
             await BladesHelpers.addFactionSquad(this.actor, droppedEntityFull, true);
           break;
-        case "npcs":
-          if (droppedEntityFull.type == "npc")
+        case 'npcs':
+          if (droppedEntityFull.type == 'npc')
             await BladesHelpers.addFactionNPC(this.actor, droppedEntityFull, true);
-          break;
-        case "regions":
-          if (droppedEntityFull.type == "region")
-            await BladesHelpers.addRegionOwner(this.actor, droppedEntityFull, true);
           break;
         default:
           break;
       }
 
       switch (droppedEntityFull.type) {
-        case "faction_type":
+        case 'faction_type':
           await this.addItemAsObjectAndStoreReference(droppedEntityFull, 'system.type');
+        case 'region':
+          await BladesHelpers.addRegionOwner(this.actor, droppedEntityFull, true);
+          break;
         default:
           break;
       }
@@ -129,24 +104,24 @@ export class BladesFactionSheet extends BladesSheet {
 
     // Delete Squad
     html.find('.delete-squad').click(async ev => {
-      const element = $(ev.currentTarget).closest(".item");
-      let squadFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const element = $(ev.currentTarget).closest('.item');
+      let squadFull = BladesHelpers.resolveActor(element.data('itemId'));
       if (squadFull)
         await BladesHelpers.removeFactionSquad(squadFull);
     });
 
     // Delete Squad
     html.find('.delete-npc').click( async ev => {
-      const element = $(ev.currentTarget).closest(".item");
-      let npcFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const element = $(ev.currentTarget).closest('.item');
+      let npcFull = BladesHelpers.resolveActor(element.data('itemId'));
       if (npcFull)
         await BladesHelpers.removeFactionNPC(npcFull);
     });
 
     // Delete Region
     html.find('.delete-region').click( async ev => {
-      const element = $(ev.currentTarget).closest(".item");
-      let regionFull = BladesHelpers.resolveActor(element.data("itemId"));
+      const element = $(ev.currentTarget).closest('.item');
+      let regionFull = BladesHelpers.resolveActor(element.data('itemId'));
       if (regionFull)
         await BladesHelpers.removeRegionOwner(regionFull);
     });
@@ -169,8 +144,8 @@ export class BladesFactionSheet extends BladesSheet {
 
     // Delete Goal
     html.find('.delete-goal').click(async ev => {
-      const element = $(ev.currentTarget).closest(".item");
-      let currentGoalId = element.data("goalId");
+      const element = $(ev.currentTarget).closest('.item');
+      let currentGoalId = element.data('goalId');
       let goalsEntries = Object.entries(this.actor.system.goals);
       goalsEntries.splice(currentGoalId, 1);
       for (let id in goalsEntries)
@@ -180,8 +155,8 @@ export class BladesFactionSheet extends BladesSheet {
 
     // Collapse children relationship list
     html.find('.collapse').click(async ev => {
-      const element = $(ev.currentTarget).closest(".item");
-      let relationshipUuid = element.data("itemId");
+      const element = $(ev.currentTarget).closest('.item');
+      let relationshipUuid = element.data('itemId');
       let relationships = this.actor.system.relationships;
       let [relationshipId, relationshipFull] = Object.entries(relationships).find(r => r[1].uuid == relationshipUuid) ?? [-1, null];
       if (relationshipId == -1) return;

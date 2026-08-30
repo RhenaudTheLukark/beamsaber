@@ -196,12 +196,11 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
   /** @override */
   // TODO: Upgrade to V2
   async _onDropItem(event, droppedItem) {
-    await super._onDropItem(event, droppedItem);
     if (!this.actor.isOwner) {
       ui.notifications.error(`You do not have sufficient permissions to edit this character. Please speak to your GM if you feel you have reached this message in error.`, { permanent: true });
       return false;
     }
-    await this.handleDrop(event, droppedItem);
+    await this.handleDrop(event, await Item.implementation.fromDropData(droppedItem));
   }
 
   /** @override */
@@ -243,6 +242,17 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
           break;
         case 'class':
           await this.addItemAsObjectAndStoreReference(droppedEntityFull, 'system.class');
+          break;
+        case 'item':
+        case 'ability':
+          await this.addItemsToSheet([droppedEntityFull]);
+          break;
+        case 'vehicle_gear':
+          const vehicleFull = BladesHelpers.resolveActor(this.actor.system.vehicle);
+          if (vehicleFull)
+            await this.addItemsToSheet([droppedEntityFull]);
+          else
+            ui.notifications.warn(game.i18n.localize('SFTD.log.warn.DragDropVehicleGearPilotNoVehicle'));
           break;
         default:
           break;
@@ -328,7 +338,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
             speaker: speaker,
             content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/spark-usage.html', { contents: contents, note: note })
           }
-          ChatMessage.create(messageData);
+          await ChatMessage.create(messageData);
 
           await BladesHelpers.tryUpdate(this.actor, {'system.==spark': false});
         }
@@ -556,7 +566,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
           speaker: speaker,
           content: messageHTML
         }
-        ChatMessage.create(messageData);
+        await ChatMessage.create(messageData);
       }
     });
     dialog._value = null;
@@ -988,7 +998,7 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
     });
 
     // Update Any Vehicle Data
-    this.element.querySelector('select.vehicle-data, input[type=text].vehicle-data').addEventListener('change', this.#vehicleData);
+    this.element.querySelector('select.vehicle-data, input[type=text].vehicle-data').addEventListener('change', BladesCharacterSheetV2.#vehicleData);
   }
 
   // Remove unavailable roll types
