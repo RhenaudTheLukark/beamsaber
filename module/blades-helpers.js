@@ -337,9 +337,11 @@ export class BladesHelpers {
       let speaker = ChatMessage.getSpeaker();
       let messageData = {
         speaker: speaker,
-        messageType: 'updateRequest',
-        updateQuery: JSON.stringify(updateObject),
-        objectUuid: objectFull.uuid,
+        system: {
+          messageType: 'updateRequest',
+          updateQuery: JSON.stringify(updateObject),
+          objectUuid: objectFull.uuid
+        },
         content: '<div class="special-message"></div>',
         blind: true,
         whisper: game.users.activeGM ? [game.users.activeGM.id] : game.users.filter(u => u.isGM).map(u => u.id)
@@ -372,10 +374,12 @@ export class BladesHelpers {
       let speaker = ChatMessage.getSpeaker();
       let messageData = {
         speaker: speaker,
-        messageType: 'deleteRequest',
-        objectUuid: objectFull.uuid,
-        parentUuid: parentFull ? parentFull.uuid : null,
-        objectEmbeddedName: parentFull ? 'Item' : null,
+        system: {
+          messageType: 'deleteRequest',
+          objectUuid: objectFull.uuid,
+          parentUuid: parentFull ? parentFull.uuid : null,
+          objectEmbeddedName: parentFull ? 'Item' : null
+        },
         content: '<div class="special-message"></div>',
         blind: true,
         whisper: game.users.activeGM ? [game.users.activeGM.id] : game.users.filter(u => u.isGM).map(u => u.id)
@@ -886,21 +890,19 @@ export class BladesHelpers {
   /* -------------------------------------------- */
 
   static async sendClockStyleRequest() {
-    // Send a specific message to the GM to update some data on their end
+    // Send a specific message to the GM to request all of the server's clock styles
     let speaker = ChatMessage.getSpeaker();
     let messageData = {
       speaker: speaker,
-      messageType: 'clockStylesRequest',
-      userId: game.userId,
+      system: {
+        messageType: 'clockStylesRequest',
+        userId: game.userId
+      },
       content: '<div class="special-message"></div>',
       blind: true,
-      whisper: game.users.activeGM ? [game.users.activeGM.id] : game.users.filter(u => u.isGM).map(u => u.id)
+      whisper: game.users.activeGM.id
     }
     let message = await BeamChatMessage.create(messageData);
-
-    if (!game.users.activeGM)
-      // Notify the player that the data will be handled when a GM connects
-      ui.notifications.warn(game.i18n.localize('BITD.log.warn.ClockStylesRequestNoActiveGM'));
   }
 
   static async sendClockStyleResponseBroadcast() {
@@ -908,8 +910,10 @@ export class BladesHelpers {
       let speaker = ChatMessage.getSpeaker();
       let messageData = {
         speaker: speaker,
-        messageType: 'clockStylesResponse',
-        clockStyles: BladesHelpers.clockStyles,
+        system: {
+          messageType: 'clockStylesResponse',
+          clockStyles: BladesHelpers.clockStyles
+        },
         content: '<div class="special-message"></div>',
         blind: true,
         whisper: [user.id]
@@ -934,94 +938,103 @@ export class BladesHelpers {
   static clockStyles = {};
 
   static async loadAllClockStyles() {
-    BladesHelpers.clockStyles = {};
-    let clockStylesShifts = game.settings.get('beamsaber', 'ClockStyles').contents;
+    const canBrowseFiles = game.user.hasPermission("FILES_BROWSE");
+    if (canBrowseFiles) {
+      // Checks for clock styles through folders
+      BladesHelpers.clockStyles = {};
+      const clockStylesShifts = game.settings.get('beamsaber', 'ClockStyles').contents;
+      const firstClockRegex = new RegExp('(?<size>[0-9]+)clock_0.(?<extension>.*)');
+      const themeContainerFolders = [`worlds/${game.world.id}/themes`, 'systems/beamsaber/themes'];
+      for (const themeContainerFolder of themeContainerFolders) {
+        let themeFolders;
+        try {
+          themeFolders = await foundry.applications.apps.FilePicker.browse('data', themeContainerFolder).then(f => f.dirs);
+        } catch {
+          // No themes folder, skip
+          continue;
+        }
 
-    const firstClockRegex = new RegExp('(?<size>[0-9]+)clock_0.(?<extension>.*)');
-    const themeContainerFolders = [`worlds/${game.world.id}/themes`, 'systems/beamsaber/themes'];
-    for (const themeContainerFolder of themeContainerFolders) {
-      let themeFolders;
-      try {
-        themeFolders = await foundry.applications.apps.FilePicker.browse('data', themeContainerFolder).then(f => f.dirs);
-      } catch {
-        // No themes folder, skip
-        continue;
-      }
+        for (const themeFolder of themeFolders) {
+          const theme = themeFolder.split('/').pop();
+          const colorFolders = await foundry.applications.apps.FilePicker.browse('data', themeFolder).then(f => f.dirs);
+          if (!BladesHelpers.clockStyles[theme])
+            BladesHelpers.clockStyles[theme] = {};
 
-      for (const themeFolder of themeFolders) {
-        const theme = themeFolder.split('/').pop();
-        const colorFolders = await foundry.applications.apps.FilePicker.browse('data', themeFolder).then(f => f.dirs);
-        if (!BladesHelpers.clockStyles[theme])
-          BladesHelpers.clockStyles[theme] = {};
+          for (const colorFolder of colorFolders) {
+            const color = colorFolder.split('/').pop();
+            const filePaths = await foundry.applications.apps.FilePicker.browse('data', colorFolder).then(f => f.files);
+            if (!BladesHelpers.clockStyles[theme][color])
+              BladesHelpers.clockStyles[theme][color] = {};
 
-        for (const colorFolder of colorFolders) {
-          const color = colorFolder.split('/').pop();
-          const filePaths = await foundry.applications.apps.FilePicker.browse('data', colorFolder).then(f => f.files);
-          if (!BladesHelpers.clockStyles[theme][color])
-            BladesHelpers.clockStyles[theme][color] = {};
+            for (const fileData of filePaths.map(f => firstClockRegex.exec(f.split('/').pop())).filter(f => f != null)) {
+              if (BladesHelpers.clockStyles[theme][color][fileData.groups.size])
+                continue;
+              const fileName = fileData.input;
+              const clockData = {
+                theme: theme,
+                color: color,
+                size: fileData.groups.size,
+                extension: fileData.groups.extension,
+                inWorldFolder: themeFolder.startsWith('worlds/'),
+                baseSprite: fileName,
+                shifted: clockStylesShifts?.[theme]?.[color]?.[fileData.groups.size]?.shifted ?? false
+              };
 
-          for (const fileData of filePaths.map(f => firstClockRegex.exec(f.split('/').pop())).filter(f => f != null)) {
-            if (BladesHelpers.clockStyles[theme][color][fileData.groups.size])
-              continue;
-            const fileName = fileData.input;
-            const clockData = {
-              theme: theme,
-              color: color,
-              size: fileData.groups.size,
-              extension: fileData.groups.extension,
-              inWorldFolder: themeFolder.startsWith('worlds/'),
-              baseSprite: fileName,
-              shifted: clockStylesShifts?.[theme]?.[color]?.[fileData.groups.size]?.shifted ?? false
-            };
-
-            let clockImages = {'0': {file: fileName}};
-            const clockRegex = new RegExp(`${fileData.groups.size}clock_(?<state>[1-9][0-9]*).${fileData.groups.extension}`);
-            const looseClockRegex = new RegExp(`${fileData.groups.size}clock_(?<state>[1-9][0-9]*).(?<extension>.*)`);
-            for (let clockFileData of filePaths.map(f => clockRegex.exec(f.split('/').pop())).filter(f => f != null))
-              if (clockFileData.index == 0)
-                clockImages[clockFileData.groups.state] = {file: clockFileData.input};
-            for (let clockFileData of filePaths.map(f => looseClockRegex.exec(f.split('/').pop())).filter(f => f != null))
-              if (!clockImages[clockFileData.groups.state])
+              let clockImages = {'0': {file: fileName}};
+              const clockRegex = new RegExp(`${fileData.groups.size}clock_(?<state>[1-9][0-9]*).${fileData.groups.extension}`);
+              const looseClockRegex = new RegExp(`${fileData.groups.size}clock_(?<state>[1-9][0-9]*).(?<extension>.*)`);
+              for (let clockFileData of filePaths.map(f => clockRegex.exec(f.split('/').pop())).filter(f => f != null))
                 if (clockFileData.index == 0)
-                  clockImages[clockFileData.groups.state] = {file: clockFileData.input, dataReason: 'BITD.Settings.ClockStyles.WrongExtension'};
+                  clockImages[clockFileData.groups.state] = {file: clockFileData.input};
+              for (let clockFileData of filePaths.map(f => looseClockRegex.exec(f.split('/').pop())).filter(f => f != null))
+                if (!clockImages[clockFileData.groups.state])
+                  if (clockFileData.index == 0)
+                    clockImages[clockFileData.groups.state] = {file: clockFileData.input, dataReason: 'BITD.Settings.ClockStyles.WrongExtension'};
 
-            let reasons = [];
-            for (let clockState of Array(Number(fileData.groups.size) + 1).fill().map((_, i) => String(i))) {
-              const clockStateData = clockImages[clockState];
-              if (!clockStateData)
-                reasons.push(game.i18n.format('BITD.Settings.ClockStyles.MissingClockState', {fill: clockState}));
-              else if (clockStateData.dataReason == 'BITD.Settings.ClockStyles.WrongExtension')
-                reasons.push(game.i18n.format(clockStateData.dataReason, {fill: clockState, bad: clockStateData.file.split('.', 2).pop(), good: clockData.extension}));
-              else if (clockStateData.dataReason)
-                reasons.push(game.i18n.location(clockStateData.dataReason));
+              let reasons = [];
+              for (let clockState of Array(Number(fileData.groups.size) + 1).fill().map((_, i) => String(i))) {
+                const clockStateData = clockImages[clockState];
+                if (!clockStateData)
+                  reasons.push(game.i18n.format('BITD.Settings.ClockStyles.MissingClockState', {fill: clockState}));
+                else if (clockStateData.dataReason == 'BITD.Settings.ClockStyles.WrongExtension')
+                  reasons.push(game.i18n.format(clockStateData.dataReason, {fill: clockState, bad: clockStateData.file.split('.', 2).pop(), good: clockData.extension}));
+                else if (clockStateData.dataReason)
+                  reasons.push(game.i18n.location(clockStateData.dataReason));
+              }
+              clockData.dataReason = reasons.join('<br/>');
+              BladesHelpers.clockStyles[theme][color][fileData.groups.size] = clockData;
             }
-            clockData.dataReason = reasons.join('<br/>');
-            BladesHelpers.clockStyles[theme][color][fileData.groups.size] = clockData;
+            BladesHelpers.clockStyles[theme][color].dataReason = Object.entries(BladesHelpers.clockStyles[theme][color])
+              .filter(s => s[0] != 'dataReason' && s[1].dataReason != '')
+              .map(s => `${(s[1].dataReason ?? '')
+                .split('<br/>')
+                .map(s2 => `${game.i18n.localize('BITD.Settings.ClockStyles.Size')} ${s[0]}: ${s2}`)
+                .join('<br/>')}`)
+              .join('<br/>');
           }
-          BladesHelpers.clockStyles[theme][color].dataReason = Object.entries(BladesHelpers.clockStyles[theme][color])
-            .filter(s => s[0] != 'dataReason' && s[1].dataReason != '')
-            .map(s => `${(s[1].dataReason ?? '')
+          BladesHelpers.clockStyles[theme] = Object.fromEntries(Object.entries(BladesHelpers.clockStyles[theme]).sort((a, b) => a[0].localeCompare(b[0], 'en-US')));
+          BladesHelpers.clockStyles[theme].dataReason = Object.entries(BladesHelpers.clockStyles[theme])
+            .filter(c => c[0] != 'dataReason' && c[1].dataReason != '')
+            .map(c => `${(c[1].dataReason ?? '')
               .split('<br/>')
-              .map(s2 => `${game.i18n.localize('BITD.Settings.ClockStyles.Size')} ${s[0]}: ${s2}`)
+              .map(c2 => `${game.i18n.localize('BITD.Settings.ClockStyles.Color')} ${c[0]}, ${c2}`)
               .join('<br/>')}`)
             .join('<br/>');
         }
-        BladesHelpers.clockStyles[theme] = Object.fromEntries(Object.entries(BladesHelpers.clockStyles[theme]).sort((a, b) => a[0].localeCompare(b[0], 'en-US')));
-        BladesHelpers.clockStyles[theme].dataReason = Object.entries(BladesHelpers.clockStyles[theme])
-          .filter(c => c[0] != 'dataReason' && c[1].dataReason != '')
-          .map(c => `${(c[1].dataReason ?? '')
-            .split('<br/>')
-            .map(c2 => `${game.i18n.localize('BITD.Settings.ClockStyles.Color')} ${c[0]}, ${c2}`)
-            .join('<br/>')}`)
-          .join('<br/>');
+        BladesHelpers.clockStyles = Object.fromEntries(Object.entries(BladesHelpers.clockStyles).sort((a, b) => a[0].localeCompare(b[0], 'en-US')));
       }
-      BladesHelpers.clockStyles = Object.fromEntries(Object.entries(BladesHelpers.clockStyles).sort((a, b) => a[0].localeCompare(b[0], 'en-US')));
+      // If you're the GM and you found clock styles, update all players' clock styles
+      if (Object.keys(BladesHelpers.clockStyles).length > 0 && game.user.isGM)
+        await BladesHelpers.sendClockStyleResponseBroadcast();
+    } else {
+      // If you can't look through files, request clock styles from an active GM (or all GMs if none are present)
+      if (!game.users.activeGM) {
+        // Notify the player that the data will be handled when a GM connects
+        ui.notifications.warn(game.i18n.localize('BITD.log.warn.ClockStylesRequestNoActiveGM'), { permanent: true });
+        game.user.needsClockStyleNotification = true;
+      } else
+        await BladesHelpers.sendClockStyleRequest();
     }
-
-    if (Object.keys(BladesHelpers.clockStyles).length == 0 && !game.user.isGM)
-      await BladesHelpers.sendClockStyleRequest();
-    if (game.user.isGM)
-      await BladesHelpers.sendClockStyleResponseBroadcast();
   }
 
   static getClockSpritePath(clockStyle) {

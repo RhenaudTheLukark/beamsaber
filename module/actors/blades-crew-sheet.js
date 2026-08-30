@@ -230,7 +230,9 @@ export class BladesSquadSheet extends BladesSheet {
         await this.actor.createGroupAction(attribute, position, true, effect, true, leaderFull, note);
         let messageData = {
           speaker: speaker,
-          groupActionSquad: this.actor.uuid,
+          system: {
+            groupActionSquad: this.actor.uuid
+          },
           content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/group-action-begin.html', { attribute_label: BladesHelpers.getAttributeLabel(attribute), position: this.actor.system.group_action.position, effect: this.actor.system.group_action.effect, leader: leaderFull, note: note, isGM: game.user.isGM })
         }
         BeamChatMessage.create(messageData);
@@ -329,7 +331,7 @@ export class BladesSquadSheet extends BladesSheet {
           speaker: speaker,
           content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/start-mission.html', { contents: messageContents })
         }
-        BeamChatMessage.create(messageData);
+        ChatMessage.create(messageData);
       }
     });
     await dialog.render(true);
@@ -565,7 +567,7 @@ export class BladesSquadSheet extends BladesSheet {
           speaker: speaker,
           content: await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/end-mission.html', { contents: messageContents })
         }
-        BeamChatMessage.create(messageData);
+        ChatMessage.create(messageData);
       }
     });
     extraData.dialog = dialog;

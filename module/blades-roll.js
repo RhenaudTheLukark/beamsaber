@@ -720,7 +720,7 @@ export const bladesRollModifierList = {
       return {
         dice: dice,
         rollText: otherHelper ? 'BITD.DowntimeAssistOtherEffect' : 'BITD.DowntimeAssistEffect',
-        rollTextArgs: { pilot: helperFull?.name } };
+        rollTextArgs: { helper: game.i18n.localize(helperFull?.name ?? 'Unknown Helper') } };
     },
     downtime_assist: true
   },
@@ -1657,8 +1657,10 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
 
   let messageData = {
     speaker: speaker,
+    system: {
+      rollData: extraFields.rollData
+    },
     content: result,
-    rollData: extraFields.rollData,
     rolls: [r]
   }
   await BeamChatMessage.create(messageData);
@@ -1879,10 +1881,10 @@ export function getBladesRollStatus(rolls, zeromode, modifiers) {
 export function getBladesRollResistanceStress(rolls, extraResult = 0, zeromode = false) {
   // Sort roll values from lowest to highest.
   let sortedRolls = rolls.map(i => i.result).sort();
-  let result = extraResult + sortedRolls[zeromode ? 0 : sortedRolls.length - 1];
+  let result = Math.min(extraResult + sortedRolls[zeromode ? 0 : sortedRolls.length - 1], 6);
   if (!zeromode && sortedRolls.length >= 2 && sortedRolls[sortedRolls.length - 1] == 6 && sortedRolls[sortedRolls.length - 2] == 6)
     result += 1;
-  let useDie = Math.max(Math.min(result, 7), 1);
+  let useDie = Math.clamp(result, 1, 7);
   return 6 - useDie;
 }
 
@@ -1902,11 +1904,11 @@ export function getBladesResistanceQuirks(dice) {
 export function getBladesRollCollect(rolls, extraResult = 0, zeromode = false) {
   // Sort roll values from lowest to highest.
   let sortedRolls = rolls.map(i => i.result).sort();
-  let result = extraResult + sortedRolls[zeromode ? 0 : sortedRolls.length - 1];
+  let result = Math.min(extraResult + sortedRolls[zeromode ? 0 : sortedRolls.length - 1], 6);
   if (!zeromode && sortedRolls.length >= 2 && sortedRolls[sortedRolls.length - 1] == 6 && sortedRolls[sortedRolls.length - 2] == 6)
     result += 1;
-  result = Math.max(Math.min(result, 7), 1);
-  return result == 7 ? 9 : result;
+  let useDie = Math.clamp(result, 1, 7);
+  return useDie == 7 ? 9 : useDie;
 }
 
 /**
@@ -1918,7 +1920,7 @@ export function getBladesRollCutLooseUpkeep(rolls, extraResult = 0, zeromode = f
   // Sort roll values from lowest to highest.
   let sortedRolls = rolls.map(i => i.result).sort();
   let result = extraResult + sortedRolls[zeromode ? 0 : sortedRolls.length - 1];
-  result = Math.max(Math.min(result, 6), 1);
+  result = Math.clamp(result, 1, 6);
   return result;
 }
 
@@ -1933,9 +1935,9 @@ export function getBladesRollDowntime(rolls, extraResult = 0, zeromode = false) 
   let useDie = sortedRolls[zeromode ? 0 : sortedRolls.length - 1];
   if (!zeromode && sortedRolls.length >= 2 && sortedRolls[sortedRolls.length - 1] == 6 && sortedRolls[sortedRolls.length - 2] == 6)
     useDie += 1;
-  useDie = Math.max(Math.min(useDie, 7), 1);
+  useDie = Math.clamp(useDie, 1, 7);
   let result = extraResult + (useDie <= 3 ? 1 : useDie < 6 ? 2 : (useDie - 3));
-  result = Math.max(Math.min(result, 4), 1);
+  result = Math.clamp(result, 1, 4);
   return result == 4 ? 5 : result;
 }
 

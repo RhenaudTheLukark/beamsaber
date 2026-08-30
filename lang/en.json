@@ -750,7 +750,7 @@
     "Assist": "Assist",
     "AssistEffect": "{pilot} assisted you. They suffered <strong>{num} Stress</strong>. You have chosen the following <strong>{benefits}</strong> benefit(s):<ul>{effects}</ul>",
     "AssistTacticalGeniusEffect": "{pilot} assisted you. They suffered no Stress due to their tactical genius. You have chosen the following <strong>{benefits}</strong> benefit(s):<ul>{effects}</ul>",
-    "DowntimeAssistEffect": "{pilot} assisted you, granting you <strong>+1d</strong>.",
+    "DowntimeAssistEffect": "{helper} assisted you, granting you <strong>+1d</strong>.",
     "DowntimeAssistOtherEffect": "An ally or your direct superior assisted you. It is likely to provide access to resources otherwise unavailable.",
     "Setup": "Setup",
     "SetupEffect": "Another Pilot or a Cohort set you up for success. Your {effect} has improved.",
@@ -1170,7 +1170,8 @@
         "SameObjectFromOwned": "The dropped {owner} is already this {obj}'s {owner}.",
         "OwnedFactionRelationship": "The dropped actor is already owned by this faction.",
         "SameFactionRelationship": "The dropped actor already has a relationship with this faction.",
-        "SameSquadRelationship": "The dropped actor already has a relationship with this squad."
+        "SameSquadRelationship": "The dropped actor already has a relationship with this squad.",
+        "ClockStylesRequestNotification": "Clock styles have been properly loaded. Re-open sheets to see proper clocks."
       },
       "warn": {
         "CarryThatWeightNoSquad": "Carry That Weight can only be used if you are in a Squad!",

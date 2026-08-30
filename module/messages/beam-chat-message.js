@@ -8,23 +8,6 @@ export class BeamChatMessage extends foundry.documents.ChatMessage {
   static handledMessages = [];
 
   /** @override */
-  _preCreate(data, options, user) {
-    super._preCreate(data, options, user);
-    this.updateSource({
-      'system.messageType': data.messageType,
-      'system.clockStyles': data.clockStyles,
-      'system.userId': data.userId,
-      'system.parentUuid': data.parentUuid,
-      'system.objectEmbeddedName': data.objectEmbeddedName,
-      'system.objectUuid': data.objectUuid,
-      'system.objectData': data.objectData,
-      'system.groupActionSquad': data.groupActionSquad,
-      'system.updateQuery': data.updateQuery,
-      'system.rollData': data.rollData
-    });
-  }
-
-  /** @override */
   get visible() {
     if (!this.system.messageType)
       return super.visible;
@@ -110,8 +93,10 @@ export class BeamChatMessage extends foundry.documents.ChatMessage {
     const speaker = ChatMessage.getSpeaker();
     const messageData = {
       speaker: speaker,
-      messageType: 'clockStylesResponse',
-      clockStyles: BladesHelpers.clockStyles,
+      system: {
+        messageType: 'clockStylesResponse',
+        clockStyles: BladesHelpers.clockStyles
+      },
       content: '<div class="special-message"></div>',
       blind: true,
       whisper: [this.system.userId]
@@ -122,6 +107,10 @@ export class BeamChatMessage extends foundry.documents.ChatMessage {
 
   async handleClockStylesResponseMessage(html) {
     // Update the clock styles, then delete the message
+    if (game.user.needsClockStyleNotification) {
+      ui.notifications.info(game.i18n.localize('BITD.log.info.ClockStylesRequestNotification'), { permanent: true });
+      game.user.needsClockStyleNotification = false;
+    }
     BladesHelpers.clockStyles = this.system.clockStyles;
     return html;
   }
