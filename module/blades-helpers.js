@@ -519,6 +519,10 @@ export class BladesHelpers {
     telepathy: {
       conditional: true,
       includeOwner: true
+    },
+    doctor: {
+      conditional: false,
+      includeOwner: true
     }
   };
 

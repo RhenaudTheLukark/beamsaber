@@ -324,6 +324,12 @@ export const bladesRollModifierList = {
     rollTypes: ['actionRoll', 'groupAction'],
     effect: 1
   },
+  doctor: {
+    name: 'BITD.AbilityUpgrade.DoctorTitle',
+    rollType: 'recover',
+    dice: 1,
+    exclude: true
+  },
   researcher: {
     rollType: 'manufacture',
     result: 1

@@ -25,6 +25,12 @@
           "mode": 5,
           "value": "true",
           "priority": 30
+        },
+        {
+          "key": "system.conditional_roll_modifiers.doctor",
+          "mode": 5,
+          "value": "true",
+          "priority": 30
         }
       ],
       "description": "",
@@ -41,7 +47,7 @@
         "systemId": "beamsaber",
         "systemVersion": "0.6.0",
         "createdTime": 1776606508829,
-        "modifiedTime": 1776606524185,
+        "modifiedTime": 1789091700425,
         "lastModifiedBy": "YR7rqLkjCwcJpOjY"
       },
       "_key": "!items.effects!Emdr4BRQFwIqtKhK.iSc21yfBhY8HoYxp"
@@ -73,12 +79,11 @@
     "class": "Technician",
     "price": 1,
     "uses": {
-      "max": 0,
       "value": 0,
+      "max": 0,
       "per": null
     },
-    "purchased": false,
-    "class_default": false,
+    "replenish": true,
     "logic": "",
     "activation": {
       "type": "",
@@ -113,7 +118,9 @@
     ],
     "collapsed": false,
     "container_type": "TYPES.Item.item",
-    "expertise_action": ""
+    "expertise_action": "",
+    "purchased": false,
+    "class_default": false
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!Emdr4BRQFwIqtKhK"

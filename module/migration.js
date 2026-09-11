@@ -100,6 +100,9 @@ async function _migrateActor(actor, version) {
       };
     }
   }
+  if (version < 4.4)
+    if (actor.type == 'crew')
+      await actor.updateCrewWideAbilityOwnership();
 
   return updateData ?? {};
 }

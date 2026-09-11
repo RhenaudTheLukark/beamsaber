@@ -1,8 +1,6 @@
 Bug list:
 -1 Try to stop single quotes and double quotes from being an issue in texts by unescaping them
 	- May be fixed by using escapeHTML(), but it's asynchronous, so it needs SheetV2
--1 Drop item through drag & drop on Vehicle: it adds it to the Vehicle even if it has a pilot
-	- Can be fixed easily after switching to SheetV2
 -1 Vehicle fields not updating the Pilot sheet properly once they're changed on the Vehicle sheet
 	- Upgrade to SheetV2 to work with apps instead of updating everything manually :pray:
 
