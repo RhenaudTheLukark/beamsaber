@@ -52,7 +52,7 @@ export const bladesRollModifierList = {
     rollTypes: ['actionRoll', 'groupAction', 'fortune'],
     fields: {
       'BITD.Cost': [],
-      'BITD.Effect': ['BITD.ExtraDie', 'BITD.ImprovedEffect', 'BITD.IgnoreHarmDamage']
+      'BITD.Effect': ['BITD.ExtraDie', 'BITD.ImprovedEffect']
     },
     resolveFunc: (fields, extraData) => {
       let isStress = fields['BITD.Cost'] ? fields['BITD.Cost'] == 'BITD.Stress' : !extraData.isVehicle;
@@ -73,7 +73,7 @@ export const bladesRollModifierList = {
       'BITD.Connection': [],
       'BITD.TacticalGenius': false,
       'BITD.CombinedArms': false,
-      'BITD.Effects': ['BITD.ExtraDie', 'BITD.ImprovedPosition', 'BITD.ImprovedEffect', 'BITD.IgnoreHarmDamage'],
+      'BITD.Effects': ['BITD.ExtraDie', 'BITD.ImprovedPosition', 'BITD.ImprovedEffect'],
     },
     resolveFunc: (fields, extraData) => {
       let effectText = '';
@@ -2616,6 +2616,14 @@ export async function resolveRollModifierArray(modifiers, actorFull, conditional
             let squadFull = actorFull.type == 'crew' ? actorFull : BladesHelpers.resolveActor(actorFull.system.crew);
             if (!squadFull?.system.real_workshop) continue;
           }
+          if (result.push_yourself || result.assist) {
+            const key = `BITD.Effect${result.assist ? 's' : ''}`;
+            if ((!actorFull.system.tough_as_nails && actorFull.system.harm.heavy.one) || (actorFull.system.tough_as_nails && actorFull.system.harm.deadly.one))
+              result.fields[key].push('BITD.IgnoreHarm')
+            const vehicleFull = BladesHelpers.resolveActor(actorFull.system.vehicle);
+            if (vehicleFull?.system.damage.heavy.one)
+              result.fields[key].push('BITD.IgnoreDamage')
+          }
           output.push(result);
         } else
           console.error(`Unknown modifier '${key}'`);
@@ -2707,7 +2715,7 @@ export function buildConditionalModifiersHTML(modifiers, actorFull) {
         else if (fieldDataArray instanceof Array) {
           let first = true;
           let multiple = fieldName == 'BITD.Effects';
-          output += `<select field="${fieldName}"${multiple ? ' data-tooltip="BITD.MultipleSelectUsage" multiple': ''}>`
+          output += `<select field="${fieldName}"${multiple ? ` data-tooltip="BITD.MultipleSelectUsage" size="${Math.min(fieldDataArray.length, 4)}" multiple`: ''}>`
           for (let fieldData of fieldDataArray) {
             output += `<option value="${fieldData}" ${first ? 'selected' : ''}>${game.i18n.localize(fieldData)}</option>`;
             first = false;
@@ -2716,7 +2724,7 @@ export function buildConditionalModifiersHTML(modifiers, actorFull) {
         } else {
           let first = true;
           let multiple = fieldName == 'BITD.Effects';
-          output += `<select field="${fieldName}"${multiple ? ' data-tooltip="BITD.MultipleSelectUsage" multiple': ''}>`
+          output += `<select field="${fieldName}"${multiple ? ` data-tooltip="BITD.MultipleSelectUsage" size="${Math.min(Object.values(fieldDataArray).length, 4)}" multiple`: ''}>`
           for (let [fieldDataInternal, fieldData] of Object.entries(fieldDataArray)) {
             output += `<option value="${fieldDataInternal}" ${first ? 'selected' : ''}>${game.i18n.localize(fieldData)}</option>`;
             first = false;
