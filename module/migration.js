@@ -78,14 +78,14 @@ export const migrateWorld = async function(oldVersion, newVersion) {
 
 /**
  * Migrate the actor attributes
- * @param {Actor} actor   The actor to Update
- * @return {Promise<Object>}       The updateData to apply
+ * @param {Actor} actorFull   The actor to Update
+ * @return {Promise<Object>}  The updateData to apply
  */
-async function _migrateActor(actor, version) {
-  let updateData = null;
+async function _migrateActor(actorFull, version) {
+  let updateData = {};
 
   if (version < 4.1) {
-    if (actor.type == 'character') {
+    if (actorFull.type == 'character') {
       updateData = {
         'system.==trauma': {
           'value': 0,
@@ -101,14 +101,46 @@ async function _migrateActor(actor, version) {
     }
   }
   if (version < 4.4)
-    if (actor.type == 'crew')
-      await actor.updateCrewWideAbilityOwnership();
+    if (actorFull.type == 'crew')
+      await actorFull.updateCrewWideAbilityOwnership();
+  if (version < 4.5) {
+    // Update Armor properly
+    if (actorFull.type == 'vehicle' || actorFull.type == 'character') {
+      const armorGap = actorFull.system.armor.max - actorFull.system.armor.value;
+      const pilotFull = BladesHelpers.resolveActor(actorFull.system.pilot);
+      const itemType = actorFull.type == 'vehicle' ? 'vehicle_gear' : 'item';
+      var armorMax = 0;
 
-  return updateData ?? {};
+      BladesHelpers.tryUpdate(actorFull, {'system.armor.max': 0});
+
+      // Migrate items so they have proper Armor effects
+      const items = (pilotFull ?? actorFull).items.filter(i => i.type == itemType && i.system.armor);
+      for (const item of items) {
+        armorMax ++;
+        await BladesHelpers.tryUpdate(item, {'system.==armor': false});
+        await item.createEmbeddedDocuments('ActiveEffect', [{
+          name: 'Armor Effect',
+          icon: 'systems/beamsaber/styles/assets/icons/Icon.3_13.png',
+          origin: item.uuid,
+          disabled: item.system.suppressed,
+          changes: [{
+            key: actorFull.type == 'vehicle' ? 'system.vehicle_armor_max' : 'system.armor.max',
+            mode: 2,
+            value: 1,
+            priority: 30
+          }]
+        }]);
+      }
+
+      updateData['system.armor.==value'] = Math.max(armorMax - armorGap, 0);
+    }
+  }
+
+  return updateData;
 }
 
 /**
- * Migrate the itrm attributes
+ * Migrate the item attributes
  * @param {Item} item   The item to Update
  * @return {Promise<Object>}    The updateData to apply
  */

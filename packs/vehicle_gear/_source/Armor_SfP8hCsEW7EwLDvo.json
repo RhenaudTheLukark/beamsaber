@@ -1,7 +1,52 @@
 {
   "name": "Armor",
   "type": "vehicle_gear",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Armor Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.vehicle_gear.Item.SfP8hCsEW7EwLDvo",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "CI3snmB07aMa6AWJ",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.vehicle_armor_max",
+          "mode": 2,
+          "value": "1",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "1.0.3.2",
+        "createdTime": 1789609024143,
+        "modifiedTime": 1789609855792,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!SfP8hCsEW7EwLDvo.CI3snmB07aMa6AWJ"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -25,6 +70,12 @@
   },
   "system": {
     "description": "<p>[Load 2] Spend to reduce Damage by one level. Armor is restored at the start of downtime at no cost. Armor can be taken multiple times-each costs 2 Load and can be spent once per mission.</p>",
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "replenish": true,
     "logic": "",
     "activation": {
       "type": "",
@@ -46,11 +97,6 @@
       "long": null,
       "units": ""
     },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
     "consume": {
       "type": "",
       "target": null,
@@ -60,14 +106,15 @@
     "is_container": false,
     "container_load": 0,
     "container_item_types": [],
+    "collapsed": false,
+    "container_type": "TYPES.Item.item",
     "class": "",
     "load": 2,
     "form": 0,
     "suppressed": false,
     "experimental": false,
     "hidden": false,
-    "special_ammunition_type": "other",
-    "armor": true
+    "special_ammunition_type": "other"
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!SfP8hCsEW7EwLDvo"

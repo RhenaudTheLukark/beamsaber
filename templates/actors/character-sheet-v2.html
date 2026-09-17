@@ -282,7 +282,7 @@
       <thead>
         <th class="black-white-header" colspan="4">{{localize 'BITD.VehicleDamage'}}</th>
         <th class="black-white-header">{{localize 'BITD.VehicleRepair'}}</th>
-        {{#if (gt system.vehicle.system.armor.max 0)}}
+        {{#if (gt vehicle_armor 0)}}
         <th class="black-white-header">{{localize 'BITD.VehicleArmor'}}</th>
         {{/if}}
       </thead>
@@ -298,13 +298,13 @@
               {{{blades-clock-object system.vehicle.system.repair_clock 'system.repair_clock' 'repair-clock' defaultClockThemeColor true false}}}
             </div>
           </td>
-          {{#if (gt system.vehicle.system.armor.max 0)}}
+          {{#if (gt vehicle_armor 0)}}
           <td rowspan="3" id="vehicle-{{_id}}-armor" class="vehicle-armor">
             <div class="flex-horizontal">
               {{#multiboxes system.vehicle.system.armor.value}}
               <input data-action="vehicleData" class="vehicle-data" type="radio" id="vehicle-{{_id}}-armor-0" data-name="system.armor.value" value="0" dtype="Radio">
 
-              {{#times_from 1 system.vehicle.system.armor.max}}
+              {{#times_from 1 vehicle_armor}}
               <input data-action="vehicleData" class="vehicle-data" type="radio" id="vehicle-{{../_id}}-armor-{{this}}" data-name="system.armor.value" value="{{this}}" dtype="Radio">
               <label class="radio-toggle{{#if (lteq this ../system.vehicle.system.armor.value)}} enabled{{/if}}"><a><i class="fa{{#if (lteq this ../system.vehicle.system.armor.value)}}s{{else}}-regular{{/if}} fa-shield"></i></a></label>
               {{/times_from}}

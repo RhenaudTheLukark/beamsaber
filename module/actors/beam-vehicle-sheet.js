@@ -88,6 +88,7 @@ export class BeamVehicleSheet extends BladesSheet {
     }
 
     sheetData.system.attributes = this.actor.getComputedAttributes(true);
+    sheetData.system.armor.max += sheetData.system.vehicle_armor_max + (sheetData.system.pilot?.system.vehicle_armor_max ?? 0)
 
     return sheetData;
   }

@@ -290,7 +290,7 @@ export class BladesSquadSheet extends BladesSheet {
 
           let vehicleFull = BladesHelpers.resolveActor(memberFull.system.vehicle);
           if (vehicleFull)
-            BladesHelpers.tryUpdate(vehicleFull, {'system.armor.==value': vehicleFull.system.armor.max});
+            BladesHelpers.tryUpdate(vehicleFull, {'system.armor.==value': vehicleFull.system.armor.max + vehicleFull.system.vehicle_armor_max + memberFull.system.vehicle_armor_max});
         }
         if (sparkUsed)
           messageContents += `<div class="description"><p>${game.i18n.localize('BITD.StartMissionRecoverSpark')}</p></div>`;

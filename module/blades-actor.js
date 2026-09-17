@@ -34,7 +34,7 @@ export class BladesActor extends Actor {
   /** @override */
   async _onUpdate(changed, options, userId) {
     super._onUpdate(changed, options, userId);
-    if (changed.system?.is_second_form != undefined)
+    if (changed.system?.is_second_form != undefined || changed.system?.['==is_second_form'] != undefined)
       this.updateVehicleForm();
   }
 
@@ -660,28 +660,32 @@ export class BladesActor extends Actor {
   }
 
   async updateVehicleForm() {
-    let more_than_meets_the_eye = false;
-    let gearOwner = this.getGeneralVehicleGearOwner();
+    var more_than_meets_the_eye = false;
+    const gearOwner = this.getGeneralVehicleGearOwner();
     if (gearOwner != this)
       more_than_meets_the_eye = gearOwner.system.more_than_meets_the_eye;
 
-    for (let gear of gearOwner.items.filter(e => e.type == 'vehicle_gear')) {
-      let suppressed = false;
-      if (gear.system.form > 0) {
-        if (gear.system.form == 1 && this.system.is_second_form == true) suppressed = true;
-        else if (gear.system.form == 2 && this.system.is_second_form == false) suppressed = true;
-      }
-      if (gear.system.owner) {
-        let container = gearOwner.items.find(i => i._id == gear.system.owner);
-        if (container.system.suppressed) suppressed = true;
-      }
+    if (more_than_meets_the_eye) {
+      for (const gear of gearOwner.items.filter(e => e.type == 'vehicle_gear')) {
+        var suppressed = false;
+        if (gear.system.form > 0) {
+          if (gear.system.form == 1 && this.system.is_second_form == true) suppressed = true;
+          else if (gear.system.form == 2 && this.system.is_second_form == false) suppressed = true;
+        }
+        if (gear.system.owner) {
+          const container = gearOwner.items.find(i => i._id == gear.system.owner);
+          if (container.system.suppressed) suppressed = true;
+        }
 
-      if (gear.system.suppressed != suppressed) {
-        await BladesHelpers.tryUpdate(gear, {'system.==suppressed': suppressed});
-        if (suppressed)
-          await BladesHelpers.preDeleteItem(gear, gearOwner, false);
-        else
-          await BladesHelpers.postCreateItem(gear, gearOwner);
+        if (gear.system.suppressed != suppressed) {
+          for (const effect of gear.effects)
+            await BladesHelpers.tryUpdate(effect, {'disabled': suppressed});
+          await BladesHelpers.tryUpdate(gear, {'system.==suppressed': suppressed});
+          if (suppressed)
+            await BladesHelpers.preDeleteItem(gear, gearOwner, false);
+          else
+            await BladesHelpers.postCreateItem(gear, gearOwner);
+        }
       }
     }
   }

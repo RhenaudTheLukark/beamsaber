@@ -184,6 +184,8 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
       container.system.container_item_types_str = container.system.container_item_types.join(',');
     }
 
+    actor.vehicle_armor = actor.system.vehicle ? actor.system.vehicle.system.vehicle_armor_max + actor.system.vehicle_armor_max : 0;
+
     return context.actor;
   }
 

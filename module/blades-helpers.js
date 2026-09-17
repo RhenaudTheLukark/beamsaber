@@ -589,17 +589,17 @@ export class BladesHelpers {
       if (itemFull.effects.filter(e => e.changes.filter(c => c.value == "true" && c.mode == 5 && Object.keys(BladesHelpers.crewWideModifiers).includes(c.key.split('.').reverse()[0])).length).length)
         await actorFull.updateCrewWideAbilityOwnership();
 
-    // Pilot & Vehicle Armor
-    if (['item', 'vehicle_gear'].includes(itemFull.type) && itemFull.system.armor) {
-      let differentActor = false;
-      if (itemFull.type == 'vehicle_gear' && actorFull.type != 'vehicle') {
-        actorFull = BladesHelpers.resolveActor(actorFull.system.vehicle);
-        differentActor = true;
+    // Armor: Auto-fill
+    if (['item', 'vehicle_gear'].includes(itemFull.type)) {
+      let armorOwnerFull = actorFull;
+      if (itemFull.type == 'vehicle_gear' && armorOwnerFull.type != 'vehicle')
+        armorOwnerFull = BladesHelpers.resolveActor(actorFull.system.vehicle);
+      const armorKey = armorOwnerFull.type == 'vehicle' ? 'system.vehicle_armor_max' : 'system.armor.max';
+      const armorChangingEffects = itemFull.effects.filter(e => e.changes.filter(c => c.key == armorKey).length);
+      if (armorChangingEffects.length) {
+        const value = armorChangingEffects.reduce((acc, e) => acc + e.changes.filter(c => c.key == armorKey).reduce((acc, c) => acc + parseInt(c.value), 0), 0);
+        BladesHelpers.tryUpdate(armorOwnerFull, {'system.armor.==value': armorOwnerFull.system.armor.value + value})
       }
-      let armorData = actorFull.system.armor;
-      armorData.max ++;
-      armorData.value ++;
-      await BladesHelpers.tryUpdate(actorFull, {'system.armor.==max': armorData.max, 'system.armor.==value': armorData.value});
     }
   }
 
@@ -618,16 +618,16 @@ export class BladesHelpers {
       }
     }
 
-    // Pilot & Vehicle Armor
+    // Armor: Auto-fill
     if (['item', 'vehicle_gear'].includes(itemFull.type)) {
-      if (itemFull.system.armor) {
-        let shieldOwner = actorFull;
-        if (itemFull.type == 'vehicle_gear' && shieldOwner.type != 'vehicle')
-          shieldOwner = BladesHelpers.resolveActor(actorFull.system.vehicle);
-        let armorData = shieldOwner.system.armor;
-        armorData.max --;
-        armorData.value = Math.min(armorData.max, armorData.value);
-        await BladesHelpers.tryUpdate(shieldOwner, {'system.==armor': armorData});
+      let armorOwnerFull = actorFull;
+      if (itemFull.type == 'vehicle_gear' && armorOwnerFull.type != 'vehicle')
+        armorOwnerFull = BladesHelpers.resolveActor(actorFull.system.vehicle);
+      const armorKey = armorOwnerFull.type == 'vehicle' ? 'system.vehicle_armor_max' : 'system.armor.max';
+      const armorChangingEffects = itemFull.effects.filter(e => e.changes.filter(c => c.key == armorKey).length);
+      if (armorChangingEffects.length) {
+        const value = armorChangingEffects.reduce((acc, e) => acc + e.changes.filter(c => c.key == armorKey).reduce((acc, c) => acc + parseInt(c.value), 0), 0);
+        BladesHelpers.tryUpdate(armorOwnerFull, {'system.armor.==value': Math.max(armorOwnerFull.system.armor.value - value, 0)})
       }
     }
 

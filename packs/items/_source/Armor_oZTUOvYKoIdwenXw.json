@@ -1,7 +1,52 @@
 {
   "name": "Armor",
   "type": "item",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Armor Effect",
+      "img": "systems/beamsaber/styles/assets/icons/Icon.3_13.png",
+      "origin": "Compendium.beamsaber.item.Item.oZTUOvYKoIdwenXw",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "SLIRjcA0La9uC9YC",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.armor.max",
+          "mode": 2,
+          "value": "1",
+          "priority": 30
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.351",
+        "systemId": "beamsaber",
+        "systemVersion": "1.0.3.2",
+        "createdTime": 1789608960161,
+        "modifiedTime": 1789608978504,
+        "lastModifiedBy": "YR7rqLkjCwcJpOjY"
+      },
+      "_key": "!items.effects!oZTUOvYKoIdwenXw.SLIRjcA0La9uC9YC"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "flags": {
@@ -68,8 +113,7 @@
       "type": "",
       "target": null,
       "amount": null
-    },
-    "armor": true
+    }
   },
   "img": "icons/svg/item-bag.svg",
   "_key": "!items!oZTUOvYKoIdwenXw"
