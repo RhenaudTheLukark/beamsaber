@@ -3,7 +3,7 @@
     "Actor": {
       "faction": "Faction",
       "crew": "Squad",
-      "character": "Character",
+      "character": "Pilot",
       "vehicle": "Vehicle",
       "region": "Region",
       "npc": "NPC",
@@ -271,7 +271,7 @@
     "RollSuccess": "Success",
     "RollPartialSuccess": "Partial Success",
     "RollSomeDice": "Roll Some Dice!",
-    "RollTokenDescription": "If you want to pull the numbers from a character, select their Token first.",
+    "RollTokenDescription": "If you want to pull stats from an actor, select their Token first.",
     "RollNumberOfDice": "Number of Dice",
     "RollDoDireCritical": "You do it and a moment of clarity helped you clear <strong>1 Stress</strong>.",
     "RollDoDireVehicleCritical": "You do it. Your vehicle lights up as it recovers <strong>1 Quirk</strong> of your choosing.",
@@ -761,7 +761,7 @@
     "IgnoreDamageEffect": "Ignore your Level 3 Damage",
 
     "Squads": "Squads",
-    "NotableSquadsCharactersNPCs": "Notable Squads, Characters & NPCs",
+    "NotableSquadsCharactersNPCs": "Notable Squads, Pilots & NPCs",
     "AssociatedSquads": "Associated Squads",
     "Regions": "Regions",
     "ControlledRegions": "Controlled Regions",
@@ -794,7 +794,7 @@
     "Full": "Full",
     "Associated": "Associated",
     "DisabledByAE": "Minimum Value set by an Active Effect",
-    "NoMastery": "This Character lacks Mastery",
+    "NoMastery": "This Pilot lacks Mastery",
     "MiddleClickForForm": "Middle Click to assign this action point to a vehicle form.",
     "AssignedFirstForm": "This action point is only active when the vehicle is in its first form.",
     "AssignedSecondForm": "This action point is only active when the vehicle is in its second form.",
@@ -819,9 +819,9 @@
     "DireAction": "Dire Action",
     "Connection": "Connection",
 
-    "FactionRelationshipInfo": "Drag & drop a Faction, Squad, Character or NPC to add it as a relationship.",
+    "FactionRelationshipInfo": "Drag & drop a Faction, Squad, Pilot or NPC to add it as a relationship.",
     "SquadRelationshipInfo": "Drag & drop a Faction or Squad to add it as a relationship.",
-    "CharacterConnectionInfo": "Drag & drop another Character or NPC to add it as a connection.",
+    "CharacterConnectionInfo": "Drag & drop another Pilot or NPC to add it as a connection.",
     "AddRegionOwner": "Add Region Owner",
     "AddRegionOwnerInfo": "Drag & drop a Faction or Squad here to assign it as this Region's owner.",
 
@@ -1113,7 +1113,7 @@
       },
       "Edge": {
         "Name": "Edge",
-        "Hint": "Adds Edge to character sheets from the Deep Cuts supplement."
+        "Hint": "Adds Edge to pilot sheets from the Deep Cuts supplement."
       },
       "PublicClocks": {
         "Name": "Default Observable Clocks",
@@ -1184,15 +1184,15 @@
         "NoRollFromVehicle": "Rolls from the Vehicle sheet are not handled by the system. Please initiate a roll from this vehicle's pilot's sheet instead.",
         "NotItemOwnerVehicle": "The gear owned by this vehicle is internally owned by its pilot. Please open this vehicle's gear from its pilot' sheet instead.",
         "NoAddFromSuppressedContainer": "Items cannot be added to a disabled container. Enable it first by changing the vehicle's current form.",
-        "NoSquadToAddConnection": "The Character needs a Squad in order to display a list of connections to add!",
+        "NoSquadToAddConnection": "The Pilot needs a Squad in order to display a list of connections to add!",
         "NothingToAdd": "There is no available object that can be added to this actor.",
         "AddRegionOwnerBadType": "The object you dropped in the add region owner window is a {type}, not a Faction or Squad!",
         "WorkInProgress": "This feature has currently been disabled as it is a work in progress!",
         "GroupActionNoRollsToParse": "This Group Action has not received any roll, thus its results cannot be revealed.",
-        "GroupActionRollNoActor": "You currently have no character assigned! Select a Token first or get a character assigned by your GM.",
-        "GroupActionRollNotACharacter": "Your currently selected actor is not a Character, it is a {obj}.",
-        "GroupActionRollCharacterNotInCrew": "Your currently selected Character \"{char}\" does not belong to the Squad \"{crew}\".",
-        "WorkHardPlayHardNoActor": "You currently have no character assigned! Select a Token first or get a character assigned by your GM.",
+        "GroupActionRollNoActor": "You currently have no pilot assigned! Select a Token first or get a pilot assigned by your GM.",
+        "GroupActionRollNotACharacter": "Your currently selected actor is not a Pilot, it is a {obj}.",
+        "GroupActionRollCharacterNotInCrew": "Your currently selected Pilot \"{char}\" does not belong to the Squad \"{crew}\".",
+        "WorkHardPlayHardNoActor": "You currently have no pilot assigned! Select a Token first or get a pilot assigned by your GM.",
         "WorkHardPlayHardWrongActor": "The 'Work Hard, Play Hard' Stress Loss roll awaits the Pilot {name}, but {currentName} is selected.",
         "UnknownRollType": "The roll type \"{type}\" isn't recognized as a valid roll type.",
         "ClockStylesRequestNoActiveGM": "Clock styles could not be retrieved due to having no Gamemaster or Assistant Gamemaster currently connected. They will be received once one of them connects to the server.",
@@ -1200,7 +1200,7 @@
         "TryUpdateNoActiveGM": "Some data could not be updated due to having no Gamemaster or Assistant Gamemaster currently connected. It will be updated once one of them connects to the server.",
         "TryDeleteNoActiveGM": "Some data could not be deleted due to having no Gamemaster or Assistant Gamemaster currently connected. It will be deleted once one of them connects to the server.",
         "NoClockImage": "There is no existing clock image for the theme {theme}, color {color}, size {size} and fill {fill}.",
-        "MustOwnCharacterAndVehicle": "You must own both the Character and Vehicle in order to link or unlink them.",
+        "MustOwnCharacterAndVehicle": "You must own both the Pilot and Vehicle in order to link or unlink them.",
         "DragDropVehicleGearPilotNoVehicle": "This Pilot must have a Vehicle to assign vehicle gear to!"
       },
       "error": {

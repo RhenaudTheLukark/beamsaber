@@ -139,15 +139,17 @@ async function _migrateActor(actorFull, version) {
   return updateData;
 }
 
+/* -------------------------------------------- */
+
 /**
  * Migrate the item attributes
- * @param {Item} item   The item to Update
- * @return {Promise<Object>}    The updateData to apply
+ * @param {Item} itemFull    The item to Update
+ * @return {Promise<Object>} The updateData to apply
  */
-async function _migrateItem(item, version) {
-  let updateData = null;
+async function _migrateItem(itemFull, version) {
+  let updateData = {};
 
-  return updateData ?? {};
+  return updateData;
 }
 
 /* -------------------------------------------- */
