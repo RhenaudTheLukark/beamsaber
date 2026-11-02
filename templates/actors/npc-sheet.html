@@ -7,11 +7,11 @@
         <input type="text" id="character-{{_id}}-name" name="name" value="{{name}}" placeholder="{{localize 'BITD.Name'}}">
       </div>
       <div class="flex-horizontal">
-        <label class="text-line" for="character-{{_id}}-short-description">{{localize 'BITD.Short'}} {{localize 'BITD.Description'}}:</label>
+        <label class="text-line" for="character-{{_id}}-short-description">{{localize 'BITD.SumUp'}}:</label>
         <input type="text" id="character-{{_id}}-short-description" name="system.description_short" value="{{system.description_short}}">
       </div>
       <div class="flex-horizontal">
-        <a class="text-line item-add-popup" data-item-type="class" data-unique="true" data-value-path="system.class" data-add-as-item="true">{{localize 'BITD.Associated'}} {{localize 'BITD.Class'}}:</a>
+        <a class="text-line item-add-popup" data-item-type="class" data-unique="true" data-value-path="system.class" data-add-as-item="true">{{localize 'BITD.Class'}}:</a>
         {{#if (ne system.class null)}}
         <div class="item flex-horizontal" data-item-id="{{system.class._id}}" data-item-uuid="{{system.class.uuid}}">
           <div class="open-actor flex-horizontal">
@@ -29,7 +29,7 @@
         <textarea rows="2" id="character-{{_id}}-description" name="system.description">{{system.description}}</textarea>
       </div>
       <div class="flex-horizontal">
-        <a class="text-line actor-add-popup" data-actor-type="crew" data-unique="true" data-value-path="system.crew">{{localize 'BITD.Associated'}} {{localize 'BITD.Squad'}}:</a>
+        <a class="text-line actor-add-popup" data-actor-type="crew" data-unique="true" data-value-path="system.crew">{{localize 'BITD.Squad'}}:</a>
         {{#if (ne system.crew null)}}
         <div class="item flex-horizontal" data-item-id="{{system.crew.uuid}}">
           <div class="open-actor flex-horizontal">
@@ -43,7 +43,7 @@
         {{/if}}
       </div>
       <div class="flex-horizontal">
-        <a class="text-line actor-add-popup" data-actor-type="region" data-unique="true" data-value-path="system.region">{{localize 'BITD.Current'}} {{localize 'BITD.Region'}}:</a>
+        <a class="text-line actor-add-popup" data-actor-type="region" data-unique="true" data-value-path="system.region">{{localize 'BITD.Region'}}:</a>
         {{#if (ne system.region null)}}
         <div class="item flex-horizontal" data-item-id="{{system.region.uuid}}">
           <div class="open-actor flex-horizontal">
@@ -57,7 +57,7 @@
         {{/if}}
       </div>
       <div class="flex-horizontal">
-        <a class="text-line actor-add-popup" data-actor-type="faction" data-unique="true" data-value-path="system.faction">{{localize 'BITD.Associated'}} {{localize 'BITD.Faction'}}:</a>
+        <a class="text-line actor-add-popup" data-actor-type="faction" data-unique="true" data-value-path="system.faction">{{localize 'BITD.Faction'}}:</a>
         {{#if (ne system.faction null)}}
         <div class="item flex-horizontal" data-item-id="{{system.faction.uuid}}">
           <div class="open-actor flex-horizontal">

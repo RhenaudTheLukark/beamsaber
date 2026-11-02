@@ -7,15 +7,15 @@
         <input type="text" id="vehicle-{{_id}}-name" name="name" value="{{name}}">
       </div>
       <div class="flex-horizontal">
-        <label class="text-line" for="vehicle-{{_id}}-model">{{localize 'BITD.VehicleModel'}}:</label>
+        <label class="text-line" for="vehicle-{{_id}}-model">{{localize 'BITD.Model'}}:</label>
         <input type="text" id="vehicle-{{_id}}-model" name="system.model" value="{{system.model}}">
       </div>
       <div class="flex-horizontal">
-        <label class="text-line" for="vehicle-{{_id}}-description">{{localize 'BITD.VehicleDescrition'}}:</label>
+        <label class="text-line" for="vehicle-{{_id}}-description">{{localize 'BITD.Description'}}:</label>
         <textarea rows="2" id="vehicle-{{_id}}-description" name="system.description">{{system.description}}</textarea>
       </div>
       <div class="flex-horizontal">
-        <a class="text-line actor-add-popup" data-actor-type="faction" data-unique="true" data-value-path="system.faction">{{localize 'BITD.VehicleFaction'}}:</a>
+        <a class="text-line actor-add-popup" data-actor-type="faction" data-unique="true" data-value-path="system.faction">{{localize 'TYPES.Actor.faction'}}:</a>
         {{#if (ne system.faction null)}}
         <div class="item flex-horizontal" data-item-id="{{system.faction.uuid}}">
           <div class="open-actor flex-horizontal">

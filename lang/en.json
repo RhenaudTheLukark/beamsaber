@@ -126,6 +126,7 @@
     "Spark": "Spark",
     "LessEffect": "Less Effect",
     "Description": "Description",
+    "SumUp": "Sum Up",
     "Loadout": "Loadout",
     "Load": "Load",
     "SquadType": "Squad Type",
@@ -208,8 +209,7 @@
     "Discoveries": "Discovered Truths",
 
     "VehicleName": "Vehicle",
-    "VehicleModel": "Model",
-    "VehicleDescrition": "Vehicle Desc",
+    "Model": "Model",
     "VehicleArmor": "Armor",
     "VehicleDamage": "Vehicle Damage",
     "VehicleRepair": "Repair",
@@ -217,7 +217,6 @@
     "VehicleQuirks": "Quirks, Enhance and Breakdown",
     "VehicleEnhance": "Enhance",
     "VehicleBreakdown": "Breakdown",
-    "VehicleFaction": "Associated Faction",
 
     "Gang": "Fire Team",
     "Expert": "Expert",
