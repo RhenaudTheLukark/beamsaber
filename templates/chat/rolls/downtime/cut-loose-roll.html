@@ -7,9 +7,9 @@
   <div class="description">
     <p>
     {{#if extraFields.workHardPlayHardRoll}}
-    {{{localize 'BITD.RollCutLooseDoubleFailure' pilot=pilot clear_stress=clear_stress}}}
+    {{{localize 'BITD.RollCutLooseDoubleFailure' pilot=pilot.name clear_stress=clear_stress}}}
     {{else}}
-    {{{localize 'BITD.RollCutLooseFailure' pilot=pilot clear_stress=clear_stress}}}
+    {{{localize 'BITD.RollCutLooseFailure' pilot=pilot.name clear_stress=clear_stress}}}
     {{/if}}
     <ul>
       <li>{{{localize 'BITD.RollCutLooseFailureAttactTrouble'}}}</li>
@@ -17,13 +17,13 @@
       <li>{{{localize 'BITD.RollCutLooseFailureLost'}}}</li>
       <li>{{{localize 'BITD.RollCutLooseFailureTapped'}}}</li>
     </ul>
-    {{#if extraFields.actor.system.functioningVice}}{{{localize 'BITD.RollCutLooseFunctioningViceOther' pilot=pilot}}}{{/if}}
+    {{#if extraFields.actor.system.functioningVice}}{{{localize 'BITD.RollCutLooseFunctioningViceOther' pilot=pilot.name}}}{{/if}}
     </p>
   </div>
   {{else}}
   <div class="die success">{{localize 'BITD.RollSuccess'}}</div>
   <div class="description">
-    <p>{{{localize 'BITD.RollCutLoose' pilot=pilot clear_stress=clear_stress}}}
+    <p>{{{localize 'BITD.RollCutLoose' pilot=pilot.name clear_stress=clear_stress}}}
     {{#if extraFields.rollData.carouseStress}}
       {{#if saved_by_carouse}}
         {{{localize 'BITD.RollCutLooseSavedByCarouse'}}}
@@ -44,7 +44,7 @@
       {{else}}
         {{{localize 'BITD.RollCutLooseFunctioningVice'}}}
       {{/if}}
-      {{{localize 'BITD.RollCutLooseFunctioningViceOther' pilot=pilot}}}
+      {{{localize 'BITD.RollCutLooseFunctioningViceOther' pilot=pilot.name}}}
     {{/if}}
     {{#if (gt extraFields.actor.system.stress.value 0)}}
       {{{localize 'BITD.RollCutLooseExtraResult'}}}
@@ -55,12 +55,12 @@
   <div class="description">
     <p>
       {{#if extraFields.rollData.carousePilotRelationship}}
-        {{{localize 'BITD.RollCutLooseConnectionCarousePilot' pilot=pilot}}}
+        {{{localize 'BITD.RollCutLooseConnectionCarousePilot' pilot=pilot.name}}}
       {{else}}
-        {{{localize 'BITD.RollCutLooseConnection' pilot=pilot}}}
+        {{{localize 'BITD.RollCutLooseConnection' pilot=pilot.name}}}
       {{/if}}
       {{#if connection_maxxed}}
-        {{{localize 'BITD.RollCutLooseConnectionMaxxed' pilot=pilot}}}
+        {{{localize 'BITD.RollCutLooseConnectionMaxxed' pilot=pilot.name}}}
       {{/if}}
     </p>
   </div>
@@ -68,9 +68,9 @@
   {{#if extraFields.rollData.carouseOtherRelationship}}
   <div class="description">
     <p>
-      {{{localize 'BITD.RollCutLooseConnectionCarouseOther' pilot=pilot}}}
+      {{{localize 'BITD.RollCutLooseConnectionCarouseOther' pilot=pilot.name}}}
       {{#if connection_maxxed}}
-        {{{localize 'BITD.RollCutLooseConnectionCarouseOtherMaxxed' pilot=pilot}}}
+        {{{localize 'BITD.RollCutLooseConnectionCarouseOtherMaxxed' pilot=pilot.name}}}
       {{/if}}
     </p>
   </div>
@@ -122,14 +122,14 @@
   </div>
   {{/if}}
 
-  {{#if (and extraFields.actor.system.carouse (not (or extraFields.rollData.carouseStress (or extraFields.rollData.carousePilotRelationship extraFields.rollData.carouseOtherRelationship))))}}
-  <div class="button">
+  {{#if (not (or extraFields.rollData.carouseStress extraFields.rollData.carousePilotRelationship extraFields.rollData.carouseOtherRelationship))}}
+  <div class="button carouse-owner" data-cut-loose-owner="{{extraFields.actor.uuid}}" data-cut-loose-participant="{{pilot.uuid}}">
     <button class="carouse-stress">{{localize 'BITD.RollCutLooseCarouseStressButton'}}</button>
   </div>
-  <div class="button">
+  <div class="button carouse-owner" data-cut-loose-owner="{{extraFields.actor.uuid}}" data-cut-loose-participant="{{pilot.uuid}}">
     <button class="carouse-pilot-connection" data-actor-id="{{extraFields.connection.uuid}}">{{localize 'BITD.RollCutLooseCarousePilotConnectionButton'}}</button>
   </div>
-  <div class="button">
+  <div class="button carouse-owner" data-cut-loose-owner="{{extraFields.actor.uuid}}" data-cut-loose-participant="{{pilot.uuid}}">
     <button class="carouse-other-connection" data-actor-id="{{extraFields.connection.uuid}}">{{localize 'BITD.RollCutLooseCarouseOtherConnectionButton'}}</button>
   </div>
   {{/if}}

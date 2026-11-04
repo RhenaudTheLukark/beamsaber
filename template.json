@@ -63,6 +63,7 @@
         "cohort": {}
       },
       "group_action": null,
+      "collect_vigilance": 0,
       "load_rigging": 0,
       "mech_load_rigging": 0,
       "notes": "",
@@ -498,8 +499,7 @@
       "special_rules": "",
       "squads": [],
       "characters": [],
-      "npcs": [],
-      "collect_vigilance": 0
+      "npcs": []
     },
     "\uD83D\uDD5B clock": {
       "size": 4,

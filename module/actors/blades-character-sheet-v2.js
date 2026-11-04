@@ -834,7 +834,6 @@ export class BladesCharacterSheetV2 extends BladesSheetV2 {
               <a class="item-name">${dropFull.name}</a>
               <a class="delete-actor"><i class="fas fa-times"></i></a>
             </div>`;
-          this.querySelector('#collectVigilance').value = Math.min(dropFull.system.collect_vigilance, 10);
           this.querySelector('#collectRegion .delete-actor').onclick = function (ev) {
             let rollType = this.closest('.form-group').querySelector('input[type=radio]:checked').id.split('-')[0];
             if (rollType == 'collect')

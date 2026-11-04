@@ -299,8 +299,8 @@ export class BladesSquadSheet extends BladesSheet {
         for (let item of this.actor.items.filter(i => i.system.uses?.max && i.system.replenish))
           await BladesHelpers.tryUpdate(item, {'system.uses.==value': item.system.uses.max});
 
-        // Set Phase to Mission
-        await BladesHelpers.tryUpdate(this.actor, {'system.==phase': 'mission'});
+        // Set Phase to Mission & Reset Collect Vigilance
+        await BladesHelpers.tryUpdate(this.actor, {'system.==phase': 'mission', 'system.==collect_vigilance': 0});
 
         let speaker = {
           actor: this.actor._id,

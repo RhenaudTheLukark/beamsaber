@@ -1104,19 +1104,19 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
 
   if (rollData.dice)
     rollData.oldDice = rollData.dice;
-  rollData.dice = diceAmount;
+  rollData.dice = extraFields.forcedDice != undefined ? extraFields.forcedDice : diceAmount;
   extraFields.rollData = rollData;
 
   if (!extraFields.noRoll) {
     let zeromode = false;
-    if (diceAmount < 0) diceAmount = 0;
-    if (diceAmount === 0) {
+    if (rollData.dice < 0) rollData.dice = 0;
+    if (rollData.dice == 0) {
       zeromode = true;
-      diceAmount = 2;
+      rollData.dice = 2;
     }
 
     let rolls;
-    let diceToRoll = diceAmount - (extraFields.rollData.oldDice ?? 0);
+    let diceToRoll = rollData.dice - (extraFields.rollData.oldDice ?? 0);
     if (diceToRoll > 0) {
       rolls = new Roll(`${diceToRoll}d6`, {});
       // show 3d Dice so Nice if enabled
@@ -1124,14 +1124,14 @@ export async function bladesRoll(diceAmount, attributeOrRollName = '', note = ''
     }
     if (!rolls)
       rolls = extraFields.rollData.rolls;
-    else if (extraFields.rollData.rolls && extraFields.rollData.oldDice !== 0) {
+    else if (extraFields.rollData.rolls && extraFields.rollData.oldDice > 0) {
       extraFields.rollData.rolls.terms[0].results = extraFields.rollData.rolls.terms[0].results.concat(rolls.terms[0].results);
       rolls = extraFields.rollData.rolls;
     }
 
     await showChatRollMessage(rolls, zeromode, attributeOrRollName, note, extraFields);
   } else
-    await showChatMessage(diceAmount, attributeOrRollName, note, extraFields);
+    await showChatMessage(rollData.dice, attributeOrRollName, note, extraFields);
 }
 
 /**
@@ -1316,7 +1316,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
   else if (attributeOrRollName == 'BITD.CollectRoll') {
     let squadFull = BladesHelpers.resolveActor(extraFields.actor.system.crew);
     let supplyPoints = getBladesRollCollect(rolls, extraResult, zeromode);
-    await BladesHelpers.tryUpdate(extraFields.region, {'system.==collect_vigilance': extraFields.region.system.collect_vigilance + 1});
+    await BladesHelpers.tryUpdate(squadFull, {'system.==collect_vigilance': squadFull.system.collect_vigilance + 1});
     let entanglement = rolls.map(i => i.result).find(r => r == 1) >= 0;
     if (entanglement) {
       let ownerFull = BladesHelpers.resolveActor(extraFields.region.system.owner);
@@ -1399,7 +1399,7 @@ async function showChatRollMessage(r, zeromode, attributeOrRollName, note, extra
       extraFields.rollData.stressChanges[extraFields.actor._id] = {value: realClearStress, realValue: shiftValue};
     await BladesHelpers.tryUpdate(extraFields.actor, updateObject);
 
-    result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/downtime/cut-loose-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, saved_by_conviction: savedByConviction, saved_by_functioning_vice: savedByFunctioningVice, saved_by_carouse: savedByCarouse, attribute_label: attributeLabel, pilot: connectionFull ? connectionFull.name : 'Unknown Pilot', clear_stress: clearStress, connection_maxxed: clockMaxxed, other_connection_maxxed: otherClockMaxxed, note: note, edge: edge, extraFields: extraFields });
+    result = await foundry.applications.handlebars.renderTemplate('systems/beamsaber/templates/chat/rolls/downtime/cut-loose-roll.html', { rolls: rolls, zeromode: zeromode, method: method, roll_status: rollStatus, saved_by_conviction: savedByConviction, saved_by_functioning_vice: savedByFunctioningVice, saved_by_carouse: savedByCarouse, attribute_label: attributeLabel, pilot: connectionFull ? connectionFull : {name: 'Unknown Pilot'}, clear_stress: clearStress, connection_maxxed: clockMaxxed, other_connection_maxxed: otherClockMaxxed, note: note, edge: edge, extraFields: extraFields });
   }
   // Check for Fix roll
   else if (attributeOrRollName == 'BITD.FixRoll') {
@@ -2041,7 +2041,7 @@ const rollTypeArgs = {
       <label>${game.i18n.localize('BITD.Vigilance')}:</label>
       <select id="collectVigilance" name="collectVigilance">
         <option value="0" selected disabled hidden>-0d</option>
-        ${Array(11).fill().map((_, i) => `<option value="${i}">-${i}d</option>`).join('')}
+        ${Array(11).fill().map((_, i) => `<option value="${i}"${i == Math.min(args.collectVigilance, 10) ? ' selected' : ''}>-${i}d</option>`).join('')}
       </select>
     </span>`,
   cutLoose: (strict, args) => `
@@ -2152,7 +2152,10 @@ export function buildRollPopup(popupTitle, actor, rollTypes, missingRollTypes = 
 
   let rollTypesHTML = '', rollTypesArgs = '';
   for (let rollType of rollTypes) {
-    if (rollType == 'cutLoose') {
+    if (rollType == 'collect') {
+      let squadFull = BladesHelpers.resolveActor(actor.system.crew);
+      thirdArg = {...thirdArg, collectVigilance: squadFull.system.collect_vigilance};
+    } else if (rollType == 'cutLoose') {
       let connectionsText = '';
       for (let connection of Object.entries(actor.system.connections)) {
         let entityFull = BladesHelpers.resolveActor(connection[1].uuid);
@@ -2641,7 +2644,7 @@ export async function resolveRollModifierArray(modifiers, actorFull, conditional
         if (ownerId >= 0)
           modifierOwners.splice(ownerId, 1);
       }
-      if (modifierOwners?.length)
+      if (!modifierOwners?.length)
         continue;
 
       let result = foundry.utils.deepClone(bladesRollModifierList[modifierId]);

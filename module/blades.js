@@ -514,7 +514,8 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       message.system.rollData.carouseStress = true;
       let extraFields = { roll_type: 'cutLoose', modifiers: message.system.rollData.modifiers, actor: speakerFull, rollData: message.system.rollData };
       extraFields.connection = BladesHelpers.resolveActor(message.system.rollData.connectionUuid);
-      extraFields.stress = Number(speakerFull.system.stress.value)
+      extraFields.stress = Number(speakerFull.system.stress.value);
+      extraFields.forcedDice = message.system.rollData.dice;
       await bladesRoll(0, 'BITD.CutLooseRoll', message.system.rollData.note, extraFields);
       await BladesHelpers.tryDelete(message);
     });
@@ -525,7 +526,8 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       message.system.rollData.carousePilotRelationship = true;
       let extraFields = { roll_type: 'cutLoose', modifiers: message.system.rollData.modifiers, actor: speakerFull, rollData: message.system.rollData };
       extraFields.connection = BladesHelpers.resolveActor(message.system.rollData.connectionUuid);
-      extraFields.stress = Number(speakerFull.system.stress.value)
+      extraFields.stress = Number(speakerFull.system.stress.value);
+      extraFields.forcedDice = message.system.rollData.dice;
       await bladesRoll(0, 'BITD.CutLooseRoll', message.system.rollData.note, extraFields);
       await BladesHelpers.tryDelete(message);
     });
@@ -536,7 +538,8 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
       message.system.rollData.carouseOtherRelationship = true;
       let extraFields = { roll_type: 'cutLoose', modifiers: message.system.rollData.modifiers, actor: speakerFull, rollData: message.system.rollData };
       extraFields.connection = BladesHelpers.resolveActor(message.system.rollData.connectionUuid);
-      extraFields.stress = Number(speakerFull.system.stress.value)
+      extraFields.stress = Number(speakerFull.system.stress.value);
+      extraFields.forcedDice = message.system.rollData.dice;
       await bladesRoll(0, 'BITD.CutLooseRoll', message.system.rollData.note, extraFields);
       await BladesHelpers.tryDelete(message);
     });
@@ -640,6 +643,12 @@ Hooks.on("renderChatMessageHTML", async (message, html, context) => {
   for (const element of html.querySelectorAll('.speaker-only')) {
     let speakerFull = ChatMessage.getSpeakerActor(message.speaker);
     if (!speakerFull.isOwner)
+      element.style.display = 'none';
+  }
+  for (const element of html.querySelectorAll('.carouse-owner')) {
+    let ownerFull = BladesHelpers.resolveActor(element.dataset.cutLooseOwner);
+    let participantFull = BladesHelpers.resolveActor(element.dataset.cutLooseParticipant);
+    if (!ownerFull.isOwner && !participantFull.isOwner)
       element.style.display = 'none';
   }
 });
